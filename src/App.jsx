@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from './utils/AuthContext';
 import GuestLayout from './layouts/GuestLayout';
 import AdminLayout from './layouts/AdminLayout';
 
@@ -11,9 +12,11 @@ import Ticketing from './pages/guest/Ticketing';
 import Rooms from './pages/guest/Rooms';
 import RoomDetails from './pages/guest/RoomDetails';
 import Booking from './pages/guest/Booking';
-import History from './pages/guest/History';
+import Profile from './pages/guest/Profile';
 import Payment from './pages/guest/Payment';
 import BookingDetails from './pages/guest/BookingDetails';
+import Login from './pages/guest/Login';
+import Register from './pages/guest/Register';
 
 import Dashboard from './pages/admin/Dashboard';
 import AdminRooms from './pages/admin/Rooms';
@@ -27,10 +30,26 @@ import AdminSeo from './pages/admin/Seo';
 import AdminScanner from './pages/admin/Scanner';
 import AdminFinance from './pages/admin/Finance';
 
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { user } = useAuth();
+  const location = useLocation();
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+};
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Auth Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
         {/* Guest Routes */}
         <Route path="/" element={<GuestLayout />}>
           <Route index element={<Home />} />
@@ -38,13 +57,15 @@ function App() {
           <Route path="gallery" element={<Gallery />} />
           <Route path="facilities" element={<Facilities />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="ticketing" element={<Ticketing />} />
           <Route path="rooms" element={<Rooms />} />
           <Route path="rooms/:id" element={<RoomDetails />} />
-          <Route path="booking" element={<Booking />} />
-          <Route path="payment" element={<Payment />} />
-          <Route path="booking-details" element={<BookingDetails />} />
-          <Route path="history" element={<History />} />
+
+          {/* Protected Guest Routes */}
+          <Route path="ticketing" element={<ProtectedRoute><Ticketing /></ProtectedRoute>} />
+          <Route path="booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
+          <Route path="payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+          <Route path="booking-details" element={<ProtectedRoute><BookingDetails /></ProtectedRoute>} />
+          <Route path="profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         </Route>
 
         {/* Admin Routes */}

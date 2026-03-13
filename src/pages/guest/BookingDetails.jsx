@@ -1,210 +1,253 @@
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle, MapPin, Printer, ArrowLeft, Receipt } from 'lucide-react';
 
 export default function BookingDetails() {
     const navigate = useNavigate();
 
     return (
-        <div className="animate-fade-in" style={{ backgroundColor: '#F9FAFB', paddingBottom: '6rem', minHeight: '100vh', paddingTop: '8rem' }}>
-            <div className="page-container" style={{ maxWidth: '64rem', margin: '0 auto' }}>
-
-                {/* Status Header */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-end', gap: '1.5rem', marginBottom: '3rem' }}>
-                    <div>
-                        <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
-                            <span style={{ cursor: 'pointer' }} onClick={() => navigate('/history')}>Riwayat</span>
-                            <span>/</span>
-                            <span style={{ color: 'var(--primary)' }}>Detail Pesanan #EB-RES-99821</span>
-                        </div>
-                        <h1 style={{ fontSize: '2.25rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Review Pemesanan</h1>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', backgroundColor: '#ECFDF5', color: '#047857', padding: '0.75rem 1.5rem', borderRadius: '1rem', border: '1px solid #D1FAE5', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)' }}>
-                        <div style={{ width: '0.5rem', height: '0.5rem', borderRadius: '50%', backgroundColor: '#10B981', animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}></div>
-                        <span style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Pembayaran Lunas</span>
-                    </div>
+        <main className="pt-32 pb-24 px-6 max-w-5xl mx-auto min-h-screen bg-gray-50 animate-fade-in">
+            {/* Status Header */}
+            <div className="mb-12 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+                <div>
+                    <nav className="flex text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2 gap-2">
+                        <span className="hover:text-gray-600 cursor-pointer" onClick={() => navigate('/profile')}>Riwayat</span>
+                        <span>/</span>
+                        <span className="text-eling-green">Detail Pesanan #EB-RES-99821</span>
+                    </nav>
+                    <h1 className="text-4xl font-bold font-serif text-gray-800">Review Pemesanan</h1>
                 </div>
+                <div className="flex items-center gap-3 bg-emerald-50 text-emerald-700 px-6 py-3 rounded-2xl border border-emerald-100 shadow-sm shadow-emerald-900/5">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span className="text-xs font-bold uppercase tracking-widest">Pembayaran Lunas</span>
+                </div>
+            </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '2.5rem' }} className="md-stack">
-                    <style>{`
-            @media (max-width: 1024px) {
-              .md-stack { grid-template-columns: 1fr !important; }
-            }
-          `}</style>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                {/* Main Details Area */}
+                <div className="lg:col-span-8 space-y-10">
 
-                    {/* Main Details Area */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-
-                        {/* 1. Detail Pemesan */}
-                        <div style={{ backgroundColor: 'white', borderRadius: '1.5rem', padding: '2.5rem', border: '1px solid var(--border-color)', position: 'relative', overflow: 'hidden' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
-                                <span style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.875rem' }}>1</span>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Detail Pemesan</h2>
+                    {/* 1. Detail Pemesan */}
+                    <div className="bg-white rounded-[1.5rem] p-10 border border-gray-100 shadow-[0_4px_20px_-5px_rgba(0,0,0,0.03)] relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-full -mr-16 -mt-16 opacity-50"></div>
+                        <div className="relative">
+                            <div className="flex items-center gap-4 mb-10 pb-6 border-b border-gray-100">
+                                <span className="w-10 h-10 rounded-full bg-eling-green text-white flex items-center justify-center font-bold text-sm">1</span>
+                                <h2 className="text-2xl font-bold font-serif text-gray-800">Detail Pemesan</h2>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem 2rem' }}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-8">
                                 <div>
-                                    <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Nama Lengkap Pemesan</span>
-                                    <p style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1rem' }}>Tuan Khoirul Anam</p>
+                                    <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Nama Lengkap Pemesan</span>
+                                    <p className="font-bold text-gray-800 text-base">Tuan Khoirul Anam</p>
                                 </div>
                                 <div>
-                                    <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Status Pemesan</span>
-                                    <p style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1rem' }}>Memesan untuk Diri Sendiri</p>
+                                    <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Status Pemesan</span>
+                                    <p className="font-bold text-gray-800 text-base">Memesan untuk Diri Sendiri</p>
                                 </div>
                                 <div>
-                                    <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Alamat Email</span>
-                                    <p style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1rem' }}>anam@example.com</p>
+                                    <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Alamat Email</span>
+                                    <div className="flex items-center gap-2 text-gray-600">
+                                        <i className="far fa-envelope text-xs opacity-50"></i>
+                                        <p className="font-bold text-gray-800">anam@example.com</p>
+                                    </div>
                                 </div>
                                 <div>
-                                    <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Nomor Telepon / WhatsApp</span>
-                                    <p style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1rem' }}>+62 8112345678</p>
+                                    <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Nomor Telepon / WhatsApp</span>
+                                    <div className="flex items-center gap-2 text-gray-600">
+                                        <i className="fab fa-whatsapp text-xs opacity-50"></i>
+                                        <p className="font-bold text-gray-800">+62 8112345678</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* 2. Detail Menginap & Kamar */}
+                    <div className="bg-white rounded-[1.5rem] p-10 border border-gray-100 shadow-[0_4px_20px_-5px_rgba(0,0,0,0.03)]">
+                        <div className="flex items-center gap-4 mb-10 pb-6 border-b border-gray-100">
+                            <span className="w-10 h-10 rounded-full bg-eling-green text-white flex items-center justify-center font-bold text-sm">2</span>
+                            <h2 className="text-2xl font-bold font-serif text-gray-800">Detail Kamar & Menginap</h2>
+                        </div>
+
+                        <div className="flex flex-col md:flex-row gap-8 mb-12">
+                            <div className="w-full md:w-48 h-32 rounded-3xl overflow-hidden shadow-md">
+                                <img src="/images/resort-room.png" className="w-full h-full object-cover" alt="Kamar" />
+                            </div>
+                            <div className="flex-grow py-2">
+                                <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Kamar Pilihan</span>
+                                <h3 className="text-2xl font-bold text-gray-800 font-serif">Deluxe Mountain View</h3>
+                                <div className="flex gap-4 mt-3 text-sm text-gray-500 font-medium overflow-x-auto pb-2">
+                                    <span className="flex items-center gap-2 whitespace-nowrap"><i className="fas fa-expand text-[10px]"></i> 32 m²</span>
+                                    <span className="flex items-center gap-2 whitespace-nowrap"><i className="fas fa-bed text-[10px]"></i> 1 Queen Bed</span>
+                                    <span className="flex items-center gap-2 whitespace-nowrap"><i className="fas fa-wifi text-[10px]"></i> Free Wi-Fi</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* 2. Detail Menginap */}
-                        <div style={{ backgroundColor: 'white', borderRadius: '1.5rem', padding: '2.5rem', border: '1px solid var(--border-color)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
-                                <span style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.875rem' }}>2</span>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Detail Kamar & Menginap</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-gray-50 p-6 rounded-3xl border border-gray-100/50">
+                                <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Check-In</span>
+                                <p className="text-lg font-bold text-gray-800">Selasa, 10 Maret 2026</p>
+                                <p className="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest">Setelah Pukul 14:00</p>
                             </div>
+                            <div className="bg-gray-50 p-6 rounded-3xl border border-gray-100/50">
+                                <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Check-Out</span>
+                                <p className="text-lg font-bold text-gray-800">Rabu, 11 Maret 2026</p>
+                                <p className="text-[10px] text-gray-400 font-bold uppercase mt-1 tracking-widest">Sebelum Pukul 12:00</p>
+                            </div>
+                        </div>
 
-                            <div style={{ display: 'flex', gap: '2rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
-                                <div style={{ width: '12rem', height: '8rem', borderRadius: '1rem', overflow: 'hidden', flexShrink: 0 }}>
-                                    <img src="/images/resort-room.png" alt="Room" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                </div>
-                                <div style={{ flex: 1, paddingTop: '0.5rem' }}>
-                                    <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Kamar Pilihan</span>
-                                    <h3 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--text-main)', marginBottom: '0.75rem' }}>Deluxe Mountain View</h3>
-                                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.875rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                                        <span>32 m&sup2;</span>
-                                        <span>•</span>
-                                        <span>1 Queen Bed</span>
-                                        <span>•</span>
-                                        <span>Free Wi-Fi</span>
+                        <div className="mt-8 flex items-center justify-between p-6 bg-eling-green/5 rounded-3xl border border-eling-green/10">
+                            <span className="text-sm font-bold text-eling-green">Durasi Menginap</span>
+                            <span className="text-lg font-bold text-eling-green">1 Malam</span>
+                        </div>
+                    </div>
+
+                    {/* 3. Permintaan Khusus */}
+                    <div className="bg-white rounded-[1.5rem] p-10 border border-gray-100 shadow-[0_4px_20px_-5px_rgba(0,0,0,0.03)]">
+                        <div className="flex items-center gap-4 mb-10 pb-6 border-b border-gray-100">
+                            <span className="w-10 h-10 rounded-full bg-eling-green text-white flex items-center justify-center font-bold text-sm">3</span>
+                            <h2 className="text-2xl font-bold font-serif text-gray-800">Fasilitas & Permintaan</h2>
+                        </div>
+
+                        <div className="space-y-10">
+                            <div>
+                                <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-700 mb-4">Fasilitas Tambahan yang Diminta</span>
+                                <div className="flex flex-wrap gap-3">
+                                    <div className="px-5 py-3 rounded-2xl bg-white border border-eling-green text-eling-green font-bold text-xs flex items-center gap-2">
+                                        <i className="fas fa-check-circle"></i> Lantai Atas
+                                    </div>
+                                    <div className="px-5 py-3 rounded-2xl bg-white border border-eling-green text-eling-green font-bold text-xs flex items-center gap-2">
+                                        <i className="fas fa-check-circle"></i> Ranjang Besar (Large)
+                                    </div>
+                                    <div className="px-5 py-3 rounded-2xl bg-white border border-gray-200 text-gray-300 font-bold text-xs flex items-center gap-2 line-through opacity-50">
+                                        <i className="fas fa-times-circle"></i> Kamar Bebas Rokok
                                     </div>
                                 </div>
                             </div>
 
-                            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '1rem' }}>
-                                <div style={{ backgroundColor: '#F9FAFB', padding: '1.5rem', borderRadius: '1.5rem', border: '1px solid var(--border-color)' }}>
-                                    <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Check-In</span>
-                                    <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-main)' }}>Selasa, 10 Maret 2026</p>
-                                    <p style={{ fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginTop: '0.25rem' }}>Setelah Pukul 14:00</p>
-                                </div>
-                                <div style={{ backgroundColor: '#F9FAFB', padding: '1.5rem', borderRadius: '1.5rem', border: '1px solid var(--border-color)' }}>
-                                    <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Check-Out</span>
-                                    <p style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--text-main)' }}>Rabu, 11 Maret 2026</p>
-                                    <p style={{ fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginTop: '0.25rem' }}>Sebelum Pukul 12:00</p>
-                                </div>
-                            </div>
-
-                            <div style={{ marginTop: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.5rem', backgroundColor: '#F0FDF4', borderRadius: '1.5rem', border: '1px solid #D1FAE5' }}>
-                                <span style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--primary)' }}>Durasi Menginap</span>
-                                <span style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--primary)' }}>1 Malam</span>
-                            </div>
-                        </div>
-
-                        {/* 3. Fasilitas & Permintaan */}
-                        <div style={{ backgroundColor: 'white', borderRadius: '1.5rem', padding: '2.5rem', border: '1px solid var(--border-color)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
-                                <span style={{ width: '2.5rem', height: '2.5rem', borderRadius: '50%', backgroundColor: 'var(--primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.875rem' }}>3</span>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Fasilitas & Permintaan</h2>
-                            </div>
-
-                            <div style={{ marginBottom: '2rem' }}>
-                                <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '1rem' }}>Fasilitas Tambahan yang Diminta</span>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-                                    <div style={{ padding: '0.75rem 1.25rem', borderRadius: '1rem', border: '1px solid var(--primary)', color: 'var(--primary)', fontWeight: 700, fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={14} /> Lantai Atas</div>
-                                    <div style={{ padding: '0.75rem 1.25rem', borderRadius: '1rem', border: '1px solid var(--primary)', color: 'var(--primary)', fontWeight: 700, fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CheckCircle size={14} /> Ranjang Besar (Large)</div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Estimasi Waktu Tiba</span>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400">
+                                            <i className="far fa-clock"></i>
+                                        </div>
+                                        <p className="font-bold text-gray-800 text-base">14:00 - 15:00</p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div style={{ paddingTop: '2rem', borderTop: '1px dashed var(--border-color)' }}>
-                                <span style={{ display: 'block', fontSize: '0.625rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-muted)', marginBottom: '1rem' }}>Catatan Tambahan untuk Resort</span>
-                                <blockquote style={{ backgroundColor: '#F9FAFB', borderLeft: '4px solid var(--primary)', padding: '1.5rem', borderRadius: '0 1.5rem 1.5rem 0', color: 'var(--text-muted)', fontStyle: 'italic', fontWeight: 500, lineHeight: 1.6 }}>
+                            <div className="pt-8 border-t border-dashed border-gray-100">
+                                <span className="block text-[10px] font-bold uppercase tracking-[0.1em] text-gray-400 mb-2">Catatan Tambahan untuk Resort</span>
+                                <blockquote className="bg-gray-50 border-l-4 border-eling-green p-6 rounded-r-3xl text-gray-600 font-medium leading-relaxed italic">
                                     "Mohon siapkan kamar dengan view terbaik dan jika memungkinkan di lantai yang lebih tinggi. Kami sedang merayakan ulang tahun pernikahan. Terima kasih."
                                 </blockquote>
                             </div>
                         </div>
+                    </div>
+                </div>
 
+                {/* Sidebar Info Area */}
+                <div className="lg:col-span-4 space-y-8">
+
+                    {/* ID Card */}
+                    <div className="bg-gray-900 rounded-[2.5rem] p-10 text-white shadow-2xl shadow-gray-900/40 relative overflow-hidden group">
+                        <div className="absolute -right-8 -bottom-8 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:bg-white/10 transition-all duration-700"></div>
+                        <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] mb-3">Booking ID</p>
+                        <h4 className="text-3xl font-bold font-serif mb-10 tracking-wider">#EB-RES-99821</h4>
+
+                        <div className="space-y-6 pt-10 border-t border-white/10">
+                            <div className="flex justify-between items-center text-xs">
+                                <span className="text-white/40 font-bold uppercase tracking-widest">Dipesan pada</span>
+                                <span className="font-bold">06 Mar 2026, 14:20</span>
+                            </div>
+                            <div className="flex justify-between items-center text-xs">
+                                <span className="text-white/40 font-bold uppercase tracking-widest">Metode Bayar</span>
+                                <span className="font-bold">Mandiri VA</span>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Sidebar Area */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                    {/* Price Detail */}
+                    <div className="bg-white rounded-[1.5rem] p-10 border border-gray-100 shadow-lg">
+                        <div className="flex items-center gap-3 mb-8">
+                            <i className="fas fa-receipt text-eling-green text-xl"></i>
+                            <h2 className="text-lg font-bold font-serif text-gray-800">Rincian Harga</h2>
+                        </div>
 
-                        {/* ID Card */}
-                        <div style={{ backgroundColor: '#111827', borderRadius: '2.5rem', padding: '2.5rem', color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)' }}>
-                            <div style={{ position: 'absolute', right: '-2rem', bottom: '-2rem', width: '10rem', height: '10rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '50%', filter: 'blur(3xl)' }}></div>
-                            <p style={{ fontSize: '0.625rem', fontWeight: 700, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', letterSpacing: '0.3em', marginBottom: '0.75rem' }}>Booking ID</p>
-                            <h4 style={{ fontSize: '1.875rem', fontWeight: 700, fontFamily: 'var(--font-heading)', letterSpacing: '0.05em', marginBottom: '2.5rem' }}>#EB-RES-99821</h4>
-
-                            <div style={{ paddingTop: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem' }}>
-                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Dipesan pada</span>
-                                    <span style={{ fontWeight: 700 }}>06 Mar 2026, 14:20</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem' }}>
-                                    <span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Metode Bayar</span>
-                                    <span style={{ fontWeight: 700 }}>Mandiri VA</span>
-                                </div>
+                        <div className="space-y-4 mb-8">
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-400">Harga Kamar (x1)</span>
+                                <span className="font-bold text-gray-700">Rp 1.250.000</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-400">Pajak (10%)</span>
+                                <span className="font-bold text-gray-700">Rp 125.000</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                                <span className="text-gray-400">Biaya Layanan</span>
+                                <span className="font-bold text-gray-700">Gratis</span>
                             </div>
                         </div>
 
-                        {/* Price Detail */}
-                        <div style={{ backgroundColor: 'white', borderRadius: '1.5rem', padding: '2.5rem', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-md)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
-                                <Receipt color="var(--primary)" size={24} />
-                                <h2 style={{ fontSize: '1.125rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>Rincian Harga</h2>
-                            </div>
-
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '2rem' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                                    <span style={{ color: 'var(--text-muted)' }}>Harga Kamar (x1)</span>
-                                    <span style={{ fontWeight: 700 }}>Rp 1.250.000</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                                    <span style={{ color: 'var(--text-muted)' }}>Pajak (10%)</span>
-                                    <span style={{ fontWeight: 700 }}>Rp 125.000</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
-                                    <span style={{ color: 'var(--text-muted)' }}>Biaya Layanan</span>
-                                    <span style={{ fontWeight: 700 }}>Gratis</span>
-                                </div>
-                            </div>
-
-                            <div style={{ paddingTop: '1.5rem', borderTop: '1px dashed var(--border-color)' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Total Terbayar</span>
-                                    <span style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--primary)' }}>Rp 1.375.000</span>
-                                </div>
+                        <div className="pt-6 border-t border-dashed border-gray-100">
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Terbayar</span>
+                                <span className="text-2xl font-bold text-eling-green">Rp 1.375.000</span>
                             </div>
                         </div>
+                    </div>
 
-                        {/* Directions */}
-                        <a href="#" style={{ backgroundColor: 'white', border: '1px solid var(--border-color)', padding: '1.5rem', borderRadius: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', textDecoration: 'none', transition: 'var(--transition)' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                <div style={{ width: '3rem', height: '3rem', backgroundColor: '#EFF6FF', color: '#3B82F6', borderRadius: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <MapPin size={20} />
+                    {/* Directions & Help */}
+                    <div className="grid grid-cols-1 gap-4">
+                        <a href="#" className="bg-white border border-gray-100 p-6 rounded-3xl flex items-center justify-between group hover:border-blue-500/30 transition-all">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <i className="fas fa-map-marked-alt"></i>
                                 </div>
                                 <div>
-                                    <p style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.25rem' }}>Lokasi Resort</p>
-                                    <p style={{ fontSize: '0.625rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Google Maps</p>
+                                    <p className="text-sm font-bold text-gray-800">Lokasi Resort</p>
+                                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Google Maps</p>
                                 </div>
                             </div>
+                            <i className="fas fa-chevron-right text-gray-200 group-hover:text-blue-500 group-hover:translate-x-1 transition-all"></i>
                         </a>
-
-                        {/* Action Buttons */}
-                        <button onClick={() => window.print()} className="btn-primary-outline" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', width: '100%', padding: '1rem' }}>
-                            <Printer size={18} /> Cetak Bukti Pesanan
-                        </button>
-                        <button onClick={() => navigate('/history')} style={{ width: '100%', padding: '1rem', backgroundColor: 'transparent', border: 'none', color: 'var(--text-muted)', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                            <ArrowLeft size={16} /> Kembali ke Riwayat
-                        </button>
-
                     </div>
+
+                    {/* Action Buttons */}
+                    <button onClick={() => window.print()} className="w-full bg-white border border-gray-200 text-gray-600 font-bold py-4 rounded-2xl shadow-sm hover:bg-gray-50 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                        <i className="fas fa-print"></i> Cetak Bukti Pesanan
+                    </button>
+                    <button onClick={() => navigate('/profile')} className="w-full bg-white text-gray-400 font-bold py-4 rounded-2xl hover:text-gray-600 transition-all text-sm cursor-pointer border border-transparent flex items-center justify-center gap-2">
+                        <i className="fas fa-arrow-left"></i> Kembali ke Riwayat
+                    </button>
 
                 </div>
             </div>
-        </div>
+
+            <style>{`
+                @media print {
+                    nav,
+                    .lg\\:col-span-4,
+                    .bg-gray-900 {
+                        display: none !important;
+                    }
+                    body {
+                        background: white;
+                    }
+                    main {
+                        padding-top: 0;
+                    }
+                    .bg-white {
+                        box-shadow: none !important;
+                        border: 1px solid #eee !important;
+                        margin-bottom: 2rem;
+                    }
+                    .lg\\:col-span-8 {
+                        width: 100% !important;
+                    }
+                }
+            `}</style>
+        </main>
     );
 }

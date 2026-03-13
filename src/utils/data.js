@@ -71,6 +71,33 @@ export const DEFAULT_TICKETS = [
     },
 ];
 
+export const DEFAULT_BOOKINGS = [
+    {
+        id: 'EB-TICK-982134',
+        itemName: 'Tiket Masuk Reguler (Weekend)',
+        date: '2026-03-20T00:00:00.000Z',
+        name: 'Budi Santoso',
+        total: 120000,
+        status: 'success'
+    },
+    {
+        id: 'EB-RES-556123',
+        itemName: 'Deluxe Mountain View',
+        date: '2026-04-10T00:00:00.000Z',
+        name: 'Budi Santoso',
+        total: 1375000,
+        status: 'success'
+    },
+    {
+        id: 'EB-TICK-334211',
+        itemName: 'Tiket Masuk Reguler (Weekday)',
+        date: '2026-03-15T00:00:00.000Z',
+        name: 'Siti Aminah',
+        total: 50000,
+        status: 'success'
+    }
+];
+
 export function getRooms() {
     try {
         const stored = localStorage.getItem(EB_ROOMS_KEY);
@@ -96,8 +123,8 @@ export function saveTickets(tickets) {
 export function getBookings() {
     try {
         const stored = localStorage.getItem(EB_BOOKINGS_KEY);
-        return stored ? JSON.parse(stored) : [];
-    } catch { return []; }
+        return stored ? JSON.parse(stored) : DEFAULT_BOOKINGS;
+    } catch { return DEFAULT_BOOKINGS; }
 }
 
 export function saveBookings(bookings) {

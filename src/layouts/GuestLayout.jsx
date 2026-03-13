@@ -1,9 +1,14 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { UserCircle } from 'lucide-react';
+import { Menu, X, User, UserCircle } from 'lucide-react';
+import { useAuth } from '../utils/AuthContext';
+import '../styles/guest.css';
 
 export default function GuestLayout() {
-    const [isScrolled, setIsScrolled] = useState(false);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const [scrolled, setScrolled] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
 
     // Auto scroll to top on route change
@@ -13,7 +18,7 @@ export default function GuestLayout() {
 
     useEffect(() => {
         const handleScroll = () => {
-            setIsScrolled(window.scrollY > 50);
+            setScrolled(window.scrollY > 50);
         };
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -47,10 +52,10 @@ export default function GuestLayout() {
             `}</style>
 
             {/* Header / Navbar */}
-            <nav className={`fixed w-full z-50 transition-all duration-300 py-4 px-6 lg:px-12 flex justify-between items-center ${isHome && !isScrolled ? 'glass text-white' : 'bg-white/90 text-gray-900 shadow-lg'}`}>
+            <nav className={`fixed w-full z-50 transition-all duration-300 py-4 px-6 lg:px-12 flex justify-between items-center ${isHome && !scrolled ? 'glass text-white' : 'bg-white/90 text-gray-900 shadow-lg'}`}>
                 <Link to="/" className="flex items-center gap-2">
-                    <img src="/images/logo.png" alt="Logo" className={`h-10 ${isHome && !isScrolled ? '' : ''}`} />
-                    <span className={`text-xl font-serif font-bold tracking-wider ${isHome && !isScrolled ? '' : 'text-eling-green'}`}>Eling Bening</span>
+                    <img src="/images/logo.png" alt="Logo" className={`h-10 ${isHome && !scrolled ? '' : ''}`} />
+                    <span className={`text-xl font-serif font-bold tracking-wider ${isHome && !scrolled ? '' : 'text-eling-green'}`}>Eling Bening</span>
                 </Link>
 
                 <div className="hidden lg:flex gap-8 font-semibold tracking-wide uppercase text-sm">
@@ -73,10 +78,22 @@ export default function GuestLayout() {
                             <div className="px-6 py-2 border-b border-gray-100 mb-2">
                                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Akun Saya</p>
                             </div>
-                            <Link to="/login" className="block px-6 py-2 hover:bg-gray-50 hover:text-eling-green transition text-sm font-semibold">Login</Link>
-                            <Link to="/register" className="block px-6 py-2 hover:bg-gray-50 hover:text-eling-green transition text-sm font-semibold">Register</Link>
+                            {user ? (
+                                <>
+                                    <div className="px-6 py-2 mb-2 bg-green-50">
+                                        <p className="text-sm font-bold text-eling-green">{user.name}</p>
+                                        <p className="text-xs text-gray-500">{user.email}</p>
+                                    </div>
+                                    <button onClick={logout} className="w-full text-left px-6 py-2 hover:bg-gray-50 hover:text-eling-red transition text-sm font-semibold">Logout</button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/login" className="block px-6 py-2 hover:bg-gray-50 hover:text-eling-green transition text-sm font-semibold">Login</Link>
+                                    <Link to="/register" className="block px-6 py-2 hover:bg-gray-50 hover:text-eling-green transition text-sm font-semibold">Register</Link>
+                                </>
+                            )}
                             <div className="h-px bg-gray-100 my-2 mx-4"></div>
-                            <Link to="/history" className="block px-6 py-2 hover:bg-gray-50 hover:text-eling-green transition text-sm font-semibold">Riwayat Pesanan</Link>
+                            {user && <Link to="/profile" className="block px-6 py-2 hover:bg-gray-50 hover:text-eling-green transition text-sm font-semibold">Profil & Riwayat</Link>}
                             <Link to="/admin" className="block px-6 py-2 hover:bg-gray-50 hover:text-eling-green transition text-sm font-semibold text-eling-red">Panel Admin</Link>
                         </div>
                     </div>
@@ -122,7 +139,7 @@ export default function GuestLayout() {
                         <ul className="space-y-4 text-green-100 text-sm">
                             <li><Link to="/ticketing" className="hover:text-white transition underline-offset-4 hover:underline">Tiket Online</Link></li>
                             <li><Link to="/rooms" className="hover:text-white transition underline-offset-4 hover:underline">Booking Resort</Link></li>
-                            <li><Link to="/history" className="hover:text-white transition underline-offset-4 hover:underline">Riwayat Pesanan</Link></li>
+                            <li><Link to="/profile" className="hover:text-white transition underline-offset-4 hover:underline">Riwayat Pesanan</Link></li>
                             <li><Link to="/contact" className="hover:text-white transition underline-offset-4 hover:underline">Hubungi Kami</Link></li>
                         </ul>
                     </div>

@@ -1,6 +1,8 @@
-import { Utensils, BedDouble, Waves, MapPin, Phone, Mail } from 'lucide-react';
+import { useState } from 'react';
+import { Utensils, BedDouble, Waves, MapPin, Phone, Mail, X } from 'lucide-react';
 
 export default function Facilities() {
+    const [showMap, setShowMap] = useState(false);
     const facilities = [
         { icon: "fa-utensils", title: "Restaurant & Cafe", desc: "Menyajikan hidangan lokal dan internasional dengan view spektakuler Danau Rawa Pening." },
         { icon: "fa-child", title: "Area Play-Land", desc: "Taman bermain yang aman dan menyenangkan untuk anak-anak dengan berbagai wahana." },
@@ -47,6 +49,72 @@ export default function Facilities() {
                     ))}
                 </div>
             </section>
+
+            {/* Peta Wisata Section */}
+            <section className="bg-white py-24 px-6 lg:px-24">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 bg-green-50 rounded-3xl p-8 lg:p-12 border border-green-100">
+                    <div className="flex-1">
+                        <span className="text-eling-red uppercase tracking-widest font-bold text-sm block mb-4">Lokasi & Panduan</span>
+                        <h2 className="text-3xl lg:text-4xl font-bold mb-6 font-serif text-gray-900">Peta Wisata Eling Bening</h2>
+                        <p className="text-gray-600 leading-relaxed mb-6">
+                            Jelajahi seluruh area Eling Bening dengan mudah. Temukan lokasi fasilitas favorit Anda, mulai dari restoran, kolam renang, area resort, hingga spot-spot foto terbaik kami.
+                        </p>
+                        <button
+                            onClick={() => setShowMap(true)}
+                            className="bg-eling-green text-white px-8 py-3 rounded-xl font-bold hover:bg-green-800 transition shadow-lg flex items-center gap-2"
+                        >
+                            <MapPin size={20} /> Lihat Peta Lengkap
+                        </button>
+                    </div>
+                    <div className="flex-1 w-full relative group">
+                        <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white cursor-pointer" onClick={() => setShowMap(true)}>
+                            {/* Dummy Map Illustration */}
+                            <img src="/images/hero-bg.png" alt="Map Preview" className="w-full h-full object-cover group-hover:scale-105 transition duration-500 blur-[2px] group-hover:blur-0" />
+                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition duration-500 rounded-2xl flex items-center justify-center">
+                                <span className="bg-white/90 text-gray-900 px-6 py-2 rounded-full font-bold shadow-lg backdrop-blur-sm shadow-black/20 group-hover:scale-110 transition duration-300">Buka Peta</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Map Modal */}
+            {showMap && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-10 bg-black/80 backdrop-blur-md animate-fade-in" onClick={() => setShowMap(false)}>
+                    <div className="bg-white rounded-3xl overflow-hidden w-full h-full max-w-6xl shadow-2xl relative flex flex-col" onClick={e => e.stopPropagation()}>
+                        <div className="p-4 bg-white flex justify-between items-center border-b border-gray-100 shrink-0">
+                            <div>
+                                <h3 className="font-bold text-xl font-serif text-gray-900">Peta Area Eling Bening</h3>
+                                <p className="text-xs text-gray-500">Ambarawa, Jawa Tengah</p>
+                            </div>
+                            <button onClick={() => setShowMap(false)} className="w-10 h-10 bg-gray-100 hover:bg-eling-red hover:text-white rounded-full flex items-center justify-center transition">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <div className="flex-1 bg-gray-200 relative">
+                            {/* Embedded Google Map / Image Map */}
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15831.90563467439!2d110.42159815000001!3d-7.24227915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70810db6e379b3%3A0x6bbaeee2bc55ecba!2sEling%20Bening!5e0!3m2!1sid!2sid!4v1716301323334!5m2!1sid!2sid"
+                                className="absolute inset-0 w-full h-full border-0"
+                                allowFullScreen=""
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            ></iframe>
+
+                            {/* Overlay Legend */}
+                            <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-xl max-w-xs md:max-w-sm">
+                                <h4 className="font-bold text-sm mb-3 border-b pb-2 uppercase tracking-wide text-eling-green">Panduan Lokasi</h4>
+                                <ul className="grid grid-cols-2 gap-2 text-xs font-semibold text-gray-700">
+                                    <li className="flex items-center gap-2"><div className="w-3 h-3 bg-red-500 rounded-full"></div> Titik Kumpul</li>
+                                    <li className="flex items-center gap-2"><div className="w-3 h-3 bg-blue-500 rounded-full"></div> Kolam Renang</li>
+                                    <li className="flex items-center gap-2"><div className="w-3 h-3 bg-yellow-400 rounded-full"></div> Restoran</li>
+                                    <li className="flex items-center gap-2"><div className="w-3 h-3 bg-purple-500 rounded-full"></div> Resort Area</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
