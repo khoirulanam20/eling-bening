@@ -29,7 +29,7 @@ export default function Tickets() {
         toast.success(`Tiket ${updated.find(t => t.id === id).status === 'active' ? 'diaktifkan' : 'dinonaktifkan'}`);
     };
 
-    const filteredTickets = tickets.filter(t => 
+    const filteredTickets = tickets.filter(t =>
         t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.desc.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -62,12 +62,12 @@ export default function Tickets() {
                     <div className="flex gap-4">
                         <div className="relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-light" size={16} />
-                            <input 
-                                type="text" 
-                                placeholder="Search ticket type..." 
+                            <input
+                                type="text"
+                                placeholder="Search ticket type..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72" 
+                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72"
                             />
                         </div>
                     </div>
@@ -121,7 +121,7 @@ export default function Tickets() {
                                     </button>
                                 </td>
                                 <td>
-                                    <div className="flex justify-end gap-2">
+                                    <div className="flex justify-start gap-2">
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Modify" onClick={() => navigate(`/admin/tickets/edit/${ticket.id}`)}><Edit size={16} /></button>
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-danger flex items-center justify-center hover:bg-danger hover:text-white hover:border-danger transition-all shadow-sm" title="Delete" onClick={() => handleDelete(ticket.id)}><Trash2 size={16} /></button>
                                     </div>

@@ -1,26 +1,58 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Calendar, FileText, Tag, CircleDollarSign, Filter, Search, X, MoreVertical, CreditCard, Receipt, ArrowDownCircle } from 'lucide-react';
+import { Plus, Trash2, Calendar, FileText, Tag, CircleDollarSign, Filter, Search, X, MoreVertical, CreditCard, Receipt, ArrowDownCircle, Edit } from 'lucide-react';
 import { getExpenses, saveExpenses, formatRupiah } from '../../utils/data';
 import toast from 'react-hot-toast';
 
 export default function Expenses() {
     const [expenses, setExpenses] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
     const [formData, setFormData] = useState({ title: '', amount: '', category: 'Operasional', date: new Date().toISOString().split('T')[0], note: '' });
 
     useEffect(() => {
         setExpenses(getExpenses());
     }, []);
 
+    const resetForm = () => {
+        setFormData({ title: '', amount: '', category: 'Operasional', date: new Date().toISOString().split('T')[0], note: '' });
+        setIsEditing(false);
+        setEditId(null);
+        setShowForm(false);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newExpense = { ...formData, id: Date.now(), amount: Number(formData.amount) };
-        const updated = [newExpense, ...expenses];
-        setExpenses(updated);
-        saveExpenses(updated);
-        setShowForm(false);
-        setFormData({ title: '', amount: '', category: 'Operasional', date: new Date().toISOString().split('T')[0], note: '' });
-        toast.success('Pengeluaran berhasil dicatat');
+        
+        if (isEditing) {
+            const updated = expenses.map(exp => 
+                exp.id === editId ? { ...formData, id: editId, amount: Number(formData.amount) } : exp
+            );
+            setExpenses(updated);
+            saveExpenses(updated);
+            toast.success('Pengeluaran berhasil diperbarui');
+        } else {
+            const newExpense = { ...formData, id: Date.now(), amount: Number(formData.amount) };
+            const updated = [newExpense, ...expenses];
+            setExpenses(updated);
+            saveExpenses(updated);
+            toast.success('Pengeluaran berhasil dicatat');
+        }
+        resetForm();
+    };
+
+    const handleEdit = (exp) => {
+        setFormData({
+            title: exp.title,
+            amount: exp.amount,
+            category: exp.category,
+            date: exp.date,
+            note: exp.note || ''
+        });
+        setIsEditing(true);
+        setEditId(exp.id);
+        setShowForm(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleDelete = (id) => {
@@ -39,7 +71,7 @@ export default function Expenses() {
                     <h1>Pengeluaran Operasional</h1>
                     <p>Catat dan audit semua biaya operasional, gaji, dan pemeliharaan.</p>
                 </div>
-                <button className={`btn-primary shadow-lg shadow-admin-primary/20 ${showForm ? '!bg-danger' : ''}`} onClick={() => setShowForm(!showForm)}>
+                <button className={`btn-primary shadow-lg shadow-admin-primary/20 ${showForm ? '!bg-danger' : ''}`} onClick={() => showForm ? resetForm() : setShowForm(true)}>
                     {showForm ? <X size={18} /> : <Plus size={18} />}
                     {showForm ? 'Batal' : 'Catat Pengeluaran'}
                 </button>
@@ -52,8 +84,8 @@ export default function Expenses() {
                             <Receipt size={24} />
                         </div>
                         <div>
-                            <h3 className="text-xl font-black text-admin-text-main">Input Transaksi</h3>
-                            <p className="text-xs text-admin-text-muted font-bold">Pastikan data pengeluaran sesuai dengan bukti kwitansi.</p>
+                            <h3 className="text-xl font-black text-admin-text-main">{isEditing ? 'Perbarui Transaksi' : 'Input Transaksi'}</h3>
+                            <p className="text-xs text-admin-text-muted font-bold">{isEditing ? 'Lakukan perubahan pada data pengeluaran.' : 'Pastikan data pengeluaran sesuai dengan bukti kwitansi.'}</p>
                         </div>
                     </div>
 
@@ -98,9 +130,9 @@ export default function Expenses() {
                         </div>
 
                         <div className="flex justify-end gap-3 pt-4 border-t border-admin-border">
-                            <button type="button" className="px-6 py-3 rounded-xl border border-admin-border text-admin-text-muted font-black text-xs uppercase tracking-widest hover:bg-admin-bg transition-all" onClick={() => setShowForm(false)}>Batal</button>
+                            <button type="button" className="px-6 py-3 rounded-xl border border-admin-border text-admin-text-muted font-black text-xs uppercase tracking-widest hover:bg-admin-bg transition-all" onClick={resetForm}>Batal</button>
                             <button type="submit" className="btn-primary py-3 px-8 shadow-xl shadow-admin-primary/20">
-                                <CircleDollarSign size={18} /> Simpan Pengeluaran
+                                <CircleDollarSign size={18} /> {isEditing ? 'Perbarui Catatan' : 'Simpan Pengeluaran'}
                             </button>
                         </div>
                     </form>
@@ -159,11 +191,11 @@ export default function Expenses() {
                                 </td>
                                 <td>
                                     <div className="action-buttons">
+                                        <button className="btn-icon text-admin-primary hover:bg-admin-primary/10" onClick={() => handleEdit(exp)} title="Edit">
+                                            <Edit size={16} />
+                                        </button>
                                         <button className="btn-icon !text-danger hover:!bg-danger/10" onClick={() => handleDelete(exp.id)} title="Hapus">
                                             <Trash2 size={18} />
-                                        </button>
-                                        <button className="btn-icon">
-                                            <MoreVertical size={16} />
                                         </button>
                                     </div>
                                 </td>

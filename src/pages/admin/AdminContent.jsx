@@ -350,8 +350,8 @@ export default function AdminContent() {
             </div>
 
             {/* PREVIEW CONTAINER */}
-            <div className="flex-1 bg-admin-bg p-12 flex flex-col transition-all duration-500">
-                <div className={`flex-1 flex flex-col mx-auto transition-all duration-500 ${
+            <div className="flex-1 bg-admin-bg p-12 flex flex-col transition-all duration-500 min-h-0">
+                <div className={`flex-1 flex flex-col mx-auto transition-all duration-500 min-h-0 ${
                     previewDevice === 'mobile' ? 'max-w-[375px]' : previewDevice === 'tablet' ? 'max-w-[768px]' : 'w-full'
                 }`}>
                     {/* Device Header */}
@@ -377,10 +377,10 @@ export default function AdminContent() {
                     </div>
 
                     {/* Preview Viewport */}
-                    <div className={`flex-1 overflow-hidden bg-white shadow-2xl transition-all duration-500 ${
+                    <div className={`flex-1 overflow-hidden bg-white shadow-2xl transition-all duration-500 relative min-h-0 ${
                         previewDevice === 'desktop' ? 'rounded-b-[2.5rem]' : 'rounded-b-none'
                     }`}>
-                        <div className="h-full overflow-y-auto custom-scrollbar bg-white">
+                        <div className="absolute inset-0 overflow-y-auto custom-scrollbar bg-white">
                             <PreviewRenderer activeTab={activeTab} content={content} />
                         </div>
                     </div>

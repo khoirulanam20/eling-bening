@@ -60,7 +60,7 @@ export default function Reschedule() {
                             <th>Layanan / Item</th>
                             <th>Jadwal Baru</th>
                             <th>Status</th>
-                            <th></th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,24 +90,22 @@ export default function Reschedule() {
                                 </td>
                                 <td>{getStatusBadge(req.status)}</td>
                                 <td>
-                                    <div className="action-buttons justify-end">
+                                    <div className="flex bg-admin-bg p-1 rounded-xl border border-admin-border">
                                         <button className="btn-icon" title="View Detail" onClick={() => setSelectedReq(req)}>
                                             <Eye size={18} />
                                         </button>
-                                        <div className="flex bg-admin-bg p-1 rounded-xl border border-admin-border">
-                                            <button
-                                                className={`p-2 rounded-lg transition-all ${req.status === 'approved' ? 'bg-white shadow-sm text-success' : 'text-admin-text-light hover:text-admin-text-main'}`}
-                                                onClick={() => handleAction(req.id, 'approved')} title="Approve"
-                                            >
-                                                <Check size={16} />
-                                            </button>
-                                            <button
-                                                className={`p-2 rounded-lg transition-all ${req.status === 'rejected' ? 'bg-white shadow-sm text-danger' : 'text-admin-text-light hover:text-admin-text-main'}`}
-                                                onClick={() => handleAction(req.id, 'rejected')} title="Reject"
-                                            >
-                                                <X size={16} />
-                                            </button>
-                                        </div>
+                                        <button
+                                            className={`p-2 rounded-lg transition-all ${req.status === 'approved' ? 'bg-white shadow-sm text-success' : 'text-admin-text-light hover:text-admin-text-main'}`}
+                                            onClick={() => handleAction(req.id, 'approved')} title="Approve"
+                                        >
+                                            <Check size={16} />
+                                        </button>
+                                        <button
+                                            className={`p-2 rounded-lg transition-all ${req.status === 'rejected' ? 'bg-white shadow-sm text-danger' : 'text-admin-text-light hover:text-admin-text-main'}`}
+                                            onClick={() => handleAction(req.id, 'rejected')} title="Reject"
+                                        >
+                                            <X size={16} />
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -141,7 +139,7 @@ export default function Reschedule() {
                                     <h2 className="text-3xl font-black text-admin-text-main tracking-tight">Review Case</h2>
                                 </div>
                             </div>
-                            <button 
+                            <button
                                 onClick={() => setSelectedReq(null)}
                                 className="p-3 rounded-2xl bg-admin-bg text-admin-text-muted hover:bg-admin-primary hover:text-white transition-all shadow-sm"
                             >
@@ -154,7 +152,7 @@ export default function Reschedule() {
                             {/* Comparison Row */}
                             <div className="flex items-center justify-between p-8 rounded-[2.5rem] bg-admin-bg border border-admin-border relative overflow-hidden group">
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-admin-primary/5 rounded-full translate-x-1/2 -translate-y-1/2" />
-                                
+
                                 <div className="flex-1 text-center space-y-2">
                                     <p className="text-[10px] font-black uppercase tracking-widest text-admin-text-muted">Previous Schedule</p>
                                     <p className="text-lg font-black text-admin-text-light line-through decoration-danger/40 uppercase tracking-tighter">
@@ -205,13 +203,13 @@ export default function Reschedule() {
                             <div className="flex gap-4 pt-4">
                                 {selectedReq.status === 'pending' ? (
                                     <>
-                                        <button 
+                                        <button
                                             onClick={() => handleAction(selectedReq.id, 'rejected')}
                                             className="flex-1 py-4 rounded-2xl border border-danger/20 text-danger font-black text-xs uppercase tracking-widest hover:bg-danger/5 transition-all"
                                         >
                                             Decline Request
                                         </button>
-                                        <button 
+                                        <button
                                             onClick={() => handleAction(selectedReq.id, 'approved')}
                                             className="flex-[2] py-4 rounded-2xl bg-admin-primary text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-admin-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
                                         >
@@ -219,7 +217,7 @@ export default function Reschedule() {
                                         </button>
                                     </>
                                 ) : (
-                                    <button 
+                                    <button
                                         onClick={() => setSelectedReq(null)}
                                         className="w-full py-4 rounded-2xl bg-admin-bg text-admin-text-main font-black text-xs uppercase tracking-widest hover:bg-admin-border transition-all"
                                     >

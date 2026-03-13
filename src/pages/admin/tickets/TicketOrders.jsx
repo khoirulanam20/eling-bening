@@ -35,7 +35,7 @@ export default function TicketOrders() {
         const matchesSearch = o.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
             o.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (o.itemName && o.itemName.toLowerCase().includes(searchTerm.toLowerCase()));
-        
+
         if (filter === 'all') return matchesSearch;
         if (filter === 'checked-in') return matchesSearch && o.checkedIn;
         if (filter === 'pending') return matchesSearch && !o.checkedIn;
@@ -100,19 +100,19 @@ export default function TicketOrders() {
             <div className="admin-table-container">
                 <div className="table-header-actions !flex-col md:!flex-row gap-4">
                     <div className="flex gap-2">
-                        <button 
+                        <button
                             onClick={() => setFilter('all')}
                             className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${filter === 'all' ? 'bg-admin-primary text-white' : 'bg-admin-bg text-admin-text-muted hover:text-admin-main'}`}
                         >
                             Semua
                         </button>
-                        <button 
+                        <button
                             onClick={() => setFilter('checked-in')}
                             className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${filter === 'checked-in' ? 'bg-success text-white' : 'bg-admin-bg text-admin-text-muted hover:text-admin-main'}`}
                         >
                             Sudah Check-in
                         </button>
-                        <button 
+                        <button
                             onClick={() => setFilter('pending')}
                             className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${filter === 'pending' ? 'bg-warning text-white' : 'bg-admin-bg text-admin-text-muted hover:text-admin-main'}`}
                         >
@@ -175,20 +175,13 @@ export default function TicketOrders() {
                                         </span>
                                     </div>
                                 </td>
-                                <td className="text-center">
+                                <td className="flex justify-start">
                                     <button
                                         onClick={() => toggleCheckIn(order.id)}
                                         className={`transition-all ${order.checkedIn ? 'text-success' : 'text-admin-text-light hover:text-admin-primary opacity-40 hover:opacity-100'}`}
                                     >
                                         <CheckCircle2 size={24} strokeWidth={order.checkedIn ? 3 : 2} />
                                     </button>
-                                </td>
-                                <td>
-                                    <div className="action-buttons">
-                                        <button className="btn-icon">
-                                            <MoreVertical size={16} />
-                                        </button>
-                                    </div>
                                 </td>
                             </tr>
                         ))}
@@ -199,7 +192,7 @@ export default function TicketOrders() {
                                         <ShoppingBag size={32} className="text-admin-text-light opacity-20" />
                                     </div>
                                     <p className="text-admin-text-muted font-black uppercase tracking-widest text-xs">Tidak ditemukan data pesanan</p>
-                                    <button onClick={() => {setSearchTerm(''); setFilter('all');}} className="text-admin-primary text-xs font-bold mt-2 hover:underline">Reset Semua Filter</button>
+                                    <button onClick={() => { setSearchTerm(''); setFilter('all'); }} className="text-admin-primary text-xs font-bold mt-2 hover:underline">Reset Semua Filter</button>
                                 </td>
                             </tr>
                         )}

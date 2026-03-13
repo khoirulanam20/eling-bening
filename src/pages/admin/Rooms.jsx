@@ -23,7 +23,7 @@ export default function Rooms() {
         }
     };
 
-    const filteredRooms = rooms.filter(r => 
+    const filteredRooms = rooms.filter(r =>
         r.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -50,17 +50,17 @@ export default function Rooms() {
                     <div className="flex gap-4">
                         <div className="relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-light" size={16} />
-                            <input 
-                                type="text" 
-                                placeholder="Search room type..." 
+                            <input
+                                type="text"
+                                placeholder="Search room type..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72" 
+                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72"
                             />
                         </div>
                     </div>
                 </div>
-                
+
                 <table className="admin-table">
                     <thead>
                         <tr>
@@ -69,7 +69,7 @@ export default function Rooms() {
                             <th>Capacity</th>
                             <th>Availability</th>
                             <th>Rate / Night</th>
-                            <th className="text-right">Operations</th>
+                            <th>Operations</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,8 +77,8 @@ export default function Rooms() {
                             <tr key={room.id} className="group">
                                 <td className="w-28">
                                     <div className="relative w-20 h-14 rounded-2xl overflow-hidden border-2 border-admin-border group-hover:border-admin-primary transition-all shadow-sm">
-                                        <img 
-                                            src={(Array.isArray(room.images) && room.images.length > 0 ? room.images[0] : room.image) || '/images/resort-room.png'} 
+                                        <img
+                                            src={(Array.isArray(room.images) && room.images.length > 0 ? room.images[0] : room.image) || '/images/resort-room.png'}
                                             alt={room.name}
                                             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                                         />
@@ -124,7 +124,7 @@ export default function Rooms() {
                                     </div>
                                 </td>
                                 <td>
-                                    <div className="flex justify-end gap-2">
+                                    <div className="flex justify-start gap-2">
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="View Deep Analysis" onClick={() => setSelectedRoom(room)}><Eye size={18} /></button>
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Modify" onClick={() => navigate(`/admin/rooms/edit/${room.id}`)}><Edit size={18} /></button>
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-danger flex items-center justify-center hover:bg-danger hover:text-white hover:border-danger transition-all shadow-sm" title="Terminate" onClick={() => handleDelete(room.id)}><Trash2 size={18} /></button>
@@ -150,7 +150,7 @@ export default function Rooms() {
                 <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 animate-fade-in">
                     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md" onClick={() => setSelectedRoom(null)}></div>
                     <div className="bg-white w-full max-w-5xl rounded-[3rem] overflow-hidden flex flex-col lg:flex-row relative z-[1001] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] animate-scale-up border border-white/20">
-                        <button 
+                        <button
                             onClick={() => setSelectedRoom(null)}
                             className="absolute top-8 right-8 z-20 w-12 h-12 rounded-2xl bg-white/10 hover:bg-white/30 text-white flex items-center justify-center backdrop-blur-xl transition-all shadow-2xl border border-white/20"
                         >
@@ -158,13 +158,13 @@ export default function Rooms() {
                         </button>
 
                         <div className="lg:w-1/2 h-80 lg:h-auto relative">
-                            <img 
-                                src={(Array.isArray(selectedRoom.images) && selectedRoom.images.length > 0 ? selectedRoom.images[0] : selectedRoom.image) || '/images/resort-room.png'} 
+                            <img
+                                src={(Array.isArray(selectedRoom.images) && selectedRoom.images.length > 0 ? selectedRoom.images[0] : selectedRoom.image) || '/images/resort-room.png'}
                                 alt={selectedRoom.name}
                                 className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent pointer-events-none" />
-                            
+
                             {Array.isArray(selectedRoom.images) && selectedRoom.images.length > 1 && (
                                 <div className="absolute bottom-8 left-8 right-8 flex gap-3 overflow-x-auto pb-4 no-scrollbar">
                                     {selectedRoom.images.map((img, i) => (
@@ -234,13 +234,13 @@ export default function Rooms() {
                                 </section>
 
                                 <div className="pt-10 flex gap-4">
-                                    <button 
+                                    <button
                                         onClick={() => navigate(`/admin/rooms/edit/${selectedRoom.id}`)}
                                         className="flex-1 btn-primary py-5 rounded-[2rem] shadow-2xl shadow-admin-primary/30 active:scale-95 transition-all text-sm uppercase tracking-[0.2em] font-black"
                                     >
                                         Edit Specifications
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={() => setSelectedRoom(null)}
                                         className="w-20 h-20 rounded-[2rem] bg-admin-bg border border-admin-border text-admin-text-muted flex items-center justify-center hover:bg-white transition-all shadow-xl"
                                     >

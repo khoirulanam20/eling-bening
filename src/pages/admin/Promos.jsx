@@ -96,8 +96,8 @@ export default function Promos() {
                                     <button
                                         onClick={() => toggleStatus(promo.id)}
                                         className={`badge-status group cursor-pointer transition-all ${promo.status === 'active'
-                                                ? 'bg-success/5 text-success border-success/10 hover:bg-success/10'
-                                                : 'bg-danger/5 text-danger border-danger/10 hover:bg-danger/10'
+                                            ? 'bg-success/5 text-success border-success/10 hover:bg-success/10'
+                                            : 'bg-danger/5 text-danger border-danger/10 hover:bg-danger/10'
                                             }`}
                                     >
                                         <div className={`w-1.5 h-1.5 rounded-full mr-2 ${promo.status === 'active' ? 'bg-success animate-pulse' : 'bg-danger'}`} />
@@ -105,7 +105,7 @@ export default function Promos() {
                                     </button>
                                 </td>
                                 <td>
-                                    <div className="action-buttons justify-end">
+                                    <div className="flex justify-start gap-2">
                                         <button className="btn-icon" title="Edit" onClick={() => navigate(`/admin/promos/edit/${promo.id}`)}>
                                             <Edit size={18} />
                                         </button>

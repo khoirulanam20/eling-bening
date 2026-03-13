@@ -14,17 +14,17 @@ export default function Bookings() {
     }, []);
 
     const filteredBookings = bookings.filter(b => {
-        const matchesSearch = b.id.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                             b.name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesStatus = statusFilter === 'all' || 
-                             (statusFilter === 'confirmed' && b.status === 'success') ||
-                             (statusFilter === 'pending' && b.status !== 'success');
+        const matchesSearch = b.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            b.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesStatus = statusFilter === 'all' ||
+            (statusFilter === 'confirmed' && b.status === 'success') ||
+            (statusFilter === 'pending' && b.status !== 'success');
         return matchesSearch && matchesStatus;
     });
 
     const getStatusStyles = (status) => {
-        return status === 'success' 
-            ? 'bg-success/10 text-success border-success/20' 
+        return status === 'success'
+            ? 'bg-success/10 text-success border-success/20'
             : 'bg-warning/10 text-warning border-warning/20';
     };
 
@@ -76,15 +76,15 @@ export default function Bookings() {
                     <div className="flex gap-4">
                         <div className="relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-light" size={16} />
-                            <input 
-                                type="text" 
-                                placeholder="Search by ID or customer..." 
+                            <input
+                                type="text"
+                                placeholder="Search by ID or customer..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72" 
+                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72"
                             />
                         </div>
-                        <select 
+                        <select
                             value={statusFilter}
                             onChange={(e) => setStatusFilter(e.target.value)}
                             className="px-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all cursor-pointer"
@@ -104,7 +104,7 @@ export default function Bookings() {
                             <th>Entry Date</th>
                             <th>Net Total</th>
                             <th>Status</th>
-                            <th className="text-right">Operations</th>
+                            <th>Operations</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -145,7 +145,7 @@ export default function Bookings() {
                                     </span>
                                 </td>
                                 <td>
-                                    <div className="flex justify-end gap-2">
+                                    <div className="flex justify-start gap-2">
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Inspect Order" onClick={() => setSelectedBooking(booking)}><Eye size={16} /></button>
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Download Invoice"><Download size={16} /></button>
                                     </div>
@@ -170,7 +170,7 @@ export default function Bookings() {
                 <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 animate-fade-in">
                     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md" onClick={() => setSelectedBooking(null)}></div>
                     <div className="bg-white w-full max-w-4xl rounded-[3rem] overflow-hidden flex flex-col md:flex-row relative z-[1001] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] animate-scale-up border border-white/20">
-                        <button 
+                        <button
                             onClick={() => setSelectedBooking(null)}
                             className="absolute top-8 right-8 z-20 w-12 h-12 rounded-2xl bg-admin-bg hover:bg-admin-primary hover:text-white text-admin-text-muted flex items-center justify-center transition-all shadow-sm border border-admin-border"
                         >
@@ -183,7 +183,7 @@ export default function Bookings() {
                             </div>
                             <span className="text-[10px] font-black text-admin-text-muted uppercase tracking-[0.3em] mb-2">Order Reference</span>
                             <h2 className="text-3xl font-black text-admin-text-main tracking-tighter mb-8 leading-none">{selectedBooking.id}</h2>
-                            
+
                             <div className={`mt-auto p-6 rounded-3xl border ${getStatusStyles(selectedBooking.status)}`}>
                                 <div className="flex items-center gap-3 mb-2">
                                     <Clock size={16} />
@@ -264,13 +264,13 @@ export default function Bookings() {
                             </section>
 
                             <div className="flex gap-4">
-                                <button 
+                                <button
                                     onClick={() => setSelectedBooking(null)}
                                     className="flex-1 btn-primary py-5 rounded-[2rem] shadow-2xl shadow-admin-primary/30 active:scale-95 transition-all text-sm uppercase tracking-[0.2em] font-black underline-offset-4"
                                 >
                                     Confirm Log Audit
                                 </button>
-                                <button 
+                                <button
                                     className="w-20 h-20 rounded-[2rem] bg-admin-bg border border-admin-border text-admin-text-muted flex items-center justify-center hover:bg-white transition-all shadow-xl"
                                 >
                                     <ChevronRight size={32} />

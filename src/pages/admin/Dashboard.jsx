@@ -94,18 +94,31 @@ export default function Dashboard() {
             {/* Stat Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {statCards.map((card, idx) => (
-                    <div key={idx} className="stat-card group hover:scale-[1.02] transition-all duration-300">
-                        <div className="flex justify-between items-start mb-6">
-                            <div className="p-3.5 rounded-2xl bg-white shadow-sm border border-admin-border group-hover:bg-admin-primary group-hover:text-white transition-all duration-300">
-                                <card.icon size={20} strokeWidth={2.5} />
+                    <div key={idx} className="bg-white p-8 rounded-[2rem] border border-admin-border hover:shadow-2xl hover:shadow-admin-primary/5 hover:border-admin-primary/20 transition-all duration-500 group relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-admin-primary/5 rounded-full translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        
+                        <div className="flex justify-between items-start mb-10 relative z-10">
+                            <div className="w-14 h-14 rounded-2xl bg-admin-bg border border-admin-border flex items-center justify-center text-admin-text-main group-hover:bg-admin-primary group-hover:text-white group-hover:border-admin-primary transition-all duration-500 shadow-sm">
+                                <card.icon size={24} strokeWidth={2} />
                             </div>
-                            <div className={`flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full ${card.trend === 'up' ? 'text-success bg-success/10' : 'text-danger bg-danger/10'}`}>
-                                {card.trend === 'up' ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
+                            <div className={`flex items-center gap-1.5 text-[10px] font-black px-3 py-1.5 rounded-full shadow-sm transition-transform group-hover:scale-105 ${
+                                card.trend === 'up' 
+                                ? 'text-success bg-success/5 border border-success/10' 
+                                : 'text-danger bg-danger/5 border border-danger/10'
+                            }`}>
+                                {card.trend === 'up' ? <TrendingUp size={12} /> : <TrendingUp size={12} className="rotate-180" />}
                                 {card.sub}
                             </div>
                         </div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-admin-text-muted mb-1.5">{card.title}</p>
-                        <h3 className="text-3xl font-black text-admin-text-main tracking-tight">{card.value}</h3>
+                        
+                        <div className="space-y-2 relative z-10">
+                            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-admin-text-muted group-hover:text-admin-primary transition-colors">
+                                {card.title}
+                            </p>
+                            <h3 className="text-4xl font-black text-admin-text-main tracking-tighter">
+                                {card.value}
+                            </h3>
+                        </div>
                     </div>
                 ))}
             </div>

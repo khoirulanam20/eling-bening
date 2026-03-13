@@ -125,12 +125,10 @@ export default function AdminEvents() {
                                         {event.status === 'active' ? 'Live on Site' : 'Locked (Draft)'}
                                     </button>
                                 </td>
-                                <td>
-                                    <div className="flex justify-center gap-2">
-                                        <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Open Preview" onClick={() => navigate(`/events/${event.id}`)}><ExternalLink size={16} /></button>
-                                        <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Modify" onClick={() => navigate(`/admin/events/edit/${event.id}`)}><Edit size={16} /></button>
-                                        <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-danger flex items-center justify-center hover:bg-danger hover:text-white hover:border-danger transition-all shadow-sm" title="Archive" onClick={() => handleDelete(event.id)}><Trash2 size={16} /></button>
-                                    </div>
+                                <td className="flex justify-start gap-2">
+                                    <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Open Preview" onClick={() => navigate(`/events/${event.id}`)}><ExternalLink size={16} /></button>
+                                    <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Modify" onClick={() => navigate(`/admin/events/edit/${event.id}`)}><Edit size={16} /></button>
+                                    <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-danger flex items-center justify-center hover:bg-danger hover:text-white hover:border-danger transition-all shadow-sm" title="Archive" onClick={() => handleDelete(event.id)}><Trash2 size={16} /></button>
                                 </td>
                             </tr>
                         ))}
