@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getBookings, formatRupiah } from '../../utils/data';
 import { useAuth } from '../../utils/AuthContext';
-import { Search, MapPin, Calendar, Clock, ArrowRight, User, Mail, ShieldCheck, Ticket, QrCode, X, Download } from 'lucide-react';
+import { Search, MapPin, Calendar, Clock, ArrowRight, User, Mail, ShieldCheck, Ticket, QrCode, X, Download, BedDouble } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Profile() {
