@@ -35,9 +35,14 @@ export default function Tickets() {
                     <h1>Manajemen Tiket</h1>
                     <p className="text-muted mt-1">Mengatur jenis tiket dan status aktif untuk area wisata.</p>
                 </div>
-                <button className="btn-primary" onClick={() => navigate('/admin/tickets/add')}>
-                    <Plus size={18} /> Tambah Tiket Baru
-                </button>
+                <div style={{ display: 'flex', gap: '1rem' }}>
+                    <button className="btn-primary-outline" onClick={() => navigate('/admin/tickets/orders')}>
+                        Daftar Pesanan Tiket
+                    </button>
+                    <button className="btn-primary" onClick={() => navigate('/admin/tickets/add')}>
+                        <Plus size={18} /> Tambah Tiket Baru
+                    </button>
+                </div>
             </div>
 
             <div className="admin-table-container">

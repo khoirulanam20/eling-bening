@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { getRooms, saveRooms } from '../../../utils/data';
 import toast from 'react-hot-toast';
+
+const AMENITIES_OPTIONS = [
+    'WiFi', 'TV', 'AC', 'Coffee Maker',
+    'Balcony', 'Minibar', 'Shower', 'Lake View',
+    'Bathtub', 'Breakfast', 'Work Desk', 'Safe Deposit Box'
+];
 
 export default function EditRoom() {
     const { id } = useParams();
@@ -13,18 +19,35 @@ export default function EditRoom() {
         const rooms = getRooms();
         const room = rooms.find(r => r.id === Number(id));
         if (room) {
-            setFormData({ ...room, amenities: Array.isArray(room.amenities) ? room.amenities.join(', ') : room.amenities });
+            setFormData({
+                ...room,
+                amenities: Array.isArray(room.amenities) ? room.amenities : []
+            });
         } else {
             toast.error('Kamar tidak ditemukan');
             navigate('/admin/rooms');
         }
     }, [id, navigate]);
 
+    const handleAmenityChange = (amenity) => {
+        const current = formData.amenities;
+        if (current.includes(amenity)) {
+            setFormData({ ...formData, amenities: current.filter(a => a !== amenity) });
+        } else {
+            setFormData({ ...formData, amenities: [...current, amenity] });
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const processedAmenities = formData.amenities.split(',').map(a => a.trim());
         const rooms = getRooms();
-        const finalData = { ...formData, price: Number(formData.price), capacity: Number(formData.capacity), stock: Number(formData.stock), size: Number(formData.size), amenities: processedAmenities };
+        const finalData = {
+            ...formData,
+            price: Number(formData.price),
+            capacity: Number(formData.capacity),
+            stock: Number(formData.stock),
+            size: Number(formData.size)
+        };
 
         const updated = rooms.map(r => r.id === Number(id) ? finalData : r);
         saveRooms(updated);
@@ -79,8 +102,46 @@ export default function EditRoom() {
                     </div>
 
                     <div>
-                        <label className="admin-label">Daftar Fasilitas (Pisahkan dengan koma)</label>
-                        <input required value={formData.amenities} onChange={e => setFormData({ ...formData, amenities: e.target.value })} type="text" className="admin-input" />
+                        <label className="admin-label" style={{ marginBottom: '0.75rem' }}>Daftar Fasilitas</label>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '0.75rem' }}>
+                            {AMENITIES_OPTIONS.map(opt => (
+                                <div
+                                    key={opt}
+                                    onClick={() => handleAmenityChange(opt)}
+                                    style={{
+                                        padding: '0.5rem 0.75rem',
+                                        borderRadius: 'var(--radius-sm)',
+                                        border: '1px solid',
+                                        borderColor: formData.amenities.includes(opt) ? 'var(--primary)' : 'var(--border-color)',
+                                        backgroundColor: formData.amenities.includes(opt) ? 'var(--primary-light)' : 'white',
+                                        color: formData.amenities.includes(opt) ? 'var(--primary)' : 'var(--text-main)',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        fontSize: '0.875rem',
+                                        fontWeight: formData.amenities.includes(opt) ? 600 : 400,
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <div style={{
+                                        width: '16px',
+                                        height: '16px',
+                                        borderRadius: '4px',
+                                        border: '1px solid',
+                                        borderColor: formData.amenities.includes(opt) ? 'var(--primary)' : 'var(--border-color)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        backgroundColor: formData.amenities.includes(opt) ? 'var(--primary)' : 'white',
+                                        color: 'white'
+                                    }}>
+                                        {formData.amenities.includes(opt) && <Check size={12} strokeWidth={3} />}
+                                    </div>
+                                    {opt}
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <div>

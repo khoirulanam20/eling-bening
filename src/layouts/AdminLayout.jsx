@@ -4,7 +4,8 @@ import {
     LayoutDashboard, Ticket, Building, BedDouble, Receipt,
     Settings, Gift, RefreshCcw, Search, BarChart3,
     ChevronDown, Hotel, Maximize, ShoppingCart,
-    PieChart, Megaphone, Layout, ExternalLink
+    PieChart, Megaphone, Layout, ExternalLink,
+    ClipboardList, QrCode
 } from 'lucide-react';
 import '../styles/admin.css';
 
@@ -57,19 +58,21 @@ export default function AdminLayout() {
                             </div>
                         </li>
 
-                        {/* Tiket Masuk Group */}
+                        {/* Tiket Masuk Group - Simplified */}
                         <li>
-                            <button onClick={() => toggleMenu('ticket')} className="nav-group-btn">
-                                <div className="btn-content">
-                                    <Ticket size={20} /> <span>Tiket Masuk</span>
-                                </div>
-                                <ChevronDown size={14} className={`chevron ${openMenus.ticket ? 'rotated' : ''}`} />
-                            </button>
-                            <div className={`submenu ${openMenus.ticket ? 'open' : ''}`}>
-                                <NavLink to="/admin/packages" className="submenu-item">Kelola Paket Tiket</NavLink>
-                                <NavLink to="/admin/tickets" className="submenu-item">Daftar Pembelian</NavLink>
-                                <NavLink to="/admin/scanner" className="submenu-item">Scan Tiket</NavLink>
-                            </div>
+                            <NavLink to="/admin/tickets/orders" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <ClipboardList size={20} /> <span>Pesanan Tiket</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/tickets" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <Ticket size={20} /> <span>Jenis Tiket</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/scanner" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <QrCode size={20} /> <span>Scan Tiket</span>
+                            </NavLink>
                         </li>
 
                         {/* Keuangan Group */}
@@ -82,8 +85,8 @@ export default function AdminLayout() {
                             </button>
                             <div className={`submenu ${openMenus.finance ? 'open' : ''}`}>
                                 <NavLink to="/admin/finance" end className="submenu-item">Dashboard Keuangan</NavLink>
-                                <NavLink to="/admin/finance/tickets" className="submenu-item">Pemasukan Tiket</NavLink>
-                                <NavLink to="/admin/finance/resort" className="submenu-item">Pemasukan Resort</NavLink>
+                                <NavLink to="/admin/finance/expenses" className="submenu-item">Pengeluaran</NavLink>
+                                <NavLink to="/admin/finance/recap" className="submenu-item">Rekap Laporan</NavLink>
                             </div>
                         </li>
 

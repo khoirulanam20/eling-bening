@@ -27,6 +27,7 @@ import AdminEditRoom from './pages/admin/rooms/EditRoom';
 import AdminTickets from './pages/admin/Tickets';
 import AdminAddTicket from './pages/admin/tickets/AddTicket';
 import AdminEditTicket from './pages/admin/tickets/EditTicket';
+import AdminTicketOrders from './pages/admin/tickets/TicketOrders';
 // Admin Stubs
 import AdminBookings from './pages/admin/Bookings';
 import AdminPackages from './pages/admin/Packages';
@@ -37,6 +38,8 @@ import AdminReschedule from './pages/admin/Reschedule';
 import AdminSeo from './pages/admin/Seo';
 import AdminScanner from './pages/admin/Scanner';
 import AdminFinance from './pages/admin/Finance';
+import AdminExpenses from './pages/admin/Expenses';
+import AdminFinanceRecap from './pages/admin/FinanceRecap';
 import AdminFinanceTickets from './pages/admin/FinanceTickets';
 import AdminFinanceResort from './pages/admin/FinanceResort';
 import AdminStats from './pages/admin/Stats';
@@ -92,6 +95,7 @@ function App() {
             <Route path="tickets" element={<AdminTickets />} />
             <Route path="tickets/add" element={<AdminAddTicket />} />
             <Route path="tickets/edit/:id" element={<AdminEditTicket />} />
+            <Route path="tickets/orders" element={<AdminTicketOrders />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="packages" element={<AdminPackages />} />
             <Route path="promos" element={<AdminPromos />} />
@@ -101,6 +105,8 @@ function App() {
             <Route path="seo" element={<AdminSeo />} />
             <Route path="scanner" element={<AdminScanner />} />
             <Route path="finance" element={<AdminFinance />} />
+            <Route path="finance/expenses" element={<AdminExpenses />} />
+            <Route path="finance/recap" element={<AdminFinanceRecap />} />
             <Route path="finance/tickets" element={<AdminFinanceTickets />} />
             <Route path="finance/resort" element={<AdminFinanceResort />} />
             <Route path="content" element={<AdminContent />} />

@@ -55,7 +55,7 @@
     gap: 0.75rem;
     padding: 0.75rem 1rem;
     border-radius: var(--radius-md);
-    color: #9CA3AF;
+    color: white;
     transition: var(--transition);
     font-weight: 500;
 }
@@ -94,7 +94,7 @@
     justify-content: space-between;
     padding: 0.75rem 1rem;
     border-radius: var(--radius-md);
-    color: #9CA3AF;
+    color: white;
     transition: var(--transition);
     font-weight: 500;
     cursor: pointer;

@@ -1,6 +1,9 @@
 export const EB_ROOMS_KEY = 'eb_rooms';
 export const EB_TICKETS_KEY = 'eb_tickets';
 export const EB_BOOKINGS_KEY = 'eb_bookings';
+export const EB_PROMOS_KEY = 'eb_promos';
+export const EB_RESCHEDULES_KEY = 'eb_reschedules';
+export const EB_EXPENSES_KEY = 'eb_expenses';
 
 export const DEFAULT_ROOMS = [
     {
@@ -12,7 +15,7 @@ export const DEFAULT_ROOMS = [
         bed: 'King Bed',
         size: 32,
         desc: 'Kamar dengan panorama gunung yang memukau, dirancang untuk pengalaman menginap yang tenang dan nyaman.',
-        amenities: ['Sarapan Gratis', 'Free Mini Bar', 'Akses Kolam Renang'],
+        amenities: ['WiFi Kecepatan Tinggi', 'Smart TV 43"', 'Pembuat Kopi & Teh', 'AC', 'Kamar Mandi & Air Panas', 'Balkon Pribadi'],
         status: 'available',
         image: '/images/resort-room.png',
     },
@@ -25,7 +28,7 @@ export const DEFAULT_ROOMS = [
         bed: 'King Bed',
         size: 45,
         desc: 'Suite premium menghadap Danau Rawa Pening dengan balkon pribadi dan fasilitas bintang lima.',
-        amenities: ['Sarapan Gratis', 'Private Balcony', 'Smart TV 55"'],
+        amenities: ['WiFi Kecepatan Tinggi', 'Smart TV 55"', 'Mini Bar', 'Pembuat Kopi & Teh', 'AC', 'Kamar Mandi & Air Panas', 'Balkon Pribadi'],
         status: 'available',
         image: '/images/resort-room.png',
     },
@@ -38,7 +41,7 @@ export const DEFAULT_ROOMS = [
         bed: '2 King Bed',
         size: 90,
         desc: 'Villa luas cocok untuk keluarga besar, dengan ruang tamu, dapur kecil, dan pemandangan alam bebas.',
-        amenities: ['Sarapan Gratis', 'Private Pool', 'Full Kitchen'],
+        amenities: ['WiFi Kecepatan Tinggi', 'Smart TV 65"', 'Private Pool', 'Full Kitchen', 'AC', 'Kamar Mandi & Air Panas', 'Balkon Pribadi'],
         status: 'full',
         image: '/images/resort-room.png',
     },
@@ -98,41 +101,24 @@ export const DEFAULT_BOOKINGS = [
     }
 ];
 
-export function getRooms() {
-    try {
-        const stored = localStorage.getItem(EB_ROOMS_KEY);
-        return stored ? JSON.parse(stored) : DEFAULT_ROOMS;
-    } catch { return DEFAULT_ROOMS; }
-}
-
-export function saveRooms(rooms) {
-    localStorage.setItem(EB_ROOMS_KEY, JSON.stringify(rooms));
-}
-
-export function getTickets() {
-    try {
-        const stored = localStorage.getItem(EB_TICKETS_KEY);
-        return stored ? JSON.parse(stored) : DEFAULT_TICKETS;
-    } catch { return DEFAULT_TICKETS; }
-}
-
-export function saveTickets(tickets) {
-    localStorage.setItem(EB_TICKETS_KEY, JSON.stringify(tickets));
-}
-
-export function getBookings() {
-    try {
-        const stored = localStorage.getItem(EB_BOOKINGS_KEY);
-        return stored ? JSON.parse(stored) : DEFAULT_BOOKINGS;
-    } catch { return DEFAULT_BOOKINGS; }
-}
-
-export function saveBookings(bookings) {
-    localStorage.setItem(EB_BOOKINGS_KEY, JSON.stringify(bookings));
-}
-
-export const EB_PROMOS_KEY = 'eb_promos';
-export const EB_RESCHEDULES_KEY = 'eb_reschedules';
+export const DEFAULT_EXPENSES = [
+    {
+        id: 1,
+        date: '2026-03-10',
+        title: 'Pembelian Bahan Makanan Resto',
+        amount: 5000000,
+        category: 'Operasional',
+        note: 'Stok mingguan'
+    },
+    {
+        id: 2,
+        date: '2026-03-12',
+        title: 'Maintenance Kolam Renang',
+        amount: 2500000,
+        category: 'Pemeliharaan',
+        note: 'Pembersihan rutin'
+    }
+];
 
 export const DEFAULT_PROMOS = [
     {
@@ -182,6 +168,39 @@ export const DEFAULT_RESCHEDULES = [
     }
 ];
 
+export function getRooms() {
+    try {
+        const stored = localStorage.getItem(EB_ROOMS_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_ROOMS;
+    } catch { return DEFAULT_ROOMS; }
+}
+
+export function saveRooms(rooms) {
+    localStorage.setItem(EB_ROOMS_KEY, JSON.stringify(rooms));
+}
+
+export function getTickets() {
+    try {
+        const stored = localStorage.getItem(EB_TICKETS_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_TICKETS;
+    } catch { return DEFAULT_TICKETS; }
+}
+
+export function saveTickets(tickets) {
+    localStorage.setItem(EB_TICKETS_KEY, JSON.stringify(tickets));
+}
+
+export function getBookings() {
+    try {
+        const stored = localStorage.getItem(EB_BOOKINGS_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_BOOKINGS;
+    } catch { return DEFAULT_BOOKINGS; }
+}
+
+export function saveBookings(bookings) {
+    localStorage.setItem(EB_BOOKINGS_KEY, JSON.stringify(bookings));
+}
+
 export function getPromos() {
     try {
         const stored = localStorage.getItem(EB_PROMOS_KEY);
@@ -202,6 +221,17 @@ export function getReschedules() {
 
 export function saveReschedules(reschedules) {
     localStorage.setItem(EB_RESCHEDULES_KEY, JSON.stringify(reschedules));
+}
+
+export function getExpenses() {
+    try {
+        const stored = localStorage.getItem(EB_EXPENSES_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_EXPENSES;
+    } catch { return DEFAULT_EXPENSES; }
+}
+
+export function saveExpenses(expenses) {
+    localStorage.setItem(EB_EXPENSES_KEY, JSON.stringify(expenses));
 }
 
 export function formatRupiah(n) {
