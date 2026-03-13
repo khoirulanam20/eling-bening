@@ -319,3 +319,143 @@
     border-color: var(--primary);
     box-shadow: 0 0 0 2px var(--primary-light);
 }
+
+/* Mobile Responsive Styles */
+.bottom-navbar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: white;
+    border-top: 1px solid var(--border-color);
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 0.5rem;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.btm-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    flex: 1;
+}
+
+.btm-nav-item.active {
+    color: var(--primary);
+}
+
+.scanner-btn-pulse {
+    width: 48px;
+    height: 48px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -25px;
+    box-shadow: 0 4px 15px var(--primary-light);
+    border: 4px solid white;
+}
+
+.mobile-logo-header {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    .admin-sidebar {
+        width: 80px;
+    }
+
+    .sidebar-header h2,
+    .nav-item span,
+    .btn-content span,
+    .chevron,
+    .view-site-link span {
+        display: none;
+    }
+
+    .sidebar-logo {
+        justify-content: center;
+    }
+
+    .nav-item,
+    .nav-group-btn {
+        justify-content: center;
+        padding: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        display: none;
+    }
+
+    .bottom-navbar {
+        display: flex;
+    }
+
+    .mobile-logo-header {
+        display: flex;
+    }
+
+    .desktop-topbar-title {
+        display: none;
+    }
+
+    .admin-topbar {
+        padding: 0 1rem;
+        height: 60px;
+        position: sticky;
+        top: 0;
+        z-index: 900;
+    }
+
+    .admin-content {
+        padding: 1rem;
+        padding-bottom: 90px;
+    }
+
+    .admin-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .admin-page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .admin-table-container {
+        margin: 0 -1rem;
+        border-radius: 0;
+        box-shadow: none;
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 0.75rem 1rem;
+    }
+
+    .admin-card {
+        padding: 1rem;
+    }
+
+    .action-buttons {
+        flex-wrap: wrap;
+    }
+}

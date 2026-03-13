@@ -22,6 +22,7 @@ export default function AdminLayout() {
 
     return (
         <div className="admin-layout">
+            {/* Desktop Sidebar - Hidden on Mobile via CSS */}
             <aside className="admin-sidebar">
                 <div className="sidebar-header">
                     <div className="sidebar-logo">
@@ -58,21 +59,19 @@ export default function AdminLayout() {
                             </div>
                         </li>
 
-                        {/* Tiket Masuk Group - Simplified */}
+                        {/* Tiket Masuk Group - Consolidated */}
                         <li>
-                            <NavLink to="/admin/tickets/orders" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <ClipboardList size={20} /> <span>Pesanan Tiket</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/admin/tickets" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <Ticket size={20} /> <span>Jenis Tiket</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/admin/scanner" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <QrCode size={20} /> <span>Scan Tiket</span>
-                            </NavLink>
+                            <button onClick={() => toggleMenu('ticket')} className="nav-group-btn">
+                                <div className="btn-content">
+                                    <Ticket size={20} /> <span>Tiket Masuk</span>
+                                </div>
+                                <ChevronDown size={14} className={`chevron ${openMenus.ticket ? 'rotated' : ''}`} />
+                            </button>
+                            <div className={`submenu ${openMenus.ticket ? 'open' : ''}`}>
+                                <NavLink to="/admin/tickets/orders" className="submenu-item">Pesanan Tiket</NavLink>
+                                <NavLink to="/admin/tickets" className="submenu-item">Kelola Tiket</NavLink>
+                                <NavLink to="/admin/scanner" className="submenu-item">Scan Tiket</NavLink>
+                            </div>
                         </li>
 
                         {/* Keuangan Group */}
@@ -119,7 +118,12 @@ export default function AdminLayout() {
             <div className="admin-main-wrapper">
                 <header className="admin-topbar">
                     <div className="topbar-left">
-                        <h3 style={{ margin: 0, fontWeight: 700 }}>Admin Panel Eling Bening</h3>
+                        {/* Mobile Logo - Visible only on mobile */}
+                        <div className="mobile-logo-header">
+                            <img src="/images/logo.png" alt="Logo" style={{ height: '24px' }} />
+                            <h3 style={{ margin: 0, fontWeight: 700, fontSize: '1rem' }}>Eling Bening</h3>
+                        </div>
+                        <h3 className="desktop-topbar-title" style={{ margin: 0, fontWeight: 700 }}>Admin Panel Eling Bening</h3>
                     </div>
                     <div className="topbar-right">
                         <div className="admin-profile">
@@ -133,6 +137,32 @@ export default function AdminLayout() {
                     <Outlet />
                 </main>
             </div>
+
+            {/* Bottom Navbar for Mobile */}
+            <nav className="bottom-navbar">
+                <NavLink to="/admin" end className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
+                    <LayoutDashboard size={20} />
+                    <span>Home</span>
+                </NavLink>
+                <NavLink to="/admin/bookings" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
+                    <Hotel size={20} />
+                    <span>Booking</span>
+                </NavLink>
+                <NavLink to="/admin/scanner" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
+                    <div className="scanner-btn-pulse">
+                        <QrCode size={24} color="white" />
+                    </div>
+                    <span>Scan</span>
+                </NavLink>
+                <NavLink to="/admin/tickets/orders" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
+                    <Ticket size={20} />
+                    <span>Tiket</span>
+                </NavLink>
+                <NavLink to="/admin/finance" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
+                    <PieChart size={20} />
+                    <span>Laporan</span>
+                </NavLink>
+            </nav>
         </div>
     );
 }

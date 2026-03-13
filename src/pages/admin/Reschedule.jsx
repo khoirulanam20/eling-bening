@@ -63,12 +63,32 @@ export default function Reschedule() {
                                     <td>
                                         <div className="action-buttons">
                                             <button className="btn-icon" title="Detail" onClick={() => setSelectedReq(req)}><Eye size={18} /></button>
-                                            {req.status === 'pending' && (
-                                                <>
-                                                    <button className="btn-icon" title="Setujui" onClick={() => handleAction(req.id, 'approved')} style={{ color: '#10B981' }}><Check size={18} /></button>
-                                                    <button className="btn-icon" title="Tolak" onClick={() => handleAction(req.id, 'rejected')} style={{ color: '#EF4444' }}><X size={18} /></button>
-                                                </>
-                                            )}
+                                            <div style={{ display: 'flex', gap: '0.25rem', padding: '2px', backgroundColor: '#F1F5F9', borderRadius: 'var(--radius-md)' }}>
+                                                <button
+                                                    className={`btn-icon ${req.status === 'pending' ? 'bg-white shadow-sm' : ''}`}
+                                                    title="Set Pending"
+                                                    onClick={() => handleAction(req.id, 'pending')}
+                                                    style={{ color: '#92400E', padding: '4px' }}
+                                                >
+                                                    <Clock size={16} />
+                                                </button>
+                                                <button
+                                                    className={`btn-icon ${req.status === 'approved' ? 'bg-white shadow-sm' : ''}`}
+                                                    title="Setujui"
+                                                    onClick={() => handleAction(req.id, 'approved')}
+                                                    style={{ color: '#10B981', padding: '4px' }}
+                                                >
+                                                    <Check size={16} />
+                                                </button>
+                                                <button
+                                                    className={`btn-icon ${req.status === 'rejected' ? 'bg-white shadow-sm' : ''}`}
+                                                    title="Tolak"
+                                                    onClick={() => handleAction(req.id, 'rejected')}
+                                                    style={{ color: '#EF4444', padding: '4px' }}
+                                                >
+                                                    <X size={16} />
+                                                </button>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>

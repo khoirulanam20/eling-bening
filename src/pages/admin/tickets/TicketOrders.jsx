@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { getBookings, formatRupiah } from '../../../utils/data';
-import { Search, Filter, Calendar, Hash, User, Tag, ArrowLeft } from 'lucide-react';
+import { getBookings, saveBookings, formatRupiah } from '../../../utils/data';
+import { Search, Filter, Calendar, Hash, User, Tag, ArrowLeft, CheckCircle2, Circle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 export default function TicketOrders() {
     const navigate = useNavigate();
@@ -14,10 +15,25 @@ export default function TicketOrders() {
         setOrders(allBookings.filter(b => b.id.includes('TICK')));
     }, []);
 
+    const toggleCheckIn = (id) => {
+        const allBookings = getBookings();
+        const updatedBookings = allBookings.map(b => {
+            if (b.id === id) {
+                const newStatus = !b.checkedIn;
+                toast.success(newStatus ? 'Pengunjung berhasil check-in' : 'Check-in dibatalkan');
+                return { ...b, checkedIn: newStatus };
+            }
+            return b;
+        });
+
+        saveBookings(updatedBookings);
+        setOrders(updatedBookings.filter(b => b.id.includes('TICK')));
+    };
+
     const filteredOrders = orders.filter(o =>
         o.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
         o.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        o.itemName.toLowerCase().includes(searchTerm.toLowerCase())
+        (o.itemName && o.itemName.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     return (
@@ -45,9 +61,6 @@ export default function TicketOrders() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <button className="btn-primary-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Filter size={18} /> Filter
-                    </button>
                 </div>
             </div>
 
@@ -59,8 +72,9 @@ export default function TicketOrders() {
                             <th>Pengunjung</th>
                             <th>Jenis Tiket</th>
                             <th>Tanggal Kunjungan</th>
-                            <th>Total Bayar</th>
-                            <th>Status</th>
+                            <th>Pembayaran</th>
+                            <th className="text-center">Check-In</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,17 +98,40 @@ export default function TicketOrders() {
                                         <Calendar size={14} className="text-muted" /> {new Date(order.date).toLocaleDateString('id-ID')}
                                     </div>
                                 </td>
-                                <td style={{ fontWeight: 700, color: 'var(--text-main)' }}>{formatRupiah(order.total)}</td>
                                 <td>
-                                    <span className={`badge ${order.status === 'success' ? 'active' : 'inactive'}`}>
-                                        {order.status === 'success' ? 'Berhasil' : 'Gagal'}
-                                    </span>
+                                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                        <span style={{ fontWeight: 700 }}>{formatRupiah(order.total)}</span>
+                                        <span style={{ fontSize: '0.75rem' }} className={order.status === 'success' ? 'text-success' : 'text-danger'}>
+                                            {order.status === 'success' ? 'Lunas' : 'Gagal'}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td className="text-center">
+                                    <button
+                                        onClick={() => toggleCheckIn(order.id)}
+                                        style={{ border: 'none', background: 'none', cursor: 'pointer' }}
+                                    >
+                                        {order.checkedIn ? (
+                                            <div className="badge active" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                                <CheckCircle2 size={14} /> Sudah
+                                            </div>
+                                        ) : (
+                                            <div className="badge" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', backgroundColor: '#F1F5F9', color: '#64748B' }}>
+                                                <Circle size={14} /> Belum
+                                            </div>
+                                        )}
+                                    </button>
+                                </td>
+                                <td>
+                                    <button className="btn-icon" onClick={() => toggleCheckIn(order.id)} title={order.checkedIn ? "Batalkan Check-In" : "Check-In Sekarang"}>
+                                        <CheckCircle2 size={18} style={{ color: order.checkedIn ? '#10B981' : '#CBD5E1' }} />
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                         {filteredOrders.length === 0 && (
                             <tr>
-                                <td colSpan="6" className="text-center text-muted" style={{ padding: '3rem' }}>
+                                <td colSpan="7" className="text-center text-muted" style={{ padding: '3rem' }}>
                                     Tidak ditemukan data pesanan tiket.
                                 </td>
                             </tr>
