@@ -56,6 +56,7 @@ export default function Promos() {
                             <th>Min. Transaksi</th>
                             <th>Masa Berlaku</th>
                             <th>Status</th>
+                            <th>Aksi</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -92,13 +93,12 @@ export default function Promos() {
                                     </div>
                                 </td>
                                 <td>
-                                    <button 
+                                    <button
                                         onClick={() => toggleStatus(promo.id)}
-                                        className={`badge-status group cursor-pointer transition-all ${
-                                            promo.status === 'active' 
-                                            ? 'bg-success/5 text-success border-success/10 hover:bg-success/10' 
-                                            : 'bg-danger/5 text-danger border-danger/10 hover:bg-danger/10'
-                                        }`}
+                                        className={`badge-status group cursor-pointer transition-all ${promo.status === 'active'
+                                                ? 'bg-success/5 text-success border-success/10 hover:bg-success/10'
+                                                : 'bg-danger/5 text-danger border-danger/10 hover:bg-danger/10'
+                                            }`}
                                     >
                                         <div className={`w-1.5 h-1.5 rounded-full mr-2 ${promo.status === 'active' ? 'bg-success animate-pulse' : 'bg-danger'}`} />
                                         {promo.status === 'active' ? 'Active' : 'Paused'}

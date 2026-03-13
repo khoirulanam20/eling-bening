@@ -48,6 +48,7 @@ import AdminFinanceTickets from './pages/admin/FinanceTickets';
 import AdminFinanceResort from './pages/admin/FinanceResort';
 import AdminStats from './pages/admin/Stats';
 import AdminContent from './pages/admin/AdminContent';
+import AdminSettings from './pages/admin/Settings';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -118,6 +119,7 @@ function App() {
             <Route path="finance/tickets" element={<AdminFinanceTickets />} />
             <Route path="finance/resort" element={<AdminFinanceResort />} />
             <Route path="content" element={<AdminContent />} />
+            <Route path="settings" element={<AdminSettings />} />
             <Route path="*" element={<Navigate to="/admin" replace />} />
           </Route>
 

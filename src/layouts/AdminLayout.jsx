@@ -61,12 +61,15 @@ export default function AdminLayout() {
             {/* Sidebar */}
             <aside className={`admin-sidebar ${isSidebarCollapsed ? 'collapsed' : ''} ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
                 <div className="sidebar-header">
-                    <div className="sidebar-logo">
+                    <div className="sidebar-logo flex-1">
                         <div className="p-1.5 bg-admin-primary rounded-lg">
                             <img src="/images/logo.png" alt="Logo" className="h-6 brightness-0 invert" />
                         </div>
-                        {!isSidebarCollapsed && <h2>Admin Panel</h2>}
+                        {!isSidebarCollapsed && <h2 className="ml-3">Eling Bening</h2>}
                     </div>
+                    <button className="lg:hidden p-2 text-white/60 hover:text-white" onClick={() => setIsMobileMenuOpen(false)}>
+                        <X size={20} />
+                    </button>
                 </div>
 
                 <nav className="sidebar-nav">
@@ -138,7 +141,6 @@ export default function AdminLayout() {
                         <NavItem to="/admin/settings" icon={Settings} label="System Settings" />
                     </ul>
                 </nav>
-
                 <div className="sidebar-footer">
                     <Link to="/" className="view-site-link">
                         <ExternalLink size={18} /> 
@@ -189,6 +191,26 @@ export default function AdminLayout() {
                     <Outlet />
                 </main>
             </div>
+
+            {/* Mobile Bottom Navigation */}
+            <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-admin-border px-6 py-4 flex items-center justify-between lg:hidden z-[900]">
+                <NavLink to="/admin" end className={({ isActive }) => `flex flex-col items-center gap-1.5 transition-all ${isActive ? 'text-admin-primary' : 'text-admin-text-light'}`}>
+                    <LayoutDashboard size={22} className={location.pathname === '/admin' ? 'animate-bounce-short' : ''} />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Dash</span>
+                </NavLink>
+                <NavLink to="/admin/rooms" className={({ isActive }) => `flex flex-col items-center gap-1.5 transition-all ${isActive ? 'text-admin-primary' : 'text-admin-text-light'}`}>
+                    <BedDouble size={22} />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Rooms</span>
+                </NavLink>
+                <NavLink to="/admin/tickets" className={({ isActive }) => `flex flex-col items-center gap-1.5 transition-all ${isActive ? 'text-admin-primary' : 'text-admin-text-light'}`}>
+                    <Ticket size={22} />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Tickets</span>
+                </NavLink>
+                <NavLink to="/admin/settings" className={({ isActive }) => `flex flex-col items-center gap-1.5 transition-all ${isActive ? 'text-admin-primary' : 'text-admin-text-light'}`}>
+                    <Settings size={22} />
+                    <span className="text-[10px] font-black uppercase tracking-widest">Sets</span>
+                </NavLink>
+            </nav>
         </div>
     );
 }

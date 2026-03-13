@@ -121,7 +121,7 @@ export default function Tickets() {
                                     </button>
                                 </td>
                                 <td>
-                                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                    <div className="flex justify-end gap-2">
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Modify" onClick={() => navigate(`/admin/tickets/edit/${ticket.id}`)}><Edit size={16} /></button>
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-danger flex items-center justify-center hover:bg-danger hover:text-white hover:border-danger transition-all shadow-sm" title="Delete" onClick={() => handleDelete(ticket.id)}><Trash2 size={16} /></button>
                                     </div>

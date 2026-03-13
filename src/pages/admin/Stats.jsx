@@ -2,9 +2,9 @@ import { BarChart as BarIcon, TrendingUp, Users, Wallet, ArrowUpRight, ArrowDown
 
 export default function Stats() {
     const stats = [
-        { label: 'Tiket Terjual', value: '8.420', sub: '+12.5%', trend: 'up', icon: <TrendingUp size={20} className="text-secondary" /> },
-        { label: 'Reservasi Kamar', value: '213', sub: '+5.2%', trend: 'up', icon: <Users size={20} className="text-accent" /> },
-        { label: 'Occupancy Rate', value: '76%', sub: '-2.1%', trend: 'down', icon: <BarIcon size={20} className="text-blue-500" /> },
+        { label: 'Tiket Terjual', value: '8.420', sub: '+12.5%', trend: 'up', icon: <TrendingUp size={20} className="text-admin-primary" /> },
+        { label: 'Reservasi Kamar', value: '213', sub: '+5.2%', trend: 'up', icon: <Users size={20} className="text-admin-primary" /> },
+        { label: 'Occupancy Rate', value: '76%', sub: '-2.1%', trend: 'down', icon: <BarIcon size={20} className="text-info" /> },
         { label: 'Revenue/Month', value: 'Rp 342M', sub: '+18.4%', trend: 'up', icon: <Wallet size={20} className="text-admin-primary" />, highlight: true }
     ];
 

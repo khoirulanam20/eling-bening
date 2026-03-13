@@ -29,7 +29,7 @@ export default function AdminEvents() {
         toast.success(`Event dipindahkan ke ${updated.find(e => e.id === id).status === 'active' ? 'Publish' : 'Draft'}`);
     };
 
-    const filteredEvents = events.filter(e => 
+    const filteredEvents = events.filter(e =>
         e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         e.category.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -57,12 +57,12 @@ export default function AdminEvents() {
                     <div className="flex gap-4">
                         <div className="relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-light" size={16} />
-                            <input 
-                                type="text" 
-                                placeholder="Search event or category..." 
+                            <input
+                                type="text"
+                                placeholder="Search event or category..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72" 
+                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72"
                             />
                         </div>
                         <button className="p-2.5 rounded-xl bg-admin-bg border border-admin-border text-admin-text-light hover:text-admin-main transition-all">
@@ -87,9 +87,9 @@ export default function AdminEvents() {
                             <tr key={event.id} className="group">
                                 <td className="w-28">
                                     <div className="relative w-20 h-14 rounded-2xl overflow-hidden border-2 border-admin-border group-hover:border-admin-primary transition-all shadow-sm">
-                                        <img 
-                                            src={(Array.isArray(event.images) && event.images.length > 0 ? event.images[0] : event.image) || '/images/generated/event.png'} 
-                                            alt={event.name} 
+                                        <img
+                                            src={(Array.isArray(event.images) && event.images.length > 0 ? event.images[0] : event.image) || '/images/generated/event.png'}
+                                            alt={event.name}
                                             className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                                         />
                                     </div>
@@ -126,7 +126,7 @@ export default function AdminEvents() {
                                     </button>
                                 </td>
                                 <td>
-                                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                    <div className="flex justify-center gap-2">
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Open Preview" onClick={() => navigate(`/events/${event.id}`)}><ExternalLink size={16} /></button>
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Modify" onClick={() => navigate(`/admin/events/edit/${event.id}`)}><Edit size={16} /></button>
                                         <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-danger flex items-center justify-center hover:bg-danger hover:text-white hover:border-danger transition-all shadow-sm" title="Archive" onClick={() => handleDelete(event.id)}><Trash2 size={16} /></button>
