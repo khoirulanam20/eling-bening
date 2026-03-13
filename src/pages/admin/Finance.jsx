@@ -1,0 +1,1 @@
+export default function Finance() { return <div className="animate-fade-in"><div className="admin-page-header"><h1>Laporan Keuangan</h1><p className="text-muted mt-1">Laporan pendapatan resort dan tiket masuk.</p></div><div className="admin-card text-center text-muted" style={{ padding: '4rem' }}>Modul Laporan Keuangan sedang dalam pengembangan tahap lanjut.</div></div>; }
