@@ -131,6 +131,79 @@ export function saveBookings(bookings) {
     localStorage.setItem(EB_BOOKINGS_KEY, JSON.stringify(bookings));
 }
 
+export const EB_PROMOS_KEY = 'eb_promos';
+export const EB_RESCHEDULES_KEY = 'eb_reschedules';
+
+export const DEFAULT_PROMOS = [
+    {
+        id: 1,
+        code: 'EBNEW2026',
+        name: 'Promo Pengunjung Baru',
+        discount: 15,
+        type: 'percentage',
+        minPurchase: 50000,
+        status: 'active',
+        expiry: '2026-12-31'
+    },
+    {
+        id: 2,
+        code: 'LIBURANSERU',
+        name: 'Diskon Liburan Sekolah',
+        discount: 25000,
+        type: 'fixed',
+        minPurchase: 200000,
+        status: 'active',
+        expiry: '2026-07-15'
+    }
+];
+
+export const DEFAULT_RESCHEDULES = [
+    {
+        id: 1,
+        bookingId: 'EB-TICK-982134',
+        customerName: 'Budi Santoso',
+        itemName: 'Tiket Masuk Reguler (Weekend)',
+        oldDate: '2026-03-20',
+        newDate: '2026-03-27',
+        reason: 'Ada acara keluarga mendadak',
+        status: 'pending',
+        requestDate: '2026-03-12T10:30:00Z'
+    },
+    {
+        id: 2,
+        bookingId: 'EB-RES-556123',
+        customerName: 'Siti Aminah',
+        itemName: 'Deluxe Mountain View',
+        oldDate: '2026-04-10',
+        newDate: '2026-04-15',
+        reason: 'Perubahan jadwal cuti kantor',
+        status: 'approved',
+        requestDate: '2026-03-11T14:20:00Z'
+    }
+];
+
+export function getPromos() {
+    try {
+        const stored = localStorage.getItem(EB_PROMOS_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_PROMOS;
+    } catch { return DEFAULT_PROMOS; }
+}
+
+export function savePromos(promos) {
+    localStorage.setItem(EB_PROMOS_KEY, JSON.stringify(promos));
+}
+
+export function getReschedules() {
+    try {
+        const stored = localStorage.getItem(EB_RESCHEDULES_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_RESCHEDULES;
+    } catch { return DEFAULT_RESCHEDULES; }
+}
+
+export function saveReschedules(reschedules) {
+    localStorage.setItem(EB_RESCHEDULES_KEY, JSON.stringify(reschedules));
+}
+
 export function formatRupiah(n) {
     return 'Rp ' + Number(n).toLocaleString('id-ID');
 }

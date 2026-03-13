@@ -1,49 +1,115 @@
-import { Outlet, NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Ticket, Building, BedDouble, Receipt, Settings, Gift, RefreshCcw, Search, BarChart } from 'lucide-react';
+import { useState } from 'react';
+import { Outlet, NavLink, Link } from 'react-router-dom';
+import {
+    LayoutDashboard, Ticket, Building, BedDouble, Receipt,
+    Settings, Gift, RefreshCcw, Search, BarChart3,
+    ChevronDown, Hotel, Maximize, ShoppingCart,
+    PieChart, Megaphone, Layout, ExternalLink
+} from 'lucide-react';
 import '../styles/admin.css';
 
 export default function AdminLayout() {
-    const menuItems = [
-        { path: '/admin', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
-        { path: '/admin/tickets', icon: <Ticket size={20} />, label: 'Data Tiket' },
-        { path: '/admin/scanner', icon: <Users size={20} />, label: 'Scanner & Pengunjung' },
-        { path: '/admin/rooms', icon: <Building size={20} />, label: 'Data Kamar' },
-        { path: '/admin/packages', icon: <Gift size={20} />, label: 'Paket Bundling' },
-        { path: '/admin/bookings', icon: <BedDouble size={20} />, label: 'Data Booking' },
-        { path: '/admin/promos', icon: <BarChart size={20} />, label: 'Promo & Diskon' },
-        { path: '/admin/reschedule', icon: <RefreshCcw size={20} />, label: 'Reschedule' },
-        { path: '/admin/finance', icon: <Receipt size={20} />, label: 'Keuangan' },
-        { path: '/admin/seo', icon: <Search size={20} />, label: 'SEO & Pengaturan' }
-    ];
+    const [openMenus, setOpenMenus] = useState({
+        booking: false,
+        ticket: false,
+        finance: false
+    });
+
+    const toggleMenu = (menu) => {
+        setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
+    };
 
     return (
         <div className="admin-layout">
-            <aside className="admin-sidebar" style={{ overflowY: 'auto' }}>
+            <aside className="admin-sidebar">
                 <div className="sidebar-header">
-                    <h2>EB Admin</h2>
+                    <div className="sidebar-logo">
+                        <img src="/images/logo.png" alt="Logo" className="h-8 brightness-0 invert" style={{ height: '32px' }} />
+                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'white' }}>Admin</h2>
+                    </div>
                 </div>
 
                 <nav className="sidebar-nav">
                     <ul>
-                        {menuItems.map((item) => (
-                            <li key={item.path}>
-                                <NavLink
-                                    to={item.path}
-                                    end={item.path === '/admin'}
-                                    className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
-                                >
-                                    <span className="nav-icon">{item.icon}</span>
-                                    <span className="nav-label">{item.label}</span>
-                                </NavLink>
-                            </li>
-                        ))}
+                        <li>
+                            <NavLink to="/admin" end className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <LayoutDashboard size={20} /> <span>Dashboard</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/stats" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <BarChart3 size={20} /> <span>Statistik</span>
+                            </NavLink>
+                        </li>
+
+                        {/* Booking Resort Group */}
+                        <li>
+                            <button onClick={() => toggleMenu('booking')} className="nav-group-btn">
+                                <div className="btn-content">
+                                    <Hotel size={20} /> <span>Booking Resort</span>
+                                </div>
+                                <ChevronDown size={14} className={`chevron ${openMenus.booking ? 'rotated' : ''}`} />
+                            </button>
+                            <div className={`submenu ${openMenus.booking ? 'open' : ''}`}>
+                                <NavLink to="/admin/rooms" className="submenu-item">Kelola Kamar</NavLink>
+                                <NavLink to="/admin/bookings" className="submenu-item">Daftar Pesanan</NavLink>
+                                <NavLink to="/admin/reschedule" className="submenu-item">Kelola Reschedule</NavLink>
+                            </div>
+                        </li>
+
+                        {/* Tiket Masuk Group */}
+                        <li>
+                            <button onClick={() => toggleMenu('ticket')} className="nav-group-btn">
+                                <div className="btn-content">
+                                    <Ticket size={20} /> <span>Tiket Masuk</span>
+                                </div>
+                                <ChevronDown size={14} className={`chevron ${openMenus.ticket ? 'rotated' : ''}`} />
+                            </button>
+                            <div className={`submenu ${openMenus.ticket ? 'open' : ''}`}>
+                                <NavLink to="/admin/packages" className="submenu-item">Kelola Paket Tiket</NavLink>
+                                <NavLink to="/admin/tickets" className="submenu-item">Daftar Pembelian</NavLink>
+                                <NavLink to="/admin/scanner" className="submenu-item">Scan Tiket</NavLink>
+                            </div>
+                        </li>
+
+                        {/* Keuangan Group */}
+                        <li>
+                            <button onClick={() => toggleMenu('finance')} className="nav-group-btn">
+                                <div className="btn-content">
+                                    <Receipt size={20} /> <span>Laporan Keuangan</span>
+                                </div>
+                                <ChevronDown size={14} className={`chevron ${openMenus.finance ? 'rotated' : ''}`} />
+                            </button>
+                            <div className={`submenu ${openMenus.finance ? 'open' : ''}`}>
+                                <NavLink to="/admin/finance" end className="submenu-item">Dashboard Keuangan</NavLink>
+                                <NavLink to="/admin/finance/tickets" className="submenu-item">Pemasukan Tiket</NavLink>
+                                <NavLink to="/admin/finance/resort" className="submenu-item">Pemasukan Resort</NavLink>
+                            </div>
+                        </li>
+
+                        <li>
+                            <NavLink to="/admin/content" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <Layout size={20} /> <span>Konten CMS</span>
+                            </NavLink>
+                        </li>
+
+                        <li>
+                            <NavLink to="/admin/promos" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <Megaphone size={20} /> <span>Promo</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/admin/seo" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                                <Search size={20} /> <span>Setting SEO</span>
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
 
-                <div className="sidebar-footer" style={{ marginTop: 'auto' }}>
-                    <NavLink to="/" className="nav-item back-guest">
-                        <span className="nav-label" style={{ textAlign: 'center', width: '100%' }}>Pindah Mode Guest</span>
-                    </NavLink>
+                <div className="sidebar-footer">
+                    <Link to="/" className="view-site-link">
+                        <ExternalLink size={18} /> <span>Lihat Website</span>
+                    </Link>
                 </div>
             </aside>
 
