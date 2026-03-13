@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Search, Filter, Ticket, Calendar, MoreHorizontal, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getPromos, savePromos, formatRupiah } from '../../utils/data';
 import toast from 'react-hot-toast';
@@ -29,61 +29,101 @@ export default function Promos() {
     };
 
     return (
-        <div className="animate-fade-in">
+        <div className="animate-fade-in space-y-8">
             <div className="admin-page-header">
                 <div>
                     <h1>Promo & Diskon</h1>
-                    <p className="text-muted mt-1">Kelola kode promo dan diskon untuk tiket & resort.</p>
+                    <p>Kelola kampanye pemasaran, kode kupon, dan strategi diskon operasional.</p>
                 </div>
-                <button className="btn-primary" onClick={() => navigate('/admin/promos/add')}>
-                    <Plus size={18} /> Tambah Promo Baru
+                <button className="btn-primary py-2.5 shadow-lg shadow-admin-primary/20" onClick={() => navigate('/admin/promos/add')}>
+                    <Plus size={18} /> Buat Promo Baru
                 </button>
             </div>
 
             <div className="admin-table-container">
+                <div className="table-header-actions">
+                    <div className="topbar-search !w-full md:!w-96">
+                        <Search className="search-icon" size={16} />
+                        <input type="text" placeholder="Cari promo atau kode..." />
+                    </div>
+                </div>
+
                 <table className="admin-table">
                     <thead>
                         <tr>
-                            <th>Kode & Nama Promo</th>
-                            <th>Diskon</th>
-                            <th>Min. Belanja</th>
-                            <th>Berakhir</th>
+                            <th>Identitas Promo</th>
+                            <th>Value Diskon</th>
+                            <th>Min. Transaksi</th>
+                            <th>Masa Berlaku</th>
                             <th>Status</th>
-                            <th>Aksi</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {promos.map(promo => (
                             <tr key={promo.id}>
-                                <td style={{ fontWeight: 500 }}>
-                                    <div className="font-mono text-primary font-bold">{promo.code}</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{promo.name}</div>
-                                </td>
-                                <td style={{ fontWeight: 600 }}>
-                                    {promo.type === 'percentage' ? `${promo.discount}%` : formatRupiah(promo.discount)}
-                                </td>
-                                <td>{formatRupiah(promo.minPurchase)}</td>
-                                <td>{new Date(promo.expiry).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                                 <td>
-                                    <span
-                                        className={`badge ${promo.status === 'active' ? 'active' : 'inactive'}`}
-                                        style={{ cursor: 'pointer' }}
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-2xl bg-admin-primary/5 flex items-center justify-center text-admin-primary">
+                                            <Ticket size={24} />
+                                        </div>
+                                        <div className="flex flex-col gap-0.5">
+                                            <span className="font-black text-admin-primary font-mono text-sm tracking-widest uppercase">{promo.code}</span>
+                                            <span className="text-[11px] font-bold text-admin-text-muted uppercase tracking-tight">{promo.name}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="font-black text-admin-text-main text-base">
+                                        {promo.type === 'percentage' ? (
+                                            <span className="flex items-center gap-1">
+                                                {promo.discount}% <span className="text-[10px] text-admin-text-muted font-bold uppercase tracking-widest">Off</span>
+                                            </span>
+                                        ) : formatRupiah(promo.discount)}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span className="text-xs font-bold text-admin-text-muted">{formatRupiah(promo.minPurchase)}</span>
+                                </td>
+                                <td>
+                                    <div className="flex items-center gap-2 text-xs font-bold text-admin-text-muted">
+                                        <Calendar size={14} className="text-admin-text-light" />
+                                        {new Date(promo.expiry).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                    </div>
+                                </td>
+                                <td>
+                                    <button 
                                         onClick={() => toggleStatus(promo.id)}
+                                        className={`badge-status group cursor-pointer transition-all ${
+                                            promo.status === 'active' 
+                                            ? 'bg-success/5 text-success border-success/10 hover:bg-success/10' 
+                                            : 'bg-danger/5 text-danger border-danger/10 hover:bg-danger/10'
+                                        }`}
                                     >
-                                        {promo.status === 'active' ? 'Aktif' : 'Non-aktif'}
-                                    </span>
+                                        <div className={`w-1.5 h-1.5 rounded-full mr-2 ${promo.status === 'active' ? 'bg-success animate-pulse' : 'bg-danger'}`} />
+                                        {promo.status === 'active' ? 'Active' : 'Paused'}
+                                    </button>
                                 </td>
                                 <td>
-                                    <div className="action-buttons">
-                                        <button className="btn-icon" title="Edit" onClick={() => navigate(`/admin/promos/edit/${promo.id}`)}><Edit size={18} /></button>
-                                        <button className="btn-icon" title="Hapus" onClick={() => handleDelete(promo.id)}><Trash2 size={18} color="#EF4444" /></button>
+                                    <div className="action-buttons justify-end">
+                                        <button className="btn-icon" title="Edit" onClick={() => navigate(`/admin/promos/edit/${promo.id}`)}>
+                                            <Edit size={18} />
+                                        </button>
+                                        <button className="btn-icon !text-danger hover:!bg-danger/10" title="Hapus" onClick={() => handleDelete(promo.id)}>
+                                            <Trash2 size={18} />
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
                         ))}
                         {promos.length === 0 && (
                             <tr>
-                                <td colSpan="6" className="text-center text-muted" style={{ padding: '2rem' }}>Tidak ada data promo.</td>
+                                <td colSpan="6" className="py-24 text-center">
+                                    <div className="mx-auto w-20 h-20 rounded-full bg-admin-bg flex items-center justify-center mb-6 text-admin-text-light opacity-30">
+                                        <Ticket size={40} />
+                                    </div>
+                                    <p className="text-admin-text-muted font-black uppercase tracking-[0.2em] text-xs">Belum ada promo aktif</p>
+                                </td>
                             </tr>
                         )}
                     </tbody>

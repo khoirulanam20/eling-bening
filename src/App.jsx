@@ -19,6 +19,7 @@ import Payment from './pages/guest/Payment';
 import BookingDetails from './pages/guest/BookingDetails';
 import Login from './pages/guest/Login';
 import Register from './pages/guest/Register';
+import Events from './pages/guest/Events';
 
 import Dashboard from './pages/admin/Dashboard';
 import AdminRooms from './pages/admin/Rooms';
@@ -28,6 +29,9 @@ import AdminTickets from './pages/admin/Tickets';
 import AdminAddTicket from './pages/admin/tickets/AddTicket';
 import AdminEditTicket from './pages/admin/tickets/EditTicket';
 import AdminTicketOrders from './pages/admin/tickets/TicketOrders';
+import AdminEvents from './pages/admin/Events';
+import AdminAddEvent from './pages/admin/events/AddEvent';
+import AdminEditEvent from './pages/admin/events/EditEvent';
 // Admin Stubs
 import AdminBookings from './pages/admin/Bookings';
 import AdminPackages from './pages/admin/Packages';
@@ -76,6 +80,7 @@ function App() {
             <Route path="contact" element={<Contact />} />
             <Route path="rooms" element={<Rooms />} />
             <Route path="rooms/:id" element={<RoomDetails />} />
+            <Route path="events" element={<Events />} />
 
             {/* Protected Guest Routes */}
             <Route path="ticketing" element={<ProtectedRoute><Ticketing /></ProtectedRoute>} />
@@ -96,6 +101,9 @@ function App() {
             <Route path="tickets/add" element={<AdminAddTicket />} />
             <Route path="tickets/edit/:id" element={<AdminEditTicket />} />
             <Route path="tickets/orders" element={<AdminTicketOrders />} />
+            <Route path="events" element={<AdminEvents />} />
+            <Route path="events/add" element={<AdminAddEvent />} />
+            <Route path="events/edit/:id" element={<AdminEditEvent />} />
             <Route path="bookings" element={<AdminBookings />} />
             <Route path="packages" element={<AdminPackages />} />
             <Route path="promos" element={<AdminPromos />} />

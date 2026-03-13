@@ -36,16 +36,21 @@ export default function RoomDetails() {
             {/* Image Gallery Grid */}
             <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-auto md:h-[400px] mb-10 overflow-hidden rounded-3xl">
                 <div className="md:col-span-2 md:row-span-2">
-                    <img src={room.image || "/images/resort-room.png"} alt="Main Room" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer" />
+                    <img src={(Array.isArray(room.images) && room.images.length > 0 ? room.images[0] : room.image) || "/images/resort-room.png"} alt="Main Room" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer" />
                 </div>
                 <div className="md:col-span-1 md:row-span-1 hidden md:block">
-                    <img src={room.image || "/images/resort-room.png"} alt="Room Detail 1" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer brightness-110" />
+                    <img src={(Array.isArray(room.images) && room.images.length > 1 ? room.images[1] : (room.image || "/images/resort-room.png"))} alt="Room Detail 1" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer brightness-110" />
                 </div>
                 <div className="md:col-span-1 md:row-span-1 hidden md:block">
-                    <img src={room.image || "/images/resort-room.png"} alt="Room Detail 2" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer brightness-90" />
+                    <img src={(Array.isArray(room.images) && room.images.length > 2 ? room.images[2] : (room.image || "/images/resort-room.png"))} alt="Room Detail 2" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer brightness-90" />
                 </div>
                 <div className="md:col-span-2 md:row-span-1 hidden md:block relative">
-                    <img src={room.image || "/images/resort-room.png"} alt="Room Detail 3" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer saturate-50" />
+                    <img src={(Array.isArray(room.images) && room.images.length > 3 ? room.images[3] : (room.image || "/images/resort-room.png"))} alt="Room Detail 3" className="w-full h-full object-cover hover:scale-105 transition duration-700 cursor-pointer saturate-50" />
+                    {Array.isArray(room.images) && room.images.length > 4 && (
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center pointer-events-none">
+                            <span className="text-white font-bold text-2xl">+{room.images.length - 4}</span>
+                        </div>
+                    )}
                     <button className="absolute bottom-4 right-4 bg-white text-gray-900 px-6 py-2 rounded-xl font-bold text-sm shadow-lg hover:bg-gray-50 flex items-center gap-2">
                         <i className="fas fa-th"></i> Lihat Semua Foto
                     </button>

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { CircleDollarSign, TrendingUp, TrendingDown, FileText, ArrowRight, Wallet, Building, Ticket } from 'lucide-react';
+import { CircleDollarSign, TrendingUp, TrendingDown, FileText, ArrowRight, Wallet, Building, Ticket, Download, PieChart, Landmark, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { formatRupiah, getBookings, getExpenses } from '../../utils/data';
 import { useState, useEffect } from 'react';
 
@@ -21,83 +21,129 @@ export default function Finance() {
             desc: 'Ringkasan arus kas masuk dan keluar secara keseluruhan.',
             icon: <CircleDollarSign size={24} />,
             link: '/admin/finance/recap',
-            color: 'var(--primary)'
+            color: 'var(--primary)',
+            tag: 'Utama'
         },
         {
             title: 'Pengeluaran Operasional',
             desc: 'Catat dan kelola biaya pemeliharaan, gaji, dan lainnya.',
             icon: <TrendingDown size={24} />,
             link: '/admin/finance/expenses',
-            color: '#EF4444'
+            color: '#EF4444',
+            tag: 'Cost'
         },
         {
-            title: 'Laporan Pendapatan Tiket',
+            title: 'Pendapatan Tiket',
             desc: 'Detail transaksi harian dari penjualan tiket masuk.',
             icon: <Ticket size={24} />,
             link: '/admin/finance/tickets',
-            color: '#F59E0B'
+            color: '#F59E0B',
+            tag: 'Revenue'
         },
         {
-            title: 'Laporan Pendapatan Resort',
+            title: 'Pendapatan Resort',
             desc: 'Analisis pendapatan dari pemesanan kamar dan villa.',
             icon: <Building size={24} />,
             link: '/admin/finance/resort',
-            color: '#3B82F6'
+            color: '#3B82F6',
+            tag: 'Revenue'
         }
     ];
 
     return (
-        <div className="animate-fade-in font-sans">
+        <div className="animate-fade-in space-y-10">
             <div className="admin-page-header">
                 <div>
                     <h1>Pusat Keuangan</h1>
-                    <p className="text-muted mt-1">Sistem informasi akuntansi dan pelaporan laba rugi.</p>
+                    <p>Sistem informasi akuntansi, pelaporan laba rugi, dan rekonsiliasi kas.</p>
+                </div>
+                <div className="flex gap-2">
+                    <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-admin-border text-admin-text-main font-black text-xs uppercase tracking-widest hover:bg-admin-bg transition-all">
+                        <Download size={16} className="text-admin-primary" /> Download Audit
+                    </button>
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
-                <div className="admin-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '2rem' }}>
-                    <div>
-                        <p style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>TOTAL SALDO (PROFIT)</p>
-                        <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--primary)' }}>{formatRupiah(stats.balance)}</h2>
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                            <span style={{ fontSize: '0.75rem', color: '#10B981', fontWeight: 600 }}>In: {formatRupiah(stats.income)}</span>
-                            <span style={{ fontSize: '0.75rem', color: '#EF4444', fontWeight: 600 }}>Out: {formatRupiah(stats.expense)}</span>
+            {/* Financial Overview Cards */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 stat-card !p-10 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-admin-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-700" />
+                    <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-admin-text-muted mb-3 flex items-center gap-2">
+                                <Landmark size={12} className="text-admin-primary" /> Net Profit Margin (Maret)
+                            </p>
+                            <h2 className="text-5xl font-black text-admin-text-main tracking-tight mb-6">
+                                {formatRupiah(stats.balance)}
+                            </h2>
+                            <div className="flex flex-wrap gap-4">
+                                <div className="px-5 py-3 rounded-2xl bg-success/5 border border-success/10">
+                                    <p className="text-[9px] font-black text-success uppercase tracking-widest mb-1 flex items-center gap-1">
+                                        <ArrowUpRight size={10} /> Total Income
+                                    </p>
+                                    <p className="text-lg font-black text-admin-text-main">{formatRupiah(stats.income)}</p>
+                                </div>
+                                <div className="px-5 py-3 rounded-2xl bg-danger/5 border border-danger/10">
+                                    <p className="text-[9px] font-black text-danger uppercase tracking-widest mb-1 flex items-center gap-1">
+                                        <ArrowDownRight size={10} /> Total Expense
+                                    </p>
+                                    <p className="text-lg font-black text-admin-text-main">{formatRupiah(stats.expense)}</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div style={{ padding: '1rem', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', borderRadius: '1rem' }}>
-                        <Wallet size={32} />
+                        <div className="w-16 h-16 md:w-24 md:h-24 rounded-[2rem] bg-admin-primary text-white flex items-center justify-center shadow-2xl shadow-admin-primary/40 rotate-12 group-hover:rotate-0 transition-all duration-500">
+                            <Wallet size={48} className="md:size-48" />
+                        </div>
                     </div>
                 </div>
 
-                <div className="admin-card" style={{ padding: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-                    <div>
-                        <h3 style={{ fontWeight: 700, marginBottom: '0.5rem' }}>Siap untuk Laporan Bulanan?</h3>
-                        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Export semua data keuangan ke format Excel atau PDF untuk audit.</p>
-                        <button className="btn-primary" style={{ width: '100%' }}>Export Laporan Lengkap</button>
+                <div className="stat-card !p-10 flex flex-col justify-center items-center text-center space-y-6 bg-admin-text-main text-white border-none shadow-2xl shadow-slate-900/20">
+                    <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-md">
+                        <FileText size={32} className="text-admin-primary" />
                     </div>
+                    <div>
+                        <h3 className="text-xl font-black mb-2">Generate Report?</h3>
+                        <p className="text-xs text-white/60 font-medium leading-relaxed">Siapkan laporan konsolidasi untuk periode Maret 2024.</p>
+                    </div>
+                    <button className="btn-primary !bg-white !text-admin-text-main w-full py-3.5 justify-center shadow-xl shadow-white/5 hover:scale-105 transition-all">
+                        <PieChart size={18} /> Export Full Analysis
+                    </button>
                 </div>
             </div>
 
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: 'var(--text-main)' }}>Modul Keuangan</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-                {menuItems.map((item, idx) => (
-                    <div
-                        key={idx}
-                        className="admin-card hover-glow"
-                        style={{ padding: '1.5rem', cursor: 'pointer', transition: 'all 0.3s ease', border: '1px solid var(--border-color)' }}
-                        onClick={() => navigate(item.link)}
-                    >
-                        <div style={{ width: '50px', height: '50px', borderRadius: 'var(--radius-md)', backgroundColor: `${item.color}15`, color: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                            {item.icon}
+            {/* Sub-Modules Section */}
+            <div>
+                <div className="flex items-center gap-3 mb-8">
+                    <div className="h-8 w-1.5 bg-admin-primary rounded-full" />
+                    <h3 className="text-xl font-black text-admin-text-main uppercase tracking-widest">Financial Modules</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {menuItems.map((item, idx) => (
+                        <div
+                            key={idx}
+                            className="bg-white p-8 rounded-[2.5rem] border border-admin-border hover:border-admin-primary transition-all duration-500 hover:shadow-2xl hover:shadow-admin-primary/5 cursor-pointer group flex flex-col items-start"
+                            onClick={() => navigate(item.link)}
+                        >
+                            <div className="flex justify-between items-start w-full mb-8">
+                                <div className="p-4 rounded-2xl transition-all duration-500" 
+                                     style={{ backgroundColor: `${item.color}10`, color: item.color }}>
+                                    {item.icon}
+                                </div>
+                                <span className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full`}
+                                      style={{ backgroundColor: `${item.color}08`, color: item.color, border: `1px solid ${item.color}15` }}>
+                                    {item.tag}
+                                </span>
+                            </div>
+                            <h4 className="text-lg font-black text-admin-text-main mb-3 group-hover:text-admin-primary transition-colors">{item.title}</h4>
+                            <p className="text-xs text-admin-text-muted font-bold leading-relaxed mb-8 flex-1">{item.desc}</p>
+                            <div className="w-full h-px bg-admin-border mb-6 group-hover:bg-admin-primary/20 transition-colors" />
+                            <div className="flex items-center gap-3 font-black text-[10px] text-admin-primary uppercase tracking-widest group-hover:gap-5 transition-all">
+                                Open Module <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                            </div>
                         </div>
-                        <h4 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.5rem' }}>{item.title}</h4>
-                        <p style={{ fontSize: '0.875rem', color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>{item.desc}</p>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700, color: 'var(--primary)', fontSize: '0.875rem' }}>
-                            Buka Modul <ArrowRight size={16} />
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, User, UserCircle } from 'lucide-react';
+import { Menu, X, User, UserCircle, MapPin, Phone, Mail } from 'lucide-react';
 import { useAuth } from '../utils/AuthContext';
 import '../styles/guest.css';
 
@@ -62,7 +62,7 @@ export default function GuestLayout() {
                     <Link to="/" className="hover:text-eling-red transition">Home</Link>
                     <Link to="/about" className="hover:text-eling-red transition">Tentang Kami</Link>
                     <Link to="/rooms" className="hover:text-eling-red transition">Resort</Link>
-                    <Link to="/ticketing" className="hover:text-eling-red transition">Tiket</Link>
+                    <Link to="/events" className="hover:text-eling-red transition">Event</Link>
                     <Link to="/gallery" className="hover:text-eling-red transition">Galeri</Link>
                     <Link to="/facilities" className="hover:text-eling-red transition">Fasilitas</Link>
                     <Link to="/contact" className="hover:text-eling-red transition">Kontak</Link>
@@ -107,48 +107,62 @@ export default function GuestLayout() {
             {/* Footer */}
             <footer className="bg-eling-green text-white py-20 px-6 lg:px-24">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 max-w-7xl mx-auto">
+                    {/* Column 1: Logo + Description */}
                     <div className="space-y-6">
                         <div className="flex items-center gap-2">
                             <img src="/images/logo.png" alt="Logo" className="h-10 brightness-0 invert text-white" />
                             <span className="text-2xl font-serif font-bold tracking-wider">Eling Bening</span>
                         </div>
-                        <p className="text-green-100 text-sm leading-relaxed">Destinasi wisata alam terbaik di Ambarawa. Rasakan harmoni keindahan alam dan kemewahan dalam satu tempat.</p>
+                        <p className="text-green-100 text-sm leading-relaxed">
+                            Destinasi wisata alam terbaik di Ambarawa. Rasakan harmoni keindahan alam dan kemewahan dalam satu tempat.
+                        </p>
+                    </div>
+
+                    {/* Column 2: Quick Links (Menu) */}
+                    <div>
+                        <h4 className="font-bold text-xl mb-8">Menu Pintasan</h4>
+                        <ul className="space-y-4 text-green-100 text-sm">
+                            <li><Link to="/" className="hover:text-white transition underline-offset-4 hover:underline">Beranda</Link></li>
+                            <li><Link to="/about" className="hover:text-white transition underline-offset-4 hover:underline">Tentang Kami</Link></li>
+                            <li><Link to="/facilities" className="hover:text-white transition underline-offset-4 hover:underline">Fasilitas</Link></li>
+                            <li><Link to="/gallery" className="hover:text-white transition underline-offset-4 hover:underline">Galeri</Link></li>
+                            <li><Link to="/events" className="hover:text-white transition underline-offset-4 hover:underline">Event</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Column 3: Contact Info */}
+                    <div>
+                        <h4 className="font-bold text-xl mb-8">Hubungi Kami</h4>
+                        <ul className="space-y-4 text-green-100 text-sm">
+                            <li className="flex items-start gap-3">
+                                <MapPin size={18} className="flex-shrink-0" />
+                                <span>Jl. Sarjono, Bauman, Ambarawa, Kabupaten Semarang, Jawa Tengah.</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                                <Phone size={18} className="flex-shrink-0" />
+                                <span>+62 811-2345-6789</span>
+                            </li>
+                            <li className="flex items-center gap-3">
+                                <Mail size={18} className="flex-shrink-0" />
+                                <span>info@elingbening.com</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Column 4: Social Media */}
+                    <div>
+                        <h4 className="font-bold text-xl mb-8">Media Sosial</h4>
+                        <p className="text-green-100 text-sm mb-6">Ikuti kami untuk informasi terbaru.</p>
                         <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
-                                <i className="fab fa-facebook-f"></i>
-                            </a>
                             <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
                                 <i className="fab fa-instagram"></i>
                             </a>
                             <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+                                <i className="fab fa-tiktok"></i>
+                            </a>
+                            <a href="#" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
                                 <i className="fab fa-youtube"></i>
                             </a>
-                        </div>
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-xl mb-8">Pintasan</h4>
-                        <ul className="space-y-4 text-green-100 text-sm">
-                            <li><Link to="/" className="hover:text-white transition underline-offset-4 hover:underline">Home</Link></li>
-                            <li><Link to="/about" className="hover:text-white transition underline-offset-4 hover:underline">Tentang Kami</Link></li>
-                            <li><Link to="/gallery" className="hover:text-white transition underline-offset-4 hover:underline">Galeri</Link></li>
-                            <li><Link to="/facilities" className="hover:text-white transition underline-offset-4 hover:underline">Fasilitas</Link></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-xl mb-8">Layanan</h4>
-                        <ul className="space-y-4 text-green-100 text-sm">
-                            <li><Link to="/ticketing" className="hover:text-white transition underline-offset-4 hover:underline">Tiket Online</Link></li>
-                            <li><Link to="/rooms" className="hover:text-white transition underline-offset-4 hover:underline">Booking Resort</Link></li>
-                            <li><Link to="/profile" className="hover:text-white transition underline-offset-4 hover:underline">Riwayat Pesanan</Link></li>
-                            <li><Link to="/contact" className="hover:text-white transition underline-offset-4 hover:underline">Hubungi Kami</Link></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 className="font-bold text-xl mb-8">Newsletter</h4>
-                        <p className="text-green-100 text-sm mb-6">Dapatkan info promo dan event terbaru langsung di email Anda.</p>
-                        <div className="flex gap-2">
-                            <input type="email" className="bg-white/10 border-white/20 border rounded-lg px-4 py-2 w-full text-white placeholder-green-200 focus:outline-none" placeholder="Email Anda" />
-                            <button className="bg-white text-eling-green font-bold px-4 py-2 rounded-lg hover:bg-green-100 transition">Gabung</button>
                         </div>
                     </div>
                 </div>

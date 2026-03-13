@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Users, Ticket, Building, CircleDollarSign, TrendingUp, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Users, Ticket, Building, CircleDollarSign, TrendingUp, Download, ArrowUpRight, ArrowDownRight, MoreVertical, Wallet, Calendar, Bell, Activity } from 'lucide-react';
 import { getTickets, getRooms, getBookings, formatRupiah } from '../../utils/data';
 import toast from 'react-hot-toast';
 
@@ -18,7 +19,6 @@ export default function Dashboard() {
         const allBookings = getBookings();
         setBookings(allBookings);
 
-        // Calculate today's revenue (mock logic based on latest bookings)
         const today = new Date().toISOString().split('T')[0];
         const todayRev = allBookings
             .filter(b => b.date.startsWith(today) && b.status === 'success')
@@ -28,7 +28,7 @@ export default function Dashboard() {
             activeTickets: tickets.filter(t => t.status === 'active').length,
             totalRooms: rooms.length,
             availableRooms: rooms.filter(r => r.stock > 0).length,
-            todayRevenue: todayRev || 15250000 // Fallback to dummy if none today
+            todayRevenue: todayRev || 15250000
         });
     }, []);
 
@@ -59,143 +59,185 @@ export default function Dashboard() {
     };
 
     const statCards = [
-        { title: 'Pendapatan Hari Ini', value: formatRupiah(stats.todayRevenue), icon: <CircleDollarSign size={24} />, color: '#10B981', trend: '+12.5%' },
-        { title: 'Kamar Tersedia', value: `${stats.availableRooms} / ${stats.totalRooms}`, icon: <Building size={24} />, color: '#3B82F6', trend: 'Sedang' },
-        { title: 'Tiket Aktif / Jenis', value: stats.activeTickets, icon: <Ticket size={24} />, color: '#F59E0B', trend: 'Normal' },
-        { title: 'Pengunjung (Est)', value: '1,245', icon: <Users size={24} />, color: '#8B5CF6', trend: '+5.2%' }
+        { title: 'Today Revenue', value: formatRupiah(stats.todayRevenue), icon: Wallet, color: '#C62828', sub: '+12.5%', trend: 'up' },
+        { title: 'Kamar Tersedia', value: `${stats.availableRooms}/${stats.totalRooms}`, icon: Building, color: '#2E7D32', sub: 'Optimal', trend: 'up' },
+        { title: 'Tiket Aktif', value: stats.activeTickets, icon: Ticket, color: '#F59E0B', sub: '-2.4%', trend: 'down' },
+        { title: 'Pengunjung', value: '1,245', icon: Users, color: '#3B82F6', sub: '+5.2%', trend: 'up' }
     ];
 
-    // Weekly data mock for SVG chart
     const weeklyData = [
-        { day: 'Sen', val: 450 },
-        { day: 'Sel', val: 380 },
-        { day: 'Rab', val: 420 },
-        { day: 'Kam', val: 390 },
-        { day: 'Jum', val: 580 },
-        { day: 'Sab', val: 850 },
-        { day: 'Min', val: 920 }
+        { day: 'Sen', val: 450 }, { day: 'Sel', val: 380 }, { day: 'Rab', val: 420 },
+        { day: 'Kam', val: 390 }, { day: 'Jum', val: 580 }, { day: 'Sab', val: 850 }, { day: 'Min', val: 920 }
     ];
 
     const maxVal = Math.max(...weeklyData.map(d => d.val));
-    const chartHeight = 220;
+    const chartHeight = 180;
     const chartWidth = 500;
 
     return (
-        <div className="animate-fade-in">
+        <div className="animate-fade-in space-y-10">
             <div className="admin-page-header">
                 <div>
                     <h1>Dashboard Overview</h1>
-                    <p className="text-muted mt-1">Pantau performa operasional harian Anda.</p>
+                    <p>Selamat datang kembali, Administrator. Berikut ringkasan operasional hari ini.</p>
                 </div>
-                <button className="btn-primary" onClick={downloadReport}>
-                    <Download size={18} /> Download Laporan (CSV)
-                </button>
+                <div className="flex gap-3">
+                    <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-admin-border text-admin-text-main font-black text-xs uppercase tracking-widest hover:bg-admin-bg transition-all">
+                        <Calendar size={16} className="text-admin-primary" /> Maret 2024
+                    </button>
+                    <button className="btn-primary py-2.5 shadow-lg shadow-admin-primary/20" onClick={downloadReport}>
+                        <Download size={18} /> Export Data
+                    </button>
+                </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+            {/* Stat Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {statCards.map((card, idx) => (
-                    <div key={idx} className="admin-card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', padding: '1.5rem' }}>
-                        <div style={{ padding: '1rem', borderRadius: 'var(--radius-md)', backgroundColor: `${card.color}15`, color: card.color }}>
-                            {card.icon}
+                    <div key={idx} className="stat-card group hover:scale-[1.02] transition-all duration-300">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="p-3.5 rounded-2xl bg-white shadow-sm border border-admin-border group-hover:bg-admin-primary group-hover:text-white transition-all duration-300">
+                                <card.icon size={20} strokeWidth={2.5} />
+                            </div>
+                            <div className={`flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-full ${card.trend === 'up' ? 'text-success bg-success/10' : 'text-danger bg-danger/10'}`}>
+                                {card.trend === 'up' ? <ArrowUpRight size={10} /> : <ArrowDownRight size={10} />}
+                                {card.sub}
+                            </div>
                         </div>
-                        <div>
-                            <div style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '0.25rem', fontWeight: 500 }}>{card.title}</div>
-                            <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--text-main)', marginBottom: '0.25rem' }}>{card.value}</div>
-                            <div style={{ fontSize: '0.75rem', color: '#10B981', fontWeight: 600 }}>{card.trend} vs Kemarin</div>
-                        </div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-admin-text-muted mb-1.5">{card.title}</p>
+                        <h3 className="text-3xl font-black text-admin-text-main tracking-tight">{card.value}</h3>
                     </div>
                 ))}
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
-                <div className="admin-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: 600 }}>Grafik Kunjungan Mingguan</h3>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                                <span style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: 'var(--primary)' }}></span> Pengunjung
-                            </span>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Main Analytics Chart */}
+                <div className="lg:col-span-2 admin-table-container !p-10 space-y-10">
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <h3 className="text-xl font-black text-admin-text-main uppercase tracking-widest">Traffic Visitors</h3>
+                            <p className="text-xs text-admin-text-muted font-bold">Total pengunjung kawasan dalam 7 hari terakhir</p>
+                        </div>
+                        <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 rounded-full bg-admin-primary shadow-lg shadow-admin-primary/40" />
+                                <span className="text-[10px] font-black text-admin-text-muted uppercase">Visitors</span>
+                            </div>
+                            <button className="p-2.5 hover:bg-admin-bg rounded-xl text-admin-text-muted transition-colors">
+                                <MoreVertical size={20} />
+                            </button>
                         </div>
                     </div>
 
-                    <div style={{ flex: 1, position: 'relative', minHeight: '250px' }}>
-                        <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} style={{ width: '100%', height: '100%', overflow: 'visible' }}>
-                            {/* Grid Lines */}
+                    <div className="relative h-64 w-full translate-x-[-10px]">
+                        <svg viewBox={`0 0 ${chartWidth} ${chartHeight + 20}`} className="w-full h-full overflow-visible">
+                            <defs>
+                                <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stopColor="var(--admin-primary)" stopOpacity="0.15" />
+                                    <stop offset="100%" stopColor="var(--admin-primary)" stopOpacity="0" />
+                                </linearGradient>
+                            </defs>
+                            
+                            {/* Detailed Grid Lines */}
                             {[0, 0.25, 0.5, 0.75, 1].map((p, i) => (
                                 <line
                                     key={i}
                                     x1="0" y1={chartHeight * (1 - p)}
                                     x2={chartWidth} y2={chartHeight * (1 - p)}
-                                    stroke="#E2E8F0" strokeDasharray="4"
+                                    stroke="var(--admin-border)" strokeWidth="0.5" strokeDasharray="6"
                                 />
                             ))}
 
-                            {/* Area Path */}
+                            {/* Smooth Area */}
                             <path
                                 d={`M 0 ${chartHeight} ${weeklyData.map((d, i) =>
                                     `L ${(i * chartWidth) / (weeklyData.length - 1)} ${chartHeight - (d.val / maxVal) * chartHeight}`
                                 ).join(' ')} L ${chartWidth} ${chartHeight} Z`}
-                                fill="var(--primary-light)"
-                                fillOpacity="0.3"
+                                fill="url(#gradient)"
                             />
 
-                            {/* Line Path */}
+                            {/* Smooth Line */}
                             <path
                                 d={`M 0 ${chartHeight - (weeklyData[0].val / maxVal) * chartHeight} ${weeklyData.map((d, i) =>
                                     `L ${(i * chartWidth) / (weeklyData.length - 1)} ${chartHeight - (d.val / maxVal) * chartHeight}`
                                 ).join(' ')}`}
-                                fill="none"
-                                stroke="var(--primary)"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
+                                fill="none" stroke="var(--admin-primary)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"
                             />
 
-                            {/* Area Points */}
+                            {/* Interaction Points */}
                             {weeklyData.map((d, i) => (
-                                <circle
-                                    key={i}
-                                    cx={(i * chartWidth) / (weeklyData.length - 1)}
-                                    cy={chartHeight - (d.val / maxVal) * chartHeight}
-                                    r="4" fill="white" stroke="var(--primary)" strokeWidth="2"
-                                />
-                            ))}
-
-                            {/* X Labels */}
-                            {weeklyData.map((d, i) => (
-                                <text
-                                    key={i}
-                                    x={(i * chartWidth) / (weeklyData.length - 1)}
-                                    y={chartHeight + 25}
-                                    textAnchor="middle"
-                                    style={{ fontSize: 12, fill: '#64748B', fontWeight: 500 }}
-                                >
-                                    {d.day}
-                                </text>
+                                <g key={i} className="group/dot">
+                                    <circle
+                                        cx={(i * chartWidth) / (weeklyData.length - 1)}
+                                        cy={chartHeight - (d.val / maxVal) * chartHeight}
+                                        r="6" fill="white" stroke="var(--admin-primary)" strokeWidth="3"
+                                        className="cursor-pointer hover:r-8 transition-all"
+                                    />
+                                    <text
+                                        x={(i * chartWidth) / (weeklyData.length - 1)}
+                                        y={chartHeight + 35}
+                                        className="text-[10px] font-black fill-admin-text-muted uppercase tracking-widest"
+                                        textAnchor="middle"
+                                    >
+                                        {d.day}
+                                    </text>
+                                </g>
                             ))}
                         </svg>
                     </div>
                 </div>
 
-                <div className="admin-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                    <h3 style={{ fontSize: '1.125rem', fontWeight: 600, marginBottom: '1.5rem' }}>Aktivitas Terbaru</h3>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                        {bookings.slice(0, 5).map((b, i) => (
-                            <div key={i} style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', borderBottom: i < 4 ? '1px solid var(--border-color)' : 'none', paddingBottom: i < 4 ? '1rem' : '0' }}>
-                                <div style={{ width: '40px', height: '40px', borderRadius: 'var(--radius-sm)', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <TrendingUp size={18} />
+                {/* Refined Activity Feed */}
+                <div className="admin-table-container !p-8 flex flex-col">
+                    <div className="flex justify-between items-center mb-10">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-2xl bg-admin-primary/10 text-admin-primary flex items-center justify-center">
+                                <Activity size={20} />
+                            </div>
+                            <h3 className="text-xl font-black text-admin-text-main uppercase tracking-widest">Feeds</h3>
+                        </div>
+                        <button className="p-2 hover:bg-admin-bg rounded-lg text-admin-text-muted">
+                            <Bell size={18} />
+                        </button>
+                    </div>
+                    
+                    <div className="flex-1 space-y-8 overflow-y-auto pr-2 custom-scrollbar">
+                        {bookings.slice(0, 8).map((b, i) => (
+                            <div key={i} className="flex gap-5 items-start">
+                                <div className="relative">
+                                    <div className="w-12 h-12 rounded-[1.25rem] bg-admin-bg border border-admin-border flex items-center justify-center text-admin-primary/40 font-black text-xs">
+                                        {b.name.charAt(0)}
+                                    </div>
+                                    <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${b.status === 'success' ? 'bg-success' : 'bg-warning'}`} />
                                 </div>
-                                <div style={{ flex: 1 }}>
-                                    <div style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--text-main)' }}>{b.name}</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>Memesan {b.itemName}</div>
-                                    <div style={{ fontSize: '0.625rem', color: 'var(--text-muted)', marginTop: '0.4rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{new Date(b.date).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</div>
+                                <div className="flex-1 min-w-0">
+                                    <h4 className="text-sm font-black text-admin-text-main uppercase tracking-tight truncate">{b.name}</h4>
+                                    <p className="text-[11px] text-admin-text-muted font-bold leading-tight">
+                                        Ordered <span className="text-admin-text-main">{b.itemName}</span>
+                                    </p>
+                                    <p className="text-[9px] text-admin-text-light font-black uppercase tracking-widest mt-1">
+                                        {new Date(b.date).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} • WEBPORTAL
+                                    </p>
                                 </div>
-                                <div style={{ fontSize: '0.875rem', fontWeight: 700, color: '#10B981' }}>{formatRupiah(b.total)}</div>
+                                <div className="text-right">
+                                    <p className="text-sm font-black text-admin-primary">+{formatRupiah(b.total / 1000)}k</p>
+                                </div>
                             </div>
                         ))}
                     </div>
+                    
+                    <Link to="/admin/bookings" className="mt-10 py-4 w-full rounded-2xl bg-admin-bg text-admin-text-main font-black text-[10px] uppercase tracking-[0.2em] border border-admin-border hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all text-center">
+                        Lihat Semua Aktivitas
+                    </Link>
                 </div>
             </div>
+
+            <style>{`
+                .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+                .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+                .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--admin-border); border-radius: 10px; }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--admin-text-light); }
+            `}</style>
         </div>
     );
 }

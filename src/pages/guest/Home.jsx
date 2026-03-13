@@ -1,229 +1,393 @@
 import { Link } from 'react-router-dom';
-import { Mountain, Utensils, BedDouble, Waves, MapPin, Phone, Mail } from 'lucide-react';
+import {
+    Mountain, Utensils, BedDouble, Waves, MapPin,
+    Phone, Mail, Instagram, Youtube, Star,
+    ArrowRight, Camera, Users, Calendar, Ticket, ArrowUpRight
+} from 'lucide-react';
 
 export default function Home() {
     return (
-        <div className="animate-fade-in pb-0" style={{ paddingBottom: 0 }}>
+        <div className="animate-fade-in overflow-x-hidden">
             <style>{`
                 .hero-gradient {
-                    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
+                    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.3));
                 }
-                .glass {
-                    background: rgba(255, 255, 255, 0.1);
+                .section-container {
+                    padding: 6rem 1.5rem;
+                }
+                @media (min-width: 1024px) {
+                    .section-container { padding: 10rem 6rem; }
+                }
+                .glass-card {
+                    background: rgba(255, 255, 255, 0.7);
                     backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
                 }
-                @keyframes fadeInUp {
-                    from { opacity: 0; transform: translateY(40px); }
+                .hover-scale {
+                    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                }
+                .hover-scale:hover {
+                    transform: scale(1.03);
+                }
+                .font-serif {
+                    font-family: 'Playfair Display', serif;
+                }
+                @keyframes slide-up {
+                    from { opacity: 0; transform: translateY(30px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
-                .animate-fade-in-up {
-                    animation: fadeInUp 1s ease-out forwards;
+                .animate-slide-up {
+                    animation: slide-up 0.8s ease-out forwards;
                 }
             `}</style>
 
-            {/* Hero Section */}
-            <section id="home" className="relative h-screen flex items-center justify-center text-center overflow-hidden">
-                <img src="/images/hero-bg.png" alt="Hero Background" className="absolute inset-0 w-full h-full object-cover" />
-                <div className="absolute inset-0 hero-gradient"></div>
-                <div className="relative z-10 text-white max-w-4xl px-4">
-                    <h1 className="text-5xl lg:text-7xl font-bold mb-6 animate-fade-in-up font-serif">Selamat Datang di Eling Bening</h1>
-                    <p className="text-lg lg:text-xl mb-12 font-light tracking-wide italic animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
-                        Nikmati keindahan alam Ambarawa dalam balutan kemewahan resort dan pemandangan Danau Rawa Pening yang memesona.
+            {/* 1. Hero Section (Above the Fold) */}
+            <section id="hero" className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+                <img src="/images/generated/hero.png" alt="Eling Bening View" className="absolute inset-0 w-full h-full object-cover scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/60"></div>
+                <div className="relative z-10 text-white max-w-5xl px-4 flex flex-col items-center">
+                    <div className="flex justify-center mb-6 opacity-0 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+                        <span className="px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold tracking-[0.3em] uppercase">
+                            Premium Destination in Ambarawa
+                        </span>
+                    </div>
+                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 font-serif leading-[1.1] opacity-0 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                        Nikmati Keindahan Alam <br />
+                        <span className="text-green-400 drop-shadow-[0_2px_10px_rgba(74,222,128,0.3)]">Rawa Pening</span> dari Ketinggian
+                    </h1>
+                    <p className="text-lg md:text-xl mb-12 font-light max-w-2xl mx-auto leading-relaxed opacity-0 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+                        Destinasi wisata alam, kuliner, dan event terbaik dengan pemandangan pegunungan yang memukau dan udara segar yang menyegarkan jiwa.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s', opacity: 0 }}>
-                        <Link to="/ticketing" className="inline-block bg-eling-red hover:bg-red-800 text-white font-bold py-4 px-10 rounded-full text-lg transition shadow-2xl">
-                            Pesan Tiket
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center opacity-0 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+                        <Link to="/ticketing" className="w-full sm:w-auto bg-eling-red hover:bg-red-800 text-white font-bold py-5 px-12 rounded-full text-lg transition shadow-2xl flex items-center justify-center gap-3 group">
+                            Pesan Tiket <ArrowRight size={20} className="group-hover:translate-x-1 transition" />
                         </Link>
-                        <Link to="/rooms" className="inline-block glass hover:bg-white hover:text-eling-green text-white font-bold py-4 px-10 rounded-full text-lg transition shadow-2xl">
-                            Booking Resort
+                        <Link to="/rooms" className="w-full sm:w-auto backdrop-blur-md bg-white/10 hover:bg-white/20 text-white border border-white/30 font-bold py-5 px-12 rounded-full text-lg transition shadow-2xl flex items-center justify-center gap-3">
+                            Pesan Resort
                         </Link>
+                    </div>
+
+                    {/* Quick Info Bar */}
+                    <div className="mt-20 w-full max-w-4xl opacity-0 animate-slide-up" style={{ animationDelay: '0.6s' }}>
+                        <div className="flex flex-wrap justify-center md:grid md:grid-cols-3 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-6 lg:p-8 gap-8 md:gap-0">
+                            <div className="md:border-r border-white/10 flex flex-col items-center px-8">
+                                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                                    <MapPin size={24} className="text-green-400" />
+                                </div>
+                                <span className="text-xs text-white/60 uppercase tracking-widest mb-1">Lokasi</span>
+                                <span className="text-sm md:text-base font-bold">Ambarawa, Semarang</span>
+                            </div>
+                            <div className="md:border-r border-white/10 flex flex-col items-center px-8">
+                                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                                    <Calendar size={24} className="text-green-400" />
+                                </div>
+                                <span className="text-xs text-white/60 uppercase tracking-widest mb-1">Jam Buka</span>
+                                <span className="text-sm md:text-base font-bold">08:00 - 18:00 WIB</span>
+                            </div>
+                            <div className="flex flex-col items-center px-8">
+                                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                                    <div className="flex gap-1">
+                                        {[1, 2, 3, 4, 5].map(s => <Star key={s} size={14} fill="#4ade80" className="text-green-400" />)}
+                                    </div>
+                                </div>
+                                <span className="text-xs text-white/60 uppercase tracking-widest mb-1">Rating</span>
+                                <span className="text-sm md:text-base font-bold">4.8 (5k+ Review)</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* About Section */}
-            <section id="about" className="py-24 px-6 lg:px-24 bg-gray-50 overflow-hidden">
-                <div className="flex flex-col lg:flex-row items-center gap-16 max-w-7xl mx-auto">
+            {/* 2. Tentang Eling Bening (Short Introduction) */}
+            <section id="about" className="section-container bg-white">
+                <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 md:gap-24">
                     <div className="lg:w-1/2 relative">
-                        <div className="absolute -top-8 -left-8 w-32 h-32 bg-eling-green opacity-10 rounded-full"></div>
-                        <img src="/images/hero-bg.png" alt="About" className="rounded-2xl shadow-2xl relative z-10 w-full object-cover aspect-[4/3]" />
-                        <div className="absolute -bottom-6 -right-6 glass p-6 rounded-xl border-eling-green/30 border-2 z-20 bg-white/20 backdrop-blur-md">
-                            <p className="text-eling-green font-bold text-xl">100% Alamiah</p>
-                            <p className="text-gray-800 font-medium text-sm">Pesona Pegunungan</p>
+                        <div className="absolute -top-10 -left-10 w-40 h-40 bg-eling-green opacity-5 rounded-full blur-3xl"></div>
+                        <img src="/images/generated/resort.png" alt="Eling Bening Landscape" className="rounded-3xl shadow-2xl w-full aspect-[4/3] object-cover relative z-10" />
+                        <div className="absolute -bottom-8 -right-8 glass-card p-8 rounded-2xl shadow-xl z-20 max-w-[240px]">
+                            <p className="text-eling-green font-bold text-3xl mb-1">100%</p>
+                            <p className="text-gray-800 font-bold uppercase tracking-widest text-xs">Pemandangan Alamiah</p>
+                            <p className="text-gray-500 text-sm mt-3 leading-relaxed">Keindahan pegunungan Merbabu & Ungaran di depan mata Anda.</p>
                         </div>
                     </div>
                     <div className="lg:w-1/2">
-                        <span className="text-eling-red uppercase tracking-widest font-bold text-sm block mb-4">Tentang Kami</span>
-                        <h2 className="text-4xl lg:text-5xl font-bold mb-8 leading-tight font-serif">Eling Bening Ambarawa</h2>
-                        <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
-                            <p>Eling Bening merupakan kawasan wisata terintegrasi yang menawarkan pengalaman tak terlupakan di dataran tinggi Ambarawa. Kami menghadirkan harmoni antara arsitektur modern yang elegan dengan ketenangan alam pegunungan.</p>
-                            <p>Dengan fasilitas lengkap mulai dari resort mewah, kolam renang infinity, restoran gourmet, hingga area outbound, Eling Bening adalah pilihan utama untuk rekreasi keluarga maupun acara spesial Anda.</p>
+                        <span className="text-eling-red uppercase tracking-[0.3em] font-bold text-sm block mb-6">Discovery</span>
+                        <h2 className="text-4xl md:text-6xl font-bold mb-8 font-serif leading-tight text-gray-900">
+                            Eling Bening: Harmoni <br /> Keindahan Alam & Kemewahan
+                        </h2>
+                        <div className="space-y-6 text-gray-600 leading-relaxed text-lg lg:text-xl font-light">
+                            <p>
+                                Eling Bening adalah destinasi wisata alam terintegrasi yang menawarkan pemandangan spektakuler Danau Rawa Pening dengan latar belakang Gunung Merbabu, Ungaran, dan Telomoyo.
+                            </p>
+                            <p>
+                                Kami menghadirkan pengalaman berlibur yang tak terlupakan melalui perpaduan antara fasilitas modern, kuliner lezat, dan ketenangan alam pegunungan yang masih asri.
+                            </p>
                         </div>
-                        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border-l-4 border-eling-green">
-                                <Mountain className="text-eling-green" size={24} />
-                                <span className="font-semibold text-gray-800">Pemandangan Megah</span>
-                            </div>
-                            <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border-l-4 border-eling-green">
-                                <Utensils className="text-eling-green" size={24} />
-                                <span className="font-semibold text-gray-800">Kuliner Nusantara</span>
-                            </div>
-                            <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border-l-4 border-eling-green">
-                                <BedDouble className="text-eling-green" size={24} />
-                                <span className="font-semibold text-gray-800">Resort Berbintang</span>
-                            </div>
-                            <div className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border-l-4 border-eling-green">
-                                <Waves className="text-eling-green" size={24} />
-                                <span className="font-semibold text-gray-800">Kolam Renang Mewah</span>
-                            </div>
-                        </div>
-                        <button className="mt-12 bg-eling-green text-white font-bold py-4 px-10 rounded-full hover:bg-green-800 transition">
-                            Lihat Selengkapnya
-                        </button>
+                        <Link to="/about" className="mt-12 inline-flex items-center gap-3 bg-eling-green text-white font-bold py-4 px-10 rounded-full hover:bg-green-800 transition shadow-xl group">
+                            Selengkapnya <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition" />
+                        </Link>
                     </div>
                 </div>
             </section>
 
-            {/* Gallery Section */}
-            <section id="gallery" className="py-24 px-6 lg:px-24">
+            {/* 3. Highlight Fasilitas / Aktivitas */}
+            <section id="highlights" className="section-container bg-gray-50">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <span className="text-eling-red uppercase tracking-widest font-bold text-sm block mb-4">Galeri</span>
-                        <h2 className="text-4xl lg:text-5xl font-bold mb-4 font-serif text-gray-900">Momen Indah di Eling Bening</h2>
-                        <div className="w-24 h-1 bg-eling-green mx-auto"></div>
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                        <div>
+                            <span className="text-eling-red uppercase tracking-[0.3em] font-bold text-sm block mb-4">Activities</span>
+                            <h2 className="text-4xl md:text-5xl font-bold font-serif text-gray-900">Pengalaman Menarik</h2>
+                        </div>
+                        <p className="text-gray-500 max-w-md">Berbagai fasilitas dan aktivitas yang siap melengkapi hari libur Anda bersama keluarga.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="group relative overflow-hidden rounded-2xl aspect-[4/5] shadow-lg">
-                            <img src="/images/hero-bg.png" className="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Gallery 1" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-8">
-                                <p className="text-white font-serif text-2xl">Kolam Renang Utama</p>
-                            </div>
-                        </div>
-                        <div className="group relative overflow-hidden rounded-2xl aspect-[4/5] shadow-lg">
-                            <img src="/images/resort-room.png" className="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Gallery 2" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-8">
-                                <p className="text-white font-serif text-2xl">Villa &amp; Resort</p>
-                            </div>
-                        </div>
-                        <div className="group relative overflow-hidden rounded-2xl aspect-[4/5] shadow-lg">
-                            <img src="/images/hero-bg.png" className="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="Gallery 3" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-8">
-                                <p className="text-white font-serif text-2xl">Restoran View</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Facilities Grid */}
-            <section id="facilities" className="py-24 px-6 lg:px-24 bg-gray-50">
-                <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
-                        <span className="text-eling-red uppercase tracking-widest font-bold text-sm block mb-4">Fasilitas</span>
-                        <h2 className="text-4xl lg:text-5xl font-bold mb-4 font-serif text-gray-900">Fasilitas Eling Bening</h2>
-                        <p className="text-gray-500">Kenyamanan dan kepuasan Anda adalah prioritas kami.</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[
-                            { icon: "fa-utensils", title: "Restaurant & Cafe", desc: "Menyajikan hidangan lokal dan internasional dengan view spektakuler." },
-                            { icon: "fa-child", title: "Area Play-Land", desc: "Taman bermain yang aman dan menyenangkan untuk anak-anak." },
-                            { icon: "fa-users", title: "Tatap Lokasi", desc: "Berbagai spot foto ikonik untuk mengabadikan momen Anda." },
-                            { icon: "fa-binoculars", title: "Skydeck", desc: "Dek observasi tertinggi untuk menikmati matahari terbenam." },
-                            { icon: "fa-home", title: "Resort Mewah", desc: "Penginapan eksklusif dengan fasilitas kamar yang sangat lengkap." },
-                            { icon: "fa-praying-hands", title: "Musholla", desc: "Fasilitas ibadah yang bersih, luas, dan nyaman." },
-                            { icon: "fa-wifi", title: "Free Wi-Fi", desc: "Koneksi internet cepat tersedia di seluruh area publik." },
-                            { icon: "fa-camera", title: "Spot Foto", desc: "Puluhan spot instagramable dengan latar alam Ambarawa." }
+                            { icon: <Mountain size={32} />, title: "Panorama Alam", desc: "Nikmati pemandangan 360 derajat Danau Rawa Pening dari spot terbaik." },
+                            { icon: <Utensils size={32} />, title: "Restoran & Cafe", desc: "Sajian kuliner khas Nusantara dan Internasional dengan view pegunungan." },
+                            { icon: <Camera size={32} />, title: "Spot Foto Instagramable", desc: "Puluhan spot foto unik dengan latar alam yang sangat mempesona." },
+                            { icon: <Waves size={32} />, title: "Kolam Renang Infinity", desc: "Kolam renang mewah yang seolah menyatu dengan cakrawala pegunungan." },
+                            { icon: <Calendar size={32} />, title: "Event & Wedding", desc: "Venue outdoor romantis untuk pernikahan atau acara gathering perusahaan." },
+                            { icon: <Users size={32} />, title: "Family Recreation", desc: "Wahana bermain anak dan area outbound yang aman serta menyenangkan." }
                         ].map((item, i) => (
-                            <div key={i} className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 hover:border-eling-green transition duration-300 group">
-                                <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-eling-green transition duration-300">
-                                    <i className={`fas ${item.icon} text-eling-green text-2xl group-hover:text-white`}></i>
+                            <div key={i} className="group bg-white p-10 rounded-3xl shadow-sm hover:shadow-2xl transition duration-500 border border-gray-100 flex flex-col items-start gap-6">
+                                <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-eling-green group-hover:bg-eling-green group-hover:text-white transition duration-500">
+                                    {item.icon}
                                 </div>
-                                <h3 className="font-bold text-xl mb-3 text-gray-900">{item.title}</h3>
-                                <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
+                                <div>
+                                    <h3 className="font-bold text-2xl mb-4 text-gray-900">{item.title}</h3>
+                                    <p className="text-gray-500 leading-relaxed font-light">{item.desc}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
             </section>
 
-            {/* Contact & Map */}
-            <section id="contact" className="py-24 px-6 lg:px-24">
+            {/* 4. Galeri Wisata */}
+            <section id="gallery" className="section-container bg-white">
                 <div className="max-w-7xl mx-auto">
-                    <div className="flex flex-col lg:flex-row gap-16">
-                        <div className="lg:w-1/2">
-                            <span className="text-eling-red uppercase tracking-widest font-bold text-sm block mb-4">Kontak</span>
-                            <h2 className="text-4xl lg:text-5xl font-bold mb-8 font-serif text-gray-900">Hubungi Kami</h2>
-                            <div className="space-y-8 mb-12">
-                                <div className="flex items-start gap-6">
-                                    <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <MapPin className="text-eling-green" size={20} />
-                                    </div>
-                                    <div>
-                                        <p className="font-bold text-gray-900">Lokasi</p>
-                                        <p className="text-gray-500 text-sm leading-relaxed">Jl. Sarjono, Bauman, Ambarawa, Kec. Ambarawa, Kabupaten Semarang, Jawa Tengah 50614</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-6">
-                                    <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <Phone className="text-eling-green" size={20} />
-                                    </div>
-                                    <div>
-                                        <p className="font-bold text-gray-900">Telepon</p>
-                                        <p className="text-gray-500 text-sm">+62 811-2345-6789</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-6">
-                                    <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <Mail className="text-eling-green" size={20} />
-                                    </div>
-                                    <div>
-                                        <p className="font-bold text-gray-900">Email</p>
-                                        <p className="text-gray-500 text-sm">info@elingbening.com</p>
-                                    </div>
-                                </div>
+                    <div className="text-center mb-16">
+                        <span className="text-eling-red uppercase tracking-[0.3em] font-bold text-sm block mb-4">Gallery</span>
+                        <h2 className="text-4xl md:text-5xl font-bold font-serif text-gray-900 mb-6">Momen Indah di Eling Bening</h2>
+                        <div className="w-24 h-1 bg-eling-green mx-auto rounded-full"></div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:h-[800px]">
+                        <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-3xl cursor-pointer">
+                            <img src="/images/generated/hero.png" className="absolute inset-0 w-full h-full object-cover hover-scale" alt="Gallery 1" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
+                                <Camera className="text-white" size={48} />
                             </div>
-                            <a href="https://wa.me/6281123456789" className="inline-flex items-center gap-3 bg-green-500 text-white font-bold py-4 px-8 rounded-full hover:bg-green-600 transition shadow-lg">
-                                <i className="fab fa-whatsapp text-xl"></i>
-                                Chat via WhatsApp
-                            </a>
                         </div>
-                        <div className="lg:w-1/2 glass border border-gray-200 shadow-2xl rounded-3xl p-8 lg:p-12 bg-white">
-                            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-2">Nama Lengkap</label>
-                                    <input type="text" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-eling-green/50" placeholder="Masukkan nama Anda" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                                    <input type="email" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-eling-green/50" placeholder="nama@email.com" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-2">Pesan</label>
-                                    <textarea rows="4" className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-eling-green/50" placeholder="Apa yang ingin Anda tanyakan?"></textarea>
-                                </div>
-                                <button type="submit" className="w-full bg-eling-red text-white font-bold py-4 rounded-xl hover:bg-red-800 transition shadow-lg">
-                                    Kirim Pesan
-                                </button>
-                            </form>
+                        <div className="relative group overflow-hidden rounded-3xl cursor-pointer">
+                            <img src="/images/generated/restaurant.png" className="absolute inset-0 w-full h-full object-cover hover-scale" alt="Gallery 2" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
+                                <Camera className="text-white" size={32} />
+                            </div>
+                        </div>
+                        <div className="relative group overflow-hidden rounded-3xl cursor-pointer">
+                            <img src="/images/generated/event.png" className="absolute inset-0 w-full h-full object-cover hover-scale" alt="Gallery 3" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
+                                <Camera className="text-white" size={32} />
+                            </div>
+                        </div>
+                        <div className="md:col-span-2 relative group overflow-hidden rounded-3xl cursor-pointer">
+                            <img src="/images/generated/resort.png" className="absolute inset-0 w-full h-full object-cover hover-scale" alt="Gallery 4" />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-500 flex items-center justify-center">
+                                <Camera className="text-white" size={40} />
+                            </div>
                         </div>
                     </div>
 
-                    <div className="mt-24 h-[500px] w-full bg-gray-200 rounded-3xl shadow-inner overflow-hidden relative">
-                        <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
-                            <i className="fas fa-map-marked-alt text-6xl text-gray-400 mb-4 drop-shadow-md"></i>
-                            <p className="text-gray-600 font-bold uppercase tracking-widest drop-shadow-md bg-white/50 px-4 py-1 rounded-full backdrop-blur-sm">Interactive Map Integration</p>
-                        </div>
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15830.34757657279!2d110.4045!3d-7.2657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a783783a3371b%3A0x6a0a09e075c3f6e!2sEling%20Bening!5e0!3m2!1sen!2sid!4v1700000000000"
-                            className="w-full h-full border-0 grayscale hover:grayscale-0 transition duration-1000"
-                            allowFullScreen={false}
-                            loading="lazy">
-                        </iframe>
+                    <div className="text-center mt-12">
+                        <Link to="/gallery" className="inline-flex items-center gap-2 font-bold text-eling-green hover:underline underline-offset-8">
+                            Lihat Semua Galeri <ArrowRight size={18} />
+                        </Link>
                     </div>
+                </div>
+            </section>
+
+            {/* 6. Event & Promo */}
+            <section id="events" className="section-container bg-gray-50">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex justify-between items-end mb-16">
+                        <div>
+                            <span className="text-eling-red uppercase tracking-[0.3em] font-bold text-sm block mb-4">What's On</span>
+                            <h2 className="text-4xl md:text-5xl font-bold font-serif text-gray-900">Event & Promo Terbaru</h2>
+                        </div>
+                        <Link to="/events" className="hidden md:flex items-center gap-1 font-bold text-gray-400 hover:text-eling-green transition">
+                            Lihat Semua <ArrowRight size={16} />
+                        </Link>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Event Card */}
+                        <div className="group relative h-[400px] rounded-3xl overflow-hidden shadow-xl">
+                            <img src="/images/generated/event.png" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Event" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
+                                <div className="bg-eling-green text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-md w-fit mb-4">Up Coming Event</div>
+                                <h3 className="text-3xl font-bold text-white mb-2">Live Music Weekend</h3>
+                                <p className="text-gray-300 font-light mb-6">Nikmati senja dengan alunan musik akustik. Setiap Sabtu & Minggu jam 16:00 WIB.</p>
+                                <button className="text-white font-bold flex items-center gap-2 group/btn">
+                                    Detail Event <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition" />
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Promo Card */}
+                        <div className="group relative h-[400px] rounded-3xl overflow-hidden shadow-xl">
+                            <img src="/images/generated/hero.png" className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Promo" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
+                                <div className="bg-eling-red text-white text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-md w-fit mb-4">Limited Offer</div>
+                                <h3 className="text-3xl font-bold text-white mb-2">Promo Tiket Liburan</h3>
+                                <p className="text-gray-300 font-light mb-6">Diskon 20% untuk pembelian tiket secara online selama periode Maret - April.</p>
+                                <Link to="/ticketing" className="text-white font-bold flex items-center gap-2 group/btn">
+                                    Ambil Promo <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition" />
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 7. Testimoni Pengunjung */}
+            <section id="testimonials" className="section-container bg-white overflow-hidden">
+                <div className="max-w-7xl mx-auto relative">
+                    <div className="text-center mb-16 relative z-10">
+                        <span className="text-eling-red uppercase tracking-[0.3em] font-bold text-sm block mb-4">Guest Reviews</span>
+                        <h2 className="text-4xl md:text-5xl font-bold font-serif text-gray-900">Apa Kata Mereka?</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {[
+                            { name: "Andi Saputra", quote: "Pemandangannya luar biasa, sangat cocok untuk liburan keluarga. Pelayanannya ramah sekali.", rating: 5 },
+                            { name: "Siti Rahma", quote: "Tempat favorit saya di Semarang. Makanannya enak dan spot fotonya banyak banget.", rating: 5 },
+                            { name: "Jessica Lim", quote: "Kolam renangnya keren banget, view-nya nggak kalah sama di Bali. Sangat worth it!", rating: 4 }
+                        ].map((item, i) => (
+                            <div key={i} className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 flex flex-col gap-6">
+                                <div className="flex gap-1">
+                                    {[...Array(item.rating)].map((_, r) => <Star key={r} size={16} fill="#FACC15" className="text-yellow-400" />)}
+                                </div>
+                                <p className="text-gray-600 italic font-light leading-relaxed">"{item.quote}"</p>
+                                <div className="flex items-center gap-4 mt-4">
+                                    <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+                                    <div>
+                                        <p className="font-bold text-gray-900">{item.name}</p>
+                                        <p className="text-xs text-gray-400">Pengunjung Terverifikasi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-20 flex flex-col md:flex-row items-center justify-center gap-12 bg-white/50 backdrop-blur-sm rounded-[3rem] p-10 border border-white">
+                        <div className="flex flex-col items-center">
+                            <span className="text-4xl font-bold text-gray-900 mb-1">4.8/5</span>
+                            <div className="flex gap-1 mb-2">
+                                {[1, 2, 3, 4, 5].map(s => <Star key={s} size={20} fill="#FACC15" className="text-yellow-400" />)}
+                            </div>
+                            <span className="text-gray-400 text-sm">Berdasarkan 5.230 Review Google</span>
+                        </div>
+                        <div className="h-px w-24 bg-gray-200 md:h-24 md:w-px"></div>
+                        <div className="text-center md:text-left">
+                            <p className="font-bold text-2xl text-gray-900 mb-2">Puas dengan Layanan Kami?</p>
+                            <p className="text-gray-500 font-light">Berikan ulasan Anda dan bantu kami menjadi lebih baik.</p>
+                        </div>
+                        <button className="bg-eling-green text-white font-bold py-4 px-10 rounded-2xl shadow-lg hover:bg-green-800 transition">
+                            Tulis Review
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            {/* 8. Informasi Lokasi */}
+            <section id="location" className="section-container bg-gray-50">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+                        <div className="lg:w-2/5">
+                            <span className="text-eling-red uppercase tracking-[0.3em] font-bold text-sm block mb-6">Location</span>
+                            <h2 className="text-4xl md:text-5xl font-bold font-serif text-gray-900 mb-12 leading-tight">Temukan Jalan Menuju Kami</h2>
+
+                            <div className="space-y-10">
+                                <div className="flex items-start gap-6">
+                                    <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-eling-green flex-shrink-0">
+                                        <MapPin size={28} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-900 mb-2">Alamat Lengkap</h4>
+                                        <p className="text-gray-500 leading-relaxed">
+                                            Jl. Sarjono, Bauman, Ambarawa, Kec. Ambarawa, Kabupaten Semarang, Jawa Tengah 50614
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-6">
+                                    <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-eling-green flex-shrink-0">
+                                        <Calendar size={28} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-900 mb-2">Jam Operasional</h4>
+                                        <p className="text-gray-500">Senin - Minggu (Setiap Hari)</p>
+                                        <p className="text-gray-900 font-bold">08:00 - 18:00 WIB</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-6">
+                                    <div className="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-eling-green flex-shrink-0">
+                                        <Phone size={28} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-900 mb-2">Hubungi Kami</h4>
+                                        <p className="text-gray-500">+62 811-2345-6789</p>
+                                        <p className="text-gray-500">info@elingbening.com</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="https://maps.app.goo.gl/xxx" target="_blank" rel="noreferrer" className="mt-12 inline-flex items-center gap-3 bg-gray-900 text-white font-bold py-4 px-10 rounded-2xl hover:bg-gray-800 transition shadow-xl shadow-gray-200">
+                                <MapPin size={20} /> Lihat Rute di Maps
+                            </a>
+                        </div>
+
+                        <div className="lg:w-3/5">
+                            <div className="h-[400px] md:h-[600px] w-full bg-gray-100 rounded-[3rem] overflow-hidden shadow-2xl relative">
+                                <iframe
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15830.34757657279!2d110.4045!3d-7.2657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a783783a3371b%3A0x6a0a09e075c3f6e!2sEling%20Bening!5e0!3m2!1sen!2sid!4v1700000000000"
+                                    className="w-full h-full border-0 transition duration-1000"
+                                    allowFullScreen={false}
+                                    loading="lazy">
+                                </iframe>
+                                <div className="absolute top-6 left-6 right-6 lg:left-auto lg:w-72 bg-white/90 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-white">
+                                    <h5 className="font-bold text-gray-900 mb-2">Tips Menuju Lokasi</h5>
+                                    <p className="text-xs text-gray-500 leading-relaxed">Gunakan rute jalur utama Ambarawa untuk akses jalan yang lebih lebar dan nyaman bagi kendaraan besar/bus.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 9. CTA Section (Call To Action) */}
+            <section id="final-cta" className="relative py-32 px-6 flex items-center justify-center text-center">
+                <img src="/images/generated/hero.png" className="absolute inset-0 w-full h-full object-cover grayscale" alt="CTA BG" />
+                <div className="absolute inset-0 bg-eling-green/90 mix-blend-multiply"></div>
+                <div className="relative z-10 max-w-4xl">
+                    <h2 className="text-4xl md:text-7xl font-bold text-white mb-8 font-serif leading-tight">
+                        Siap Mengunjungi <br /> Eling Bening?
+                    </h2>
+                    <p className="text-xl text-green-100 mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+                        Ajak keluarga dan teman Anda untuk menciptakan momen berharga bersama kami. Pesan tiket Anda sekarang untuk menghindari antrian.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                        <Link to="/ticketing" className="bg-white text-eling-green hover:bg-green-100 font-bold py-5 px-12 rounded-full text-xl transition shadow-2xl">
+                            Beli Tiket Sekarang
+                        </Link>
+                        <Link to="/contact" className="bg-eling-red text-white hover:bg-red-800 font-bold py-5 px-12 rounded-full text-xl transition shadow-2xl">
+                            Reservasi Event
+                        </Link>
+                    </div>
+                    <button className="mt-12 text-white font-bold flex items-center gap-2 mx-auto hover:underline underline-offset-8 transition group">
+                        <Phone size={20} className="group-hover:rotate-12 transition" /> Hubungi Customer Service
+                    </button>
                 </div>
             </section>
         </div>

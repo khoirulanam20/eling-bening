@@ -4,6 +4,7 @@ export const EB_BOOKINGS_KEY = 'eb_bookings';
 export const EB_PROMOS_KEY = 'eb_promos';
 export const EB_RESCHEDULES_KEY = 'eb_reschedules';
 export const EB_EXPENSES_KEY = 'eb_expenses';
+export const EB_EVENTS_KEY = 'eb_events';
 
 export const DEFAULT_ROOMS = [
     {
@@ -168,6 +169,39 @@ export const DEFAULT_RESCHEDULES = [
     }
 ];
 
+export const DEFAULT_EVENTS = [
+    {
+        id: 1,
+        name: 'Wedding: Sunset Romance',
+        category: 'Wedding',
+        date: '2026-06-15',
+        price: 'Mulai Rp 25jt',
+        image: '/images/generated/event.png',
+        desc: 'Paket pernikahan eksklusif dengan latar belakang Danau Rawa Pening saat matahari terbenam.',
+        status: 'active'
+    },
+    {
+        id: 2,
+        name: 'Corporate Gathering Package',
+        category: 'Gathering',
+        date: 'Available Daily',
+        price: 'Rp 150rb / pax',
+        image: '/images/generated/event.png',
+        desc: 'Fasilitas lengkap untuk gathering perusahaan, outbound, dan team building.',
+        status: 'active'
+    },
+    {
+        id: 3,
+        name: 'Music Festival: Eling Harmony',
+        category: 'Concert',
+        date: '2026-08-20',
+        price: 'Rp 100.000',
+        image: '/images/generated/event.png',
+        desc: 'Konser musik tahunan yang menghadirkan artis nasional di panggung terbuka.',
+        status: 'active'
+    }
+];
+
 export function getRooms() {
     try {
         const stored = localStorage.getItem(EB_ROOMS_KEY);
@@ -232,6 +266,17 @@ export function getExpenses() {
 
 export function saveExpenses(expenses) {
     localStorage.setItem(EB_EXPENSES_KEY, JSON.stringify(expenses));
+}
+
+export function getEvents() {
+    try {
+        const stored = localStorage.getItem(EB_EVENTS_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_EVENTS;
+    } catch { return DEFAULT_EVENTS; }
+}
+
+export function saveEvents(events) {
+    localStorage.setItem(EB_EVENTS_KEY, JSON.stringify(events));
 }
 
 export function formatRupiah(n) {

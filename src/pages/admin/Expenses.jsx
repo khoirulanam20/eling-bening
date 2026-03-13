@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Calendar, FileText, Tag, CircleDollarSign, Filter, Search } from 'lucide-react';
+import { Plus, Trash2, Calendar, FileText, Tag, CircleDollarSign, Filter, Search, X, MoreVertical, CreditCard, Receipt, ArrowDownCircle } from 'lucide-react';
 import { getExpenses, saveExpenses, formatRupiah } from '../../utils/data';
 import toast from 'react-hot-toast';
 
@@ -15,7 +15,7 @@ export default function Expenses() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const newExpense = { ...formData, id: Date.now(), amount: Number(formData.amount) };
-        const updated = [...expenses, newExpense];
+        const updated = [newExpense, ...expenses];
         setExpenses(updated);
         saveExpenses(updated);
         setShowForm(false);
@@ -33,89 +33,150 @@ export default function Expenses() {
     };
 
     return (
-        <div className="animate-fade-in">
+        <div className="animate-fade-in space-y-6">
             <div className="admin-page-header">
                 <div>
                     <h1>Pengeluaran Operasional</h1>
-                    <p className="text-muted mt-1">Catat dan kelola semua biaya operasional kawasan.</p>
+                    <p>Catat dan audit semua biaya operasional, gaji, dan pemeliharaan.</p>
                 </div>
-                <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-                    <Plus size={18} /> {showForm ? 'Batal' : 'Tambah Pengeluaran'}
+                <button className={`btn-primary shadow-lg shadow-admin-primary/20 ${showForm ? '!bg-danger' : ''}`} onClick={() => setShowForm(!showForm)}>
+                    {showForm ? <X size={18} /> : <Plus size={18} />}
+                    {showForm ? 'Batal' : 'Catat Pengeluaran'}
                 </button>
             </div>
 
             {showForm && (
-                <div className="admin-card animate-scale-up" style={{ marginBottom: '2rem', border: '1px solid var(--primary)' }}>
-                    <h3 style={{ fontWeight: 700, marginBottom: '1.5rem' }}>Input Pengeluaran Baru</h3>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1rem' }}>
-                            <div>
-                                <label className="admin-label">Judul / Keperluan</label>
-                                <input required value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} type="text" className="admin-input" placeholder="misal: Listrik Bulanan" />
+                <div className="admin-table-container !p-8 border-2 border-admin-primary/20 animate-scale-up">
+                    <div className="flex items-center gap-3 mb-8">
+                        <div className="p-3 rounded-2xl bg-admin-primary/10 text-admin-primary">
+                            <Receipt size={24} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black text-admin-text-main">Input Transaksi</h3>
+                            <p className="text-xs text-admin-text-muted font-bold">Pastikan data pengeluaran sesuai dengan bukti kwitansi.</p>
+                        </div>
+                    </div>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="form-group">
+                                <label className="form-label">Nama Pengeluaran / Keperluan</label>
+                                <input required value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} type="text" className="admin-input" placeholder="misal: Pembelian Inventaris Resto" />
                             </div>
-                            <div>
-                                <label className="admin-label">Kategori</label>
-                                <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="admin-input">
-                                    <option>Operasional</option>
-                                    <option>Pemeliharaan</option>
-                                    <option>Gaji Karyawan</option>
-                                    <option>Pemasaran</option>
-                                    <option>Lainnya</option>
-                                </select>
+                            <div className="form-group">
+                                <label className="form-label">Kategori Biaya</label>
+                                <div className="relative">
+                                    <select value={formData.category} onChange={e => setFormData({ ...formData, category: e.target.value })} className="admin-input appearance-none">
+                                        <option>Operasional</option>
+                                        <option>Pemeliharaan</option>
+                                        <option>Gaji Karyawan</option>
+                                        <option>Pemasaran</option>
+                                        <option>Lainnya</option>
+                                    </select>
+                                    <Filter className="absolute right-4 top-1/2 -translate-y-1/2 text-admin-text-muted pointer-events-none" size={16} />
+                                </div>
                             </div>
                         </div>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                            <div>
-                                <label className="admin-label">Jumlah (Rp)</label>
-                                <input required value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} type="number" className="admin-input" />
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="form-group">
+                                <label className="form-label">Jumlah Nominal (IDR)</label>
+                                <div className="relative">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-muted font-black text-sm">Rp</span>
+                                    <input required value={formData.amount} onChange={e => setFormData({ ...formData, amount: e.target.value })} type="number" className="admin-input !pl-12" placeholder="0" />
+                                </div>
                             </div>
-                            <div>
-                                <label className="admin-label">Tanggal</label>
+                            <div className="form-group">
+                                <label className="form-label">Tanggal Transaksi</label>
                                 <input required value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} type="date" className="admin-input" />
                             </div>
                         </div>
-                        <div>
-                            <label className="admin-label">Catatan Tambahan</label>
-                            <textarea value={formData.note} onChange={e => setFormData({ ...formData, note: e.target.value })} rows="2" className="admin-input"></textarea>
+
+                        <div className="form-group">
+                            <label className="form-label">Catatan / Detail Tambahan</label>
+                            <textarea value={formData.note} onChange={e => setFormData({ ...formData, note: e.target.value })} rows="3" className="admin-textarea" placeholder="Tuliskan detail tambahan jika diperlukan..."></textarea>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <button type="submit" className="btn-primary">Simpan Pengeluaran</button>
+
+                        <div className="flex justify-end gap-3 pt-4 border-t border-admin-border">
+                            <button type="button" className="px-6 py-3 rounded-xl border border-admin-border text-admin-text-muted font-black text-xs uppercase tracking-widest hover:bg-admin-bg transition-all" onClick={() => setShowForm(false)}>Batal</button>
+                            <button type="submit" className="btn-primary py-3 px-8 shadow-xl shadow-admin-primary/20">
+                                <CircleDollarSign size={18} /> Simpan Pengeluaran
+                            </button>
                         </div>
                     </form>
                 </div>
             )}
 
             <div className="admin-table-container">
+                <div className="table-header-actions">
+                    <div className="topbar-search !w-full md:!w-96">
+                        <Search className="search-icon" size={16} />
+                        <input type="text" placeholder="Cari transaksi..." />
+                    </div>
+                </div>
+
                 <table className="admin-table">
                     <thead>
                         <tr>
                             <th>Tanggal</th>
-                            <th>Keterangan</th>
+                            <th>Detail Transaksi</th>
                             <th>Kategori</th>
-                            <th>Jumlah</th>
-                            <th>Aksi</th>
+                            <th>Nominal</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {expenses.map(exp => (
                             <tr key={exp.id}>
-                                <td>{new Date(exp.date).toLocaleDateString('id-ID')}</td>
                                 <td>
-                                    <div style={{ fontWeight: 600 }}>{exp.title}</div>
-                                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{exp.note}</div>
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-xl bg-admin-bg flex items-center justify-center text-admin-text-muted">
+                                            <Calendar size={18} />
+                                        </div>
+                                        <span className="text-xs font-black text-admin-text-muted">
+                                            {new Date(exp.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}
+                                        </span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <span className="badge" style={{ backgroundColor: '#F3F4F6', color: '#374151' }}>{exp.category}</span>
+                                    <div className="flex flex-col gap-0.5">
+                                        <span className="font-black text-admin-text-main text-sm uppercase tracking-tight">{exp.title}</span>
+                                        <span className="text-[10px] font-bold text-admin-text-muted flex items-center gap-1">
+                                            <FileText size={10} /> {exp.note || 'Tidak ada catatan'}
+                                        </span>
+                                    </div>
                                 </td>
-                                <td style={{ fontWeight: 700, color: '#EF4444' }}>- {formatRupiah(exp.amount)}</td>
                                 <td>
-                                    <button className="btn-icon" onClick={() => handleDelete(exp.id)}><Trash2 size={18} color="#EF4444" /></button>
+                                    <span className="badge-status bg-slate-100 text-slate-600 border-slate-200">
+                                        {exp.category}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div className="flex items-center gap-2 font-black text-danger">
+                                        <ArrowDownCircle size={14} />
+                                        {formatRupiah(exp.amount)}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="action-buttons">
+                                        <button className="btn-icon !text-danger hover:!bg-danger/10" onClick={() => handleDelete(exp.id)} title="Hapus">
+                                            <Trash2 size={18} />
+                                        </button>
+                                        <button className="btn-icon">
+                                            <MoreVertical size={16} />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
                         {expenses.length === 0 && (
                             <tr>
-                                <td colSpan="5" className="text-center text-muted" style={{ padding: '3rem' }}>Belum ada pengeluaran tercatat.</td>
+                                <td colSpan="5" className="py-24 text-center">
+                                    <div className="mx-auto w-20 h-20 rounded-full bg-admin-bg flex items-center justify-center mb-6 text-admin-text-light opacity-30">
+                                        <CreditCard size={40} />
+                                    </div>
+                                    <p className="text-admin-text-muted font-black uppercase tracking-[0.2em] text-xs">Data pengeluaran masih kosong</p>
+                                </td>
                             </tr>
                         )}
                     </tbody>

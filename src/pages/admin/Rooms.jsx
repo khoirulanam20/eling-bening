@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Eye, X, Check, Building, Maximize, BedDouble, Info } from 'lucide-react';
+import { Plus, Edit, Trash2, Eye, X, Check, Building, Maximize, BedDouble, Info, Search, Users, ShieldCheck, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { getRooms, saveRooms, formatRupiah } from '../../utils/data';
 import toast from 'react-hot-toast';
@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 export default function Rooms() {
     const [rooms, setRooms] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,124 +23,228 @@ export default function Rooms() {
         }
     };
 
-    return (
-        <>
-            <div className="animate-fade-in relative">
-                <div className="admin-page-header">
-                    <div>
-                        <h1>Manajemen Kamar Resort</h1>
-                        <p className="text-muted mt-1">Mengelola inventaris tipe kamar, kapasitas, dan harga per malam.</p>
-                    </div>
-                    <button className="btn-primary" onClick={() => navigate('/admin/rooms/add')}>
-                        <Plus size={18} /> Tambah Kamar Baru
-                    </button>
-                </div>
+    const filteredRooms = rooms.filter(r => 
+        r.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-                <div className="admin-table-container">
-                    <table className="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Gambar</th>
-                                <th>Nama & Tipe Kamar</th>
-                                <th>Kapasitas</th>
-                                <th>Stok</th>
-                                <th>Harga / Malam</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rooms.map(room => (
-                                <tr key={room.id}>
-                                    <td>
-                                        <div style={{ width: '80px', height: '54px', borderRadius: 'var(--radius-sm)', backgroundImage: `url('${room.image || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=200&q=80'}')`, backgroundSize: 'cover', backgroundPosition: 'center', border: '1px solid var(--border-color)' }}></div>
-                                    </td>
-                                    <td style={{ fontWeight: 500 }}>
-                                        <div style={{ fontSize: '1rem', color: 'var(--text-main)', fontWeight: 600 }}>{room.name}</div>
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', gap: '0.5rem', marginTop: '0.2rem' }}>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><BedDouble size={12} /> {room.bed}</span>
-                                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><Maximize size={12} /> {room.size} m&sup2;</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span className="badge" style={{ backgroundColor: '#F3F4F6', color: 'var(--text-main)' }}>{room.capacity} Orang</span>
-                                    </td>
-                                    <td>
-                                        {room.stock > 0 ? (
-                                            <span className="badge active">{room.stock} Unit</span>
-                                        ) : (
-                                            <span className="badge inactive">Habis</span>
-                                        )}
-                                    </td>
-                                    <td style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '1.125rem' }}>{formatRupiah(room.price)}</td>
-                                    <td>
-                                        <div className="action-buttons">
-                                            <button className="btn-icon" title="Lihat Detail" onClick={() => setSelectedRoom(room)}><Eye size={18} /></button>
-                                            <button className="btn-icon" title="Edit" onClick={() => navigate(`/admin/rooms/edit/${room.id}`)}><Edit size={18} /></button>
-                                            <button className="btn-icon" title="Hapus" onClick={() => handleDelete(room.id)} style={{ color: '#EF4444' }}><Trash2 size={18} /></button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                            {rooms.length === 0 && (
-                                <tr>
-                                    <td colSpan="6" className="text-center text-muted" style={{ padding: '2rem' }}>Tidak ada data kamar.</td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+    return (
+        <div className="animate-fade-in space-y-8">
+            <div className="admin-page-header">
+                <div>
+                    <h1>Manajemen Kamar Resort</h1>
+                    <p>Konfigurasi inventaris tipe kamar, kapasitas huni, dan manajemen harga dinamis.</p>
                 </div>
+                <button className="btn-primary py-3 px-6 shadow-xl shadow-admin-primary/20" onClick={() => navigate('/admin/rooms/add')}>
+                    <Plus size={20} /> Tambah Kamar Baru
+                </button>
             </div>
 
-            {/* Room Detail Modal - Moved outside animate-fade-in to prevent transform trapping */}
+            <div className="admin-table-container">
+                <div className="table-header-actions mb-6">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2.5 rounded-xl bg-admin-primary/10 text-admin-primary">
+                            <Building size={18} />
+                        </div>
+                        <h3 className="text-sm font-black text-admin-text-main uppercase tracking-widest">Inventory List</h3>
+                    </div>
+                    <div className="flex gap-4">
+                        <div className="relative">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-light" size={16} />
+                            <input 
+                                type="text" 
+                                placeholder="Search room type..." 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="pl-12 pr-6 py-2.5 bg-admin-bg border border-admin-border rounded-2xl text-xs font-bold text-admin-text-main focus:outline-none focus:border-admin-primary transition-all w-72" 
+                            />
+                        </div>
+                    </div>
+                </div>
+                
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Preview</th>
+                            <th>Room Specification</th>
+                            <th>Capacity</th>
+                            <th>Availability</th>
+                            <th>Rate / Night</th>
+                            <th className="text-right">Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredRooms.map(room => (
+                            <tr key={room.id} className="group">
+                                <td className="w-28">
+                                    <div className="relative w-20 h-14 rounded-2xl overflow-hidden border-2 border-admin-border group-hover:border-admin-primary transition-all shadow-sm">
+                                        <img 
+                                            src={(Array.isArray(room.images) && room.images.length > 0 ? room.images[0] : room.image) || '/images/resort-room.png'} 
+                                            alt={room.name}
+                                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="font-black text-admin-text-main text-sm uppercase tracking-tight">{room.name}</div>
+                                    <div className="flex gap-4 mt-1.5">
+                                        <span className="flex items-center gap-1.5 text-[10px] font-black text-admin-text-muted uppercase tracking-widest">
+                                            <BedDouble size={12} className="text-admin-primary/60" /> {room.bed}
+                                        </span>
+                                        <span className="flex items-center gap-1.5 text-[10px] font-black text-admin-text-muted uppercase tracking-widest">
+                                            <Maximize size={12} className="text-admin-primary/60" /> {room.size} m²
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-8 h-8 rounded-lg bg-admin-bg border border-admin-border flex items-center justify-center text-admin-text-main">
+                                            <Users size={14} />
+                                        </div>
+                                        <span className="text-xs font-black text-admin-text-main">{room.capacity} Guests</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {room.stock > 0 ? (
+                                        <div className="flex flex-col gap-1">
+                                            <span className="badge-status bg-success/10 text-success border-success/20">
+                                                Active Stock
+                                            </span>
+                                            <span className="text-[10px] font-bold text-admin-text-light pl-2">{room.stock} Units Left</span>
+                                        </div>
+                                    ) : (
+                                        <span className="badge-status bg-danger/10 text-danger border-danger/20">
+                                            Out of Stock
+                                        </span>
+                                    )}
+                                </td>
+                                <td>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-black text-admin-primary">{formatRupiah(room.price)}</span>
+                                        <span className="text-[9px] font-bold text-admin-text-light uppercase tracking-widest mt-0.5">Base Fare</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                        <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="View Deep Analysis" onClick={() => setSelectedRoom(room)}><Eye size={18} /></button>
+                                        <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-admin-text-main flex items-center justify-center hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all shadow-sm" title="Modify" onClick={() => navigate(`/admin/rooms/edit/${room.id}`)}><Edit size={18} /></button>
+                                        <button className="w-10 h-10 rounded-xl bg-admin-bg border border-admin-border text-danger flex items-center justify-center hover:bg-danger hover:text-white hover:border-danger transition-all shadow-sm" title="Terminate" onClick={() => handleDelete(room.id)}><Trash2 size={18} /></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+
+                {filteredRooms.length === 0 && (
+                    <div className="py-24 text-center">
+                        <div className="w-20 h-20 bg-admin-bg rounded-[2rem] flex items-center justify-center mx-auto mb-6 text-admin-text-light/20">
+                            <Building size={40} />
+                        </div>
+                        <h4 className="text-sm font-black text-admin-text-muted uppercase tracking-widest">No rooms matched your criteria</h4>
+                    </div>
+                )}
+            </div>
+
+            {/* Room Detail Modal */}
             {selectedRoom && (
-                <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(255,255,255,0.4)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', backdropFilter: 'blur(12px)' }}>
-                    <div className="admin-card animate-scale-up" style={{ maxWidth: '800px', width: '100%', position: 'relative', overflow: 'hidden', padding: 0, maxHeight: '90vh' }}>
-                        <button onClick={() => setSelectedRoom(null)} style={{ position: 'absolute', right: '1.5rem', top: '1.5rem', zIndex: 10, backgroundColor: 'white', borderRadius: '50%', padding: '0.5rem', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', color: 'var(--text-main)' }}><X size={20} /></button>
+                <div className="fixed inset-0 z-[1000] flex items-center justify-center p-6 animate-fade-in">
+                    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md" onClick={() => setSelectedRoom(null)}></div>
+                    <div className="bg-white w-full max-w-5xl rounded-[3rem] overflow-hidden flex flex-col lg:flex-row relative z-[1001] shadow-[0_32px_128px_-16px_rgba(0,0,0,0.3)] animate-scale-up border border-white/20">
+                        <button 
+                            onClick={() => setSelectedRoom(null)}
+                            className="absolute top-8 right-8 z-20 w-12 h-12 rounded-2xl bg-white/10 hover:bg-white/30 text-white flex items-center justify-center backdrop-blur-xl transition-all shadow-2xl border border-white/20"
+                        >
+                            <X size={24} />
+                        </button>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1.2fr) 1fr', height: '100%', minHeight: '500px' }}>
-                            <div style={{ backgroundImage: `url('${selectedRoom.image || 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80'}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
-
-                            <div style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', overflowY: 'auto' }}>
-                                <div>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                                        <span className="badge active">{selectedRoom.status === 'available' ? 'Tersedia' : 'Penuh'}</span>
-                                        <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--primary)' }}>{formatRupiah(selectedRoom.price)}/mlm</span>
-                                    </div>
-                                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-main)' }}>{selectedRoom.name}</h2>
+                        <div className="lg:w-1/2 h-80 lg:h-auto relative">
+                            <img 
+                                src={(Array.isArray(selectedRoom.images) && selectedRoom.images.length > 0 ? selectedRoom.images[0] : selectedRoom.image) || '/images/resort-room.png'} 
+                                alt={selectedRoom.name}
+                                className="w-full h-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent pointer-events-none" />
+                            
+                            {Array.isArray(selectedRoom.images) && selectedRoom.images.length > 1 && (
+                                <div className="absolute bottom-8 left-8 right-8 flex gap-3 overflow-x-auto pb-4 no-scrollbar">
+                                    {selectedRoom.images.map((img, i) => (
+                                        <div key={i} className="flex-shrink-0 w-24 h-16 rounded-[1.25rem] overflow-hidden border-2 border-white/40 hover:border-white transition-all cursor-pointer shadow-xl">
+                                            <img src={img} className="w-full h-full object-cover" />
+                                        </div>
+                                    ))}
                                 </div>
+                            )}
+                        </div>
 
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                    <div style={{ padding: '1rem', backgroundColor: '#F8FAFC', borderRadius: 'var(--radius-md)', display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
-                                        <BedDouble size={18} className="text-primary" />
-                                        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', width: '100%' }}>Tipe Kasur</div>
-                                        <div style={{ fontWeight: 700 }}>{selectedRoom.bed}</div>
-                                    </div>
-                                    <div style={{ padding: '1rem', backgroundColor: '#F8FAFC', borderRadius: 'var(--radius-md)', display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
-                                        <Maximize size={18} className="text-primary" />
-                                        <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-muted)', width: '100%' }}>Luas Kamar</div>
-                                        <div style={{ fontWeight: 700 }}>{selectedRoom.size} m&sup2;</div>
+                        <div className="lg:w-1/2 p-12 lg:p-16 overflow-y-auto max-h-[90vh]">
+                            <div className="flex items-center gap-3 mb-8">
+                                <div className="p-2 rounded-lg bg-admin-primary/10 text-admin-primary">
+                                    <ShieldCheck size={16} />
+                                </div>
+                                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-admin-primary">Property Specification</span>
+                            </div>
+
+                            <div className="flex justify-between items-start mb-10">
+                                <h2 className="text-4xl font-black text-admin-text-main tracking-tighter leading-none uppercase">{selectedRoom.name}</h2>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-6 mb-12">
+                                <div className="p-6 rounded-3xl bg-admin-bg border border-admin-border flex flex-col">
+                                    <span className="text-[10px] font-black text-admin-text-muted uppercase tracking-widest mb-3">Configurations</span>
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex items-center gap-2">
+                                            <BedDouble size={16} className="text-admin-primary" />
+                                            <span className="text-sm font-black text-admin-text-main">{selectedRoom.bed} Room</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Maximize size={16} className="text-admin-primary" />
+                                            <span className="text-sm font-black text-admin-text-main">{selectedRoom.size} Square Meters</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <div className="p-6 rounded-3xl bg-admin-primary text-white flex flex-col shadow-xl shadow-admin-primary/20">
+                                    <span className="text-[10px] font-black opacity-60 uppercase tracking-widest mb-3">Starting From</span>
+                                    <div className="flex flex-col">
+                                        <span className="text-2xl font-black">{formatRupiah(selectedRoom.price)}</span>
+                                        <span className="text-[10px] font-bold opacity-80 uppercase tracking-widest mt-1">Net Per Night</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <div>
-                                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', letterSpacing: '0.05em' }}>Fasilitas & Layanan</h4>
-                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                                        {selectedRoom.amenities.map((a, i) => (
-                                            <span key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.8rem', backgroundColor: '#F1F5F9', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 600, color: '#475569' }}>
-                                                <Check size={12} className="text-primary" /> {a}
+                            <div className="space-y-10">
+                                <section>
+                                    <h4 className="text-xs font-black text-admin-text-main uppercase tracking-widest mb-6 flex justify-between items-center">
+                                        Service Amenities
+                                        <span className="w-12 h-px bg-admin-border" />
+                                    </h4>
+                                    <div className="flex flex-wrap gap-3">
+                                        {(selectedRoom.amenities || []).map((a, i) => (
+                                            <span key={i} className="px-5 py-2.5 bg-admin-bg border border-admin-border text-admin-text-main rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-admin-primary hover:text-white hover:border-admin-primary transition-all">
+                                                <Check size={14} className="opacity-50" /> {a}
                                             </span>
                                         ))}
                                     </div>
-                                </div>
+                                </section>
 
-                                <div>
-                                    <h4 style={{ fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '0.75rem', letterSpacing: '0.05em' }}>Deskripsi</h4>
-                                    <p style={{ fontSize: '0.875rem', color: '#64748B', lineHeight: 1.6 }}>{selectedRoom.desc}</p>
-                                </div>
+                                <section>
+                                    <h4 className="text-xs font-black text-admin-text-main uppercase tracking-widest mb-4">Description Text</h4>
+                                    <p className="text-sm font-medium text-admin-text-muted leading-relaxed italic border-l-4 border-admin-primary/10 pl-6">
+                                        "{selectedRoom.desc}"
+                                    </p>
+                                </section>
 
-                                <div style={{ marginTop: 'auto', display: 'flex', gap: '1rem', paddingTop: '1rem' }}>
-                                    <button onClick={() => navigate(`/admin/rooms/edit/${selectedRoom.id}`)} style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--primary)', color: 'white', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
-                                        <Edit size={18} /> Edit Kamar
+                                <div className="pt-10 flex gap-4">
+                                    <button 
+                                        onClick={() => navigate(`/admin/rooms/edit/${selectedRoom.id}`)}
+                                        className="flex-1 btn-primary py-5 rounded-[2rem] shadow-2xl shadow-admin-primary/30 active:scale-95 transition-all text-sm uppercase tracking-[0.2em] font-black"
+                                    >
+                                        Edit Specifications
+                                    </button>
+                                    <button 
+                                        onClick={() => setSelectedRoom(null)}
+                                        className="w-20 h-20 rounded-[2rem] bg-admin-bg border border-admin-border text-admin-text-muted flex items-center justify-center hover:bg-white transition-all shadow-xl"
+                                    >
+                                        <ChevronRight size={32} />
                                     </button>
                                 </div>
                             </div>
@@ -147,6 +252,6 @@ export default function Rooms() {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }

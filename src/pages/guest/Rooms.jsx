@@ -50,7 +50,7 @@ export default function Rooms() {
                     return (
                         <div key={idx} className={`bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 group ${unavailable ? 'opacity-75' : ''}`}>
                             <div className="h-64 overflow-hidden relative">
-                                <img src={r.image || "/images/resort-room.png"} className={`w-full h-full object-cover group-hover:scale-110 transition duration-700 ${unavailable ? 'grayscale' : ''}`} alt={r.name} />
+                                <img src={(Array.isArray(r.images) && r.images.length > 0 ? r.images[0] : r.image) || "/images/resort-room.png"} className={`w-full h-full object-cover group-hover:scale-110 transition duration-700 ${unavailable ? 'grayscale' : ''}`} alt={r.name} />
                                 {unavailable ? (
                                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                                         <span className="bg-white text-gray-900 font-bold px-6 py-2 rounded-full uppercase tracking-widest text-sm">{badgeText}</span>

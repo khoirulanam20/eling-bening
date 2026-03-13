@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { QrCode, Scan, Search, Camera, StopCircle, RefreshCw, X, CheckCircle2, AlertCircle } from 'lucide-react';
+import { QrCode, Scan, Search, Camera, StopCircle, RefreshCw, X, CheckCircle2, AlertCircle, User, Fullscreen, CornerUpRight, Terminal } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
 import toast from 'react-hot-toast';
 
@@ -25,7 +25,7 @@ export default function Scanner() {
             const html5QrCode = new Html5Qrcode(scannerId);
             scannerRef.current = html5QrCode;
 
-            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            const config = { fps: 15, qrbox: { width: 280, height: 280 } };
 
             await html5QrCode.start(
                 { facingMode: "environment" },
@@ -33,9 +33,7 @@ export default function Scanner() {
                 (decodedText) => {
                     handleScanSuccess(decodedText);
                 },
-                (errorMessage) => {
-                    // console.log(errorMessage);
-                }
+                (errorMessage) => {}
             );
 
             setIsScanning(true);
@@ -75,10 +73,9 @@ export default function Scanner() {
     const handleManualCheck = () => {
         if (!scannedId) return;
         setIsLoading(true);
-        // Simulate API call
         setTimeout(() => {
             setScanResult({
-                id: scannedId,
+                id: scannedId.toUpperCase(),
                 name: "Siska Amelia",
                 type: "Tiket Masuk (Anak)",
                 date: new Date().toLocaleDateString('id-ID'),
@@ -90,122 +87,189 @@ export default function Scanner() {
     };
 
     return (
-        <div className="animate-fade-in">
+        <div className="animate-fade-in space-y-10">
             <div className="admin-page-header">
                 <div>
                     <h1>Scanner & Pengunjung</h1>
-                    <p className="text-muted mt-1">Scan kode QR tiket pengunjung untuk verifikasi kedatangan.</p>
+                    <p>Verifikasi kode QR tiket pengunjung untuk otorisasi akses kawasan.</p>
                 </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 {/* Visual Area */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <div className="admin-card" style={{ padding: '0', overflow: 'hidden', position: 'relative', minHeight: '400px', backgroundColor: '#000', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <div id={scannerId} style={{ width: '100%' }}></div>
+                <div className="space-y-6">
+                    <div className="relative aspect-square md:aspect-video lg:aspect-square bg-slate-900 rounded-[3rem] overflow-hidden border-4 border-admin-bg shadow-2xl flex items-center justify-center group">
+                        <div id={scannerId} className="w-full h-full object-cover"></div>
+                        
+                        {/* Futuristic Scanner Overlays */}
+                        {isScanning && (
+                            <div className="absolute inset-0 pointer-events-none">
+                                <div className="absolute top-10 left-10 w-8 h-8 border-t-4 border-l-4 border-admin-primary rounded-tl-xl" />
+                                <div className="absolute top-10 right-10 w-8 h-8 border-t-4 border-r-4 border-admin-primary rounded-tr-xl" />
+                                <div className="absolute bottom-10 left-10 w-8 h-8 border-b-4 border-l-4 border-admin-primary rounded-bl-xl" />
+                                <div className="absolute bottom-10 right-10 w-8 h-8 border-b-4 border-r-4 border-admin-primary rounded-br-xl" />
+                                <div className="absolute top-1/2 left-0 w-full h-[2px] bg-admin-primary/30 animate-[scan_2s_ease-in-out_infinite]" />
+                            </div>
+                        )}
 
                         {!isScanning && !scanResult && (
-                            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', backgroundColor: 'rgba(0,0,0,0.6)', padding: '2rem', textAlign: 'center' }}>
-                                <Camera size={64} style={{ marginBottom: '1.5rem', opacity: 0.5 }} />
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}>Scanner Siap</h3>
-                                <p style={{ opacity: 0.8, fontSize: '0.875rem' }}>Klik tombol di bawah untuk mengaktifkan kamera dan scan tiket.</p>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center bg-slate-900/60 backdrop-blur-sm">
+                                <div className="w-24 h-24 rounded-full bg-admin-primary/20 border border-admin-primary/20 flex items-center justify-center text-admin-primary mb-8 animate-pulse">
+                                    <Camera size={40} />
+                                </div>
+                                <h3 className="text-2xl font-black text-white uppercase tracking-widest mb-3">System Ready</h3>
+                                <p className="text-xs text-slate-400 font-bold leading-relaxed max-w-sm">
+                                    Arahkan kamera ke kode QR pengunjung. Pastikan pencahayaan cukup untuk proses deteksi yang optimal.
+                                </p>
                             </div>
                         )}
 
                         {scanResult && (
-                            <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', backgroundColor: 'rgba(0,128,0,0.85)', padding: '2rem', textAlign: 'center' }}>
-                                <CheckCircle2 size={72} style={{ marginBottom: '1rem' }} />
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>TIKET VALID</h3>
-                                <p style={{ fontSize: '1rem', opacity: 0.9 }}>{scanResult.id}</p>
-                                <button className="btn-primary" onClick={() => setScanResult(null)} style={{ marginTop: '2rem', backgroundColor: 'white', color: 'green' }}>Scan Lagi</button>
+                            <div className="absolute inset-0 flex flex-col items-center justify-center p-10 text-center bg-success/90 backdrop-blur-md animate-fade-in">
+                                <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-success mb-6 shadow-2xl shadow-white/20">
+                                    <CheckCircle2 size={56} />
+                                </div>
+                                <h3 className="text-3xl font-black text-white uppercase tracking-widest mb-2">Authenticated</h3>
+                                <p className="text-sm text-white/80 font-mono font-bold">{scanResult.id}</p>
+                                <button 
+                                    className="mt-10 px-8 py-4 bg-white text-success rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:scale-105 transition-all"
+                                    onClick={() => setScanResult(null)}
+                                >
+                                    Scan Next Ticket
+                                </button>
                             </div>
                         )}
                     </div>
 
-                    <div style={{ display: 'flex', gap: '1rem' }}>
+                    <div className="flex gap-4">
                         {!isScanning ? (
-                            <button className="btn-primary" onClick={startScanner} disabled={isLoading} style={{ flex: 1, height: '3.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '1rem' }}>
-                                {isLoading ? <RefreshCw className="animate-spin" size={20} /> : <Scan size={20} />}
-                                Aktifkan Kamera Scanner
+                            <button 
+                                className="flex-1 btn-primary py-5 rounded-[2rem] shadow-xl shadow-admin-primary/20 flex items-center justify-center gap-3 active:scale-95 transition-all"
+                                onClick={startScanner} disabled={isLoading}
+                            >
+                                {isLoading ? <RefreshCw className="animate-spin" size={20} /> : <Scan size={22} />}
+                                <span className="font-black text-sm uppercase tracking-widest">Activate Camera</span>
                             </button>
                         ) : (
-                            <button className="btn-primary" onClick={stopScanner} style={{ flex: 1, height: '3.5rem', backgroundColor: '#EF4444', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', fontSize: '1rem' }}>
-                                <StopCircle size={20} /> Hentikan Scanner
+                            <button 
+                                className="flex-1 py-5 rounded-[2rem] bg-danger text-white flex items-center justify-center gap-3 shadow-xl shadow-danger/20 hover:bg-danger/90 transition-all font-black text-sm uppercase tracking-widest"
+                                onClick={stopScanner}
+                            >
+                                <StopCircle size={22} /> Stop Scanning
                             </button>
                         )}
                     </div>
                 </div>
 
                 {/* Info Area */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                    <div className="admin-card">
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <Search size={18} className="text-primary" /> Input Manual
-                        </h3>
-                        <div style={{ display: 'flex', gap: '1rem' }}>
-                            <input
-                                type="text"
-                                placeholder="Order ID atau Kode Tiket..."
-                                value={scannedId}
-                                onChange={(e) => setScannedId(e.target.value)}
-                                style={{ flex: 1, padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-color)', outline: 'none' }}
-                            />
-                            <button className="btn-primary" onClick={handleManualCheck} disabled={isLoading}>
-                                {isLoading ? <RefreshCw className="animate-spin" size={18} /> : 'Cek'}
+                <div className="space-y-8">
+                    <div className="admin-table-container !p-8">
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="p-3 rounded-2xl bg-admin-primary/10 text-admin-primary">
+                                <Terminal size={20} />
+                            </div>
+                            <h3 className="text-lg font-black text-admin-text-main uppercase tracking-widest">Manual Override</h3>
+                        </div>
+                        <div className="flex gap-3">
+                            <div className="relative flex-1">
+                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-admin-text-light" size={18} />
+                                <input
+                                    type="text"
+                                    placeholder="Order ID / Ticket Code..."
+                                    value={scannedId}
+                                    onChange={(e) => setScannedId(e.target.value)}
+                                    className="w-full bg-admin-bg border border-admin-border rounded-2xl py-4 pl-12 pr-4 text-xs font-black uppercase tracking-widest text-admin-text-main focus:outline-none focus:border-admin-primary transition-all placeholder:text-admin-text-light/50"
+                                />
+                            </div>
+                            <button 
+                                className="btn-primary px-8 rounded-2xl shadow-lg shadow-admin-primary/10"
+                                onClick={handleManualCheck} disabled={isLoading || !scannedId}
+                            >
+                                {isLoading ? <RefreshCw className="animate-spin" size={18} /> : 'Process'}
                             </button>
                         </div>
                     </div>
 
                     {scanResult ? (
-                        <div className="admin-card animate-scale-up" style={{ border: '2px solid var(--primary)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Informasi Tiket</h3>
-                                <button onClick={() => setScanResult(null)}><X size={20} className="text-muted" /></button>
+                        <div className="admin-table-container !p-10 border-2 border-admin-primary animate-scale-up relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-admin-primary/5 rounded-full translate-x-1/2 -translate-y-1/2" />
+                            
+                            <div className="flex justify-between items-center mb-10">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 rounded-2xl bg-success/10 text-success">
+                                        <CheckCircle2 size={24} />
+                                    </div>
+                                    <h3 className="text-xl font-black text-admin-text-main uppercase tracking-widest">Validation Success</h3>
+                                </div>
+                                <button onClick={() => setScanResult(null)} className="text-admin-text-light hover:text-admin-text-main">
+                                    <X size={20} />
+                                </button>
                             </div>
 
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px dashed #E2E8F0' }}>
-                                    <span className="text-muted">Nama Pengunjung</span>
-                                    <span style={{ fontWeight: 700 }}>{scanResult.name}</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px dashed #E2E8F0' }}>
-                                    <span className="text-muted">Jenis Tiket</span>
-                                    <span className="badge active">{scanResult.type}</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px dashed #E2E8F0' }}>
-                                    <span className="text-muted">Jumlah</span>
-                                    <span style={{ fontWeight: 700 }}>{scanResult.count} Orang</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px dashed #E2E8F0' }}>
-                                    <span className="text-muted">Tanggal Scan</span>
-                                    <span style={{ fontWeight: 600 }}>{scanResult.date}</span>
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem', backgroundColor: '#F0FDF4', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#166534', fontWeight: 700 }}>
-                                        <CheckCircle2 size={18} /> STATUS VALID
+                            <div className="space-y-6">
+                                <div className="grid grid-cols-2 gap-8">
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-admin-text-muted">Customer</label>
+                                        <p className="text-base font-black text-admin-text-main uppercase">{scanResult.name}</p>
                                     </div>
-                                    <span style={{ color: '#166534' }}>Siap Masuk</span>
+                                    <div className="space-y-1.5">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-admin-text-muted">Quantity</label>
+                                        <p className="text-base font-black text-admin-text-main">{scanResult.count} PERSONS</p>
+                                    </div>
+                                    <div className="col-span-2 space-y-1.5">
+                                        <label className="text-[10px] font-black uppercase tracking-widest text-admin-text-muted">Service Category</label>
+                                        <div className="flex">
+                                            <span className="badge-status bg-admin-primary/5 text-admin-primary border-admin-primary/10">
+                                                {scanResult.type}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="pt-6 border-t border-admin-border flex items-center justify-between">
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-black text-admin-text-muted uppercase mb-1">Authenticated At</span>
+                                        <span className="text-sm font-black text-admin-text-main">{scanResult.date} • {new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</span>
+                                    </div>
+                                    <div className="bg-success text-white px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-success/20 animate-bounce">
+                                        Entry Authorized
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ) : (
-                        <div className="admin-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', backgroundColor: '#F8FAFC', border: '1px dashed #CBD5E1' }}>
-                            <QrCode size={64} style={{ color: '#94A3B8', marginBottom: '1.25rem' }} />
-                            <p style={{ color: '#64748B', textAlign: 'center' }}>Hasil verifikasi tiket akan muncul di sini setelah scan atau input manual.</p>
+                        <div className="admin-table-container !p-20 flex flex-col items-center justify-center text-center bg-admin-bg/50 border-dashed border-2">
+                            <div className="w-20 h-20 rounded-[2rem] bg-admin-bg border border-admin-border flex items-center justify-center text-admin-text-light/30 mb-6 font-black text-xs">
+                                <QrCode size={40} />
+                            </div>
+                            <h4 className="text-sm font-black text-admin-text-muted uppercase tracking-[0.2em]">Waiting for Scan</h4>
+                            <p className="max-w-[200px] mt-2 text-[11px] font-bold text-admin-text-light/60">
+                                Scanned data or manual verification results will be displayed here.
+                            </p>
                         </div>
                     )}
 
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem', padding: '1.25rem', backgroundColor: '#FEF9C3', borderRadius: 'var(--radius-md)', border: '1px solid #FEF08A' }}>
-                        <AlertCircle size={20} style={{ color: '#854D0E', flexShrink: 0, marginTop: '0.2rem' }} />
-                        <div>
-                            <p style={{ fontSize: '0.875rem', fontWeight: 700, color: '#854D0E', marginBottom: '0.25rem' }}>Petunjuk Verifikasi</p>
-                            <p style={{ fontSize: '0.8125rem', color: '#713F12', lineHeight: 1.5 }}>
-                                Pastikan kode QR terlihat jelas. Jika kamera bermasalah, gunakan input manual dengan memasukkan kode unik yang tertera di bawah QR Code tiket pengunjung.
+                    <div className="p-8 rounded-[2.5rem] bg-warning/5 border border-warning/10 flex gap-6 items-start">
+                        <div className="w-12 h-12 rounded-2xl bg-warning/10 text-warning flex items-center justify-center flex-shrink-0">
+                            <AlertCircle size={22} />
+                        </div>
+                        <div className="space-y-2">
+                            <h4 className="text-sm font-black text-warning uppercase tracking-widest">Protocol Verification</h4>
+                            <p className="text-[11px] font-bold text-warning/70 leading-relaxed">
+                                Selalu pastikan pencahayaan cukup untuk deteksi QR. Jika layar rusak, gunakan Input Manual dengan kode pesanan 12-digit. Verifikasi kartu identitas fisik jika perlu.
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <style>{`
+                @keyframes scan {
+                    0% { top: 10%; opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { top: 90%; opacity: 0; }
+                }
+            `}</style>
         </div>
     );
 }

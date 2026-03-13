@@ -1,133 +1,185 @@
-import { useState } from 'react';
-import { Outlet, NavLink, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
 import {
     LayoutDashboard, Ticket, Building, BedDouble, Receipt,
     Settings, Gift, RefreshCcw, Search, BarChart3,
     ChevronDown, Hotel, Maximize, ShoppingCart,
     PieChart, Megaphone, Layout, ExternalLink,
-    ClipboardList, QrCode
+    ClipboardList, QrCode, Calendar, Menu, X, 
+    Bell, User, LogOut, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import '../styles/admin.css';
 
 export default function AdminLayout() {
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [openMenus, setOpenMenus] = useState({
         booking: false,
         ticket: false,
         finance: false
     });
+    
+    const location = useLocation();
+
+    // Close mobile menu on route change
+    useEffect(() => {
+        setIsMobileMenuOpen(false);
+    }, [location]);
 
     const toggleMenu = (menu) => {
         setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
     };
 
+    const toggleSidebar = () => {
+        setIsSidebarCollapsed(!isSidebarCollapsed);
+    };
+
+    const NavItem = ({ to, icon: Icon, label, end = false }) => (
+        <li>
+            <NavLink 
+                to={to} 
+                end={end} 
+                className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
+                title={isSidebarCollapsed ? label : ''}
+            >
+                <Icon size={20} />
+                {!isSidebarCollapsed && <span>{label}</span>}
+            </NavLink>
+        </li>
+    );
+
     return (
         <div className="admin-layout">
-            {/* Desktop Sidebar - Hidden on Mobile via CSS */}
-            <aside className="admin-sidebar">
+            {/* Sidebar Overlay for Mobile */}
+            {isMobileMenuOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/50 z-[950] lg:hidden animate-fade-in" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+            )}
+
+            {/* Sidebar */}
+            <aside className={`admin-sidebar ${isSidebarCollapsed ? 'collapsed' : ''} ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
                 <div className="sidebar-header">
                     <div className="sidebar-logo">
-                        <img src="/images/logo.png" alt="Logo" className="h-8 brightness-0 invert" style={{ height: '32px' }} />
-                        <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'white' }}>Admin</h2>
+                        <div className="p-1.5 bg-admin-primary rounded-lg">
+                            <img src="/images/logo.png" alt="Logo" className="h-6 brightness-0 invert" />
+                        </div>
+                        {!isSidebarCollapsed && <h2>Admin Panel</h2>}
                     </div>
                 </div>
 
                 <nav className="sidebar-nav">
                     <ul>
-                        <li>
-                            <NavLink to="/admin" end className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <LayoutDashboard size={20} /> <span>Dashboard</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/admin/stats" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <BarChart3 size={20} /> <span>Statistik</span>
-                            </NavLink>
-                        </li>
+                        {!isSidebarCollapsed && <div className="nav-section-title">Main Menu</div>}
+                        <NavItem to="/admin" icon={LayoutDashboard} label="Dashboard" end />
+                        <NavItem to="/admin/stats" icon={BarChart3} label="Statistik" />
 
-                        {/* Booking Resort Group */}
+                        {!isSidebarCollapsed && <div className="nav-section-title">Operational</div>}
                         <li>
-                            <button onClick={() => toggleMenu('booking')} className="nav-group-btn">
+                            <button onClick={() => toggleMenu('booking')} className="nav-group-btn" title={isSidebarCollapsed ? 'Booking Resort' : ''}>
                                 <div className="btn-content">
-                                    <Hotel size={20} /> <span>Booking Resort</span>
+                                    <Hotel size={20} /> 
+                                    {!isSidebarCollapsed && <span>Booking Resort</span>}
                                 </div>
-                                <ChevronDown size={14} className={`chevron ${openMenus.booking ? 'rotated' : ''}`} />
+                                {!isSidebarCollapsed && <ChevronDown size={14} className={`chevron ${openMenus.booking ? 'rotated' : ''}`} />}
                             </button>
-                            <div className={`submenu ${openMenus.booking ? 'open' : ''}`}>
-                                <NavLink to="/admin/rooms" className="submenu-item">Kelola Kamar</NavLink>
-                                <NavLink to="/admin/bookings" className="submenu-item">Daftar Pesanan</NavLink>
-                                <NavLink to="/admin/reschedule" className="submenu-item">Kelola Reschedule</NavLink>
-                            </div>
+                            {!isSidebarCollapsed && (
+                                <div className={`submenu ${openMenus.booking ? 'open' : ''}`}>
+                                    <NavLink to="/admin/rooms" className="submenu-item">Kelola Kamar</NavLink>
+                                    <NavLink to="/admin/bookings" className="submenu-item">Daftar Pesanan</NavLink>
+                                    <NavLink to="/admin/reschedule" className="submenu-item">Kelola Reschedule</NavLink>
+                                </div>
+                            )}
                         </li>
 
-                        {/* Tiket Masuk Group - Consolidated */}
                         <li>
-                            <button onClick={() => toggleMenu('ticket')} className="nav-group-btn">
+                            <button onClick={() => toggleMenu('ticket')} className="nav-group-btn" title={isSidebarCollapsed ? 'Tiket Masuk' : ''}>
                                 <div className="btn-content">
-                                    <Ticket size={20} /> <span>Tiket Masuk</span>
+                                    <Ticket size={20} /> 
+                                    {!isSidebarCollapsed && <span>Tiket Masuk</span>}
                                 </div>
-                                <ChevronDown size={14} className={`chevron ${openMenus.ticket ? 'rotated' : ''}`} />
+                                {!isSidebarCollapsed && <ChevronDown size={14} className={`chevron ${openMenus.ticket ? 'rotated' : ''}`} />}
                             </button>
-                            <div className={`submenu ${openMenus.ticket ? 'open' : ''}`}>
-                                <NavLink to="/admin/tickets/orders" className="submenu-item">Pesanan Tiket</NavLink>
-                                <NavLink to="/admin/tickets" className="submenu-item">Kelola Tiket</NavLink>
-                                <NavLink to="/admin/scanner" className="submenu-item">Scan Tiket</NavLink>
-                            </div>
+                            {!isSidebarCollapsed && (
+                                <div className={`submenu ${openMenus.ticket ? 'open' : ''}`}>
+                                    <NavLink to="/admin/tickets/orders" className="submenu-item">Pesanan Tiket</NavLink>
+                                    <NavLink to="/admin/tickets" className="submenu-item">Kelola Tiket</NavLink>
+                                    <NavLink to="/admin/scanner" className="submenu-item">Scan Tiket</NavLink>
+                                </div>
+                            )}
                         </li>
 
-                        {/* Keuangan Group */}
+                        {!isSidebarCollapsed && <div className="nav-section-title">Marketing & Content</div>}
+                        <NavItem to="/admin/events" icon={Calendar} label="Kelola Event" />
+                        <NavItem to="/admin/promos" icon={Megaphone} label="Promo & Banner" />
+                        <NavItem to="/admin/content" icon={Layout} label="Konten CMS" />
+
+                        {!isSidebarCollapsed && <div className="nav-section-title">Finance</div>}
                         <li>
-                            <button onClick={() => toggleMenu('finance')} className="nav-group-btn">
+                            <button onClick={() => toggleMenu('finance')} className="nav-group-btn" title={isSidebarCollapsed ? 'Keuangan' : ''}>
                                 <div className="btn-content">
-                                    <Receipt size={20} /> <span>Laporan Keuangan</span>
+                                    <Receipt size={20} /> 
+                                    {!isSidebarCollapsed && <span>Keuangan</span>}
                                 </div>
-                                <ChevronDown size={14} className={`chevron ${openMenus.finance ? 'rotated' : ''}`} />
+                                {!isSidebarCollapsed && <ChevronDown size={14} className={`chevron ${openMenus.finance ? 'rotated' : ''}`} />}
                             </button>
-                            <div className={`submenu ${openMenus.finance ? 'open' : ''}`}>
-                                <NavLink to="/admin/finance" end className="submenu-item">Dashboard Keuangan</NavLink>
-                                <NavLink to="/admin/finance/expenses" className="submenu-item">Pengeluaran</NavLink>
-                                <NavLink to="/admin/finance/recap" className="submenu-item">Rekap Laporan</NavLink>
-                            </div>
+                            {!isSidebarCollapsed && (
+                                <div className={`submenu ${openMenus.finance ? 'open' : ''}`}>
+                                    <NavLink to="/admin/finance" end className="submenu-item">Dashboard Keuangan</NavLink>
+                                    <NavLink to="/admin/finance/expenses" className="submenu-item">Pengeluaran</NavLink>
+                                    <NavLink to="/admin/finance/recap" className="submenu-item">Rekap Laporan</NavLink>
+                                </div>
+                            )}
                         </li>
 
-                        <li>
-                            <NavLink to="/admin/content" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <Layout size={20} /> <span>Konten CMS</span>
-                            </NavLink>
-                        </li>
-
-                        <li>
-                            <NavLink to="/admin/promos" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <Megaphone size={20} /> <span>Promo</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/admin/seo" className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
-                                <Search size={20} /> <span>Setting SEO</span>
-                            </NavLink>
-                        </li>
+                        {!isSidebarCollapsed && <div className="nav-section-title">Settings</div>}
+                        <NavItem to="/admin/seo" icon={Search} label="SEO & Meta" />
+                        <NavItem to="/admin/settings" icon={Settings} label="System Settings" />
                     </ul>
                 </nav>
 
                 <div className="sidebar-footer">
                     <Link to="/" className="view-site-link">
-                        <ExternalLink size={18} /> <span>Lihat Website</span>
+                        <ExternalLink size={18} /> 
+                        {!isSidebarCollapsed && <span>Lihat Website</span>}
                     </Link>
                 </div>
             </aside>
 
+            {/* Main Wrapper */}
             <div className="admin-main-wrapper">
                 <header className="admin-topbar">
                     <div className="topbar-left">
-                        {/* Mobile Logo - Visible only on mobile */}
-                        <div className="mobile-logo-header">
-                            <img src="/images/logo.png" alt="Logo" style={{ height: '24px' }} />
-                            <h3 style={{ margin: 0, fontWeight: 700, fontSize: '1rem' }}>Eling Bening</h3>
+                        <button className="menu-toggle lg:flex hidden" onClick={toggleSidebar}>
+                            {isSidebarCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+                        </button>
+                        <button className="menu-toggle lg:hidden flex" onClick={() => setIsMobileMenuOpen(true)}>
+                            <Menu size={20} />
+                        </button>
+                        
+                        <div className="topbar-search hidden md:block">
+                            <Search className="search-icon" size={18} />
+                            <input type="text" placeholder="Cari data, pesanan, atau fitur..." />
                         </div>
-                        <h3 className="desktop-topbar-title" style={{ margin: 0, fontWeight: 700 }}>Admin Panel Eling Bening</h3>
                     </div>
+
                     <div className="topbar-right">
+                        <div className="topbar-actions hidden sm:flex">
+                            <button className="action-btn" title="Notifications">
+                                <Bell size={20} />
+                                <span className="notification-badge"></span>
+                            </button>
+                            <button className="action-btn" title="Settings">
+                                <Settings size={20} />
+                            </button>
+                        </div>
+
                         <div className="admin-profile">
-                            <span className="profile-name">Administrator</span>
+                            <div className="profile-info hidden sm:block">
+                                <span className="profile-name">Administrator</span>
+                                <span className="profile-role">Super Admin</span>
+                            </div>
                             <div className="profile-avatar">A</div>
                         </div>
                     </div>
@@ -137,32 +189,6 @@ export default function AdminLayout() {
                     <Outlet />
                 </main>
             </div>
-
-            {/* Bottom Navbar for Mobile */}
-            <nav className="bottom-navbar">
-                <NavLink to="/admin" end className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
-                    <LayoutDashboard size={20} />
-                    <span>Home</span>
-                </NavLink>
-                <NavLink to="/admin/bookings" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
-                    <Hotel size={20} />
-                    <span>Booking</span>
-                </NavLink>
-                <NavLink to="/admin/scanner" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
-                    <div className="scanner-btn-pulse">
-                        <QrCode size={24} color="white" />
-                    </div>
-                    <span>Scan</span>
-                </NavLink>
-                <NavLink to="/admin/tickets/orders" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
-                    <Ticket size={20} />
-                    <span>Tiket</span>
-                </NavLink>
-                <NavLink to="/admin/finance" className={({ isActive }) => isActive ? 'btm-nav-item active' : 'btm-nav-item'}>
-                    <PieChart size={20} />
-                    <span>Laporan</span>
-                </NavLink>
-            </nav>
         </div>
     );
 }
