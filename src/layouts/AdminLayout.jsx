@@ -5,8 +5,9 @@ import {
     Settings, Gift, RefreshCcw, Search, BarChart3,
     ChevronDown, Hotel, Maximize, ShoppingCart,
     PieChart, Megaphone, Layout, ExternalLink,
-    ClipboardList, QrCode, Calendar, Menu, X, 
-    Bell, User, LogOut, ChevronLeft, ChevronRight
+    ClipboardList, QrCode, Calendar, Menu, X,
+    Bell, User, LogOut, ChevronLeft, ChevronRight,
+    CircleDollarSign, TrendingDown
 } from 'lucide-react';
 import '../styles/admin.css';
 
@@ -15,10 +16,9 @@ export default function AdminLayout() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [openMenus, setOpenMenus] = useState({
         booking: false,
-        ticket: false,
-        finance: false
+        ticket: false
     });
-    
+
     const location = useLocation();
 
     // Close mobile menu on route change
@@ -36,9 +36,9 @@ export default function AdminLayout() {
 
     const NavItem = ({ to, icon: Icon, label, end = false }) => (
         <li>
-            <NavLink 
-                to={to} 
-                end={end} 
+            <NavLink
+                to={to}
+                end={end}
                 className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
                 title={isSidebarCollapsed ? label : ''}
             >
@@ -52,8 +52,8 @@ export default function AdminLayout() {
         <div className="admin-layout">
             {/* Sidebar Overlay for Mobile */}
             {isMobileMenuOpen && (
-                <div 
-                    className="fixed inset-0 bg-black/50 z-[950] lg:hidden animate-fade-in" 
+                <div
+                    className="fixed inset-0 bg-black/50 z-[950] lg:hidden animate-fade-in"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
             )}
@@ -82,7 +82,7 @@ export default function AdminLayout() {
                         <li>
                             <button onClick={() => toggleMenu('booking')} className="nav-group-btn" title={isSidebarCollapsed ? 'Booking Resort' : ''}>
                                 <div className="btn-content">
-                                    <Hotel size={20} /> 
+                                    <Hotel size={20} />
                                     {!isSidebarCollapsed && <span>Booking Resort</span>}
                                 </div>
                                 {!isSidebarCollapsed && <ChevronDown size={14} className={`chevron ${openMenus.booking ? 'rotated' : ''}`} />}
@@ -99,7 +99,7 @@ export default function AdminLayout() {
                         <li>
                             <button onClick={() => toggleMenu('ticket')} className="nav-group-btn" title={isSidebarCollapsed ? 'Tiket Masuk' : ''}>
                                 <div className="btn-content">
-                                    <Ticket size={20} /> 
+                                    <Ticket size={20} />
                                     {!isSidebarCollapsed && <span>Tiket Masuk</span>}
                                 </div>
                                 {!isSidebarCollapsed && <ChevronDown size={14} className={`chevron ${openMenus.ticket ? 'rotated' : ''}`} />}
@@ -118,32 +118,22 @@ export default function AdminLayout() {
                         <NavItem to="/admin/promos" icon={Megaphone} label="Promo & Banner" />
                         <NavItem to="/admin/content" icon={Layout} label="Konten CMS" />
 
-                        {!isSidebarCollapsed && <div className="nav-section-title">Finance</div>}
-                        <li>
-                            <button onClick={() => toggleMenu('finance')} className="nav-group-btn" title={isSidebarCollapsed ? 'Keuangan' : ''}>
-                                <div className="btn-content">
-                                    <Receipt size={20} /> 
-                                    {!isSidebarCollapsed && <span>Keuangan</span>}
-                                </div>
-                                {!isSidebarCollapsed && <ChevronDown size={14} className={`chevron ${openMenus.finance ? 'rotated' : ''}`} />}
-                            </button>
-                            {!isSidebarCollapsed && (
-                                <div className={`submenu ${openMenus.finance ? 'open' : ''}`}>
-                                    <NavLink to="/admin/finance" end className="submenu-item">Dashboard Keuangan</NavLink>
-                                    <NavLink to="/admin/finance/expenses" className="submenu-item">Pengeluaran</NavLink>
-                                    <NavLink to="/admin/finance/recap" className="submenu-item">Rekap Laporan</NavLink>
-                                </div>
-                            )}
-                        </li>
+                        {!isSidebarCollapsed && <div className="nav-section-title">Financial Reports</div>}
+                        <NavItem to="/admin/finance" icon={PieChart} label="Dashboard Finance" end />
+                        <NavItem to="/admin/finance/expenses" icon={TrendingDown} label="Pengeluaran" />
+                        <NavItem to="/admin/finance/tickets" icon={Ticket} label="Pendapatan Tiket" />
+                        <NavItem to="/admin/finance/resort" icon={Building} label="Pendapatan Resort" />
+                        <NavItem to="/admin/finance/recap" icon={CircleDollarSign} label="Rekapitulasi" />
 
                         {!isSidebarCollapsed && <div className="nav-section-title">Settings</div>}
                         <NavItem to="/admin/seo" icon={Search} label="SEO & Meta" />
+                        <NavItem to="/admin/profile" icon={User} label="Profil Saya" />
                         <NavItem to="/admin/settings" icon={Settings} label="System Settings" />
                     </ul>
                 </nav>
                 <div className="sidebar-footer">
                     <Link to="/" className="view-site-link">
-                        <ExternalLink size={18} /> 
+                        <ExternalLink size={18} />
                         {!isSidebarCollapsed && <span>Lihat Website</span>}
                     </Link>
                 </div>
@@ -159,7 +149,7 @@ export default function AdminLayout() {
                         <button className="menu-toggle lg:hidden flex" onClick={() => setIsMobileMenuOpen(true)}>
                             <Menu size={20} />
                         </button>
-                        
+
                         <div className="topbar-search hidden md:block">
                             <Search className="search-icon" size={18} />
                             <input type="text" placeholder="Cari data, pesanan, atau fitur..." />
@@ -177,13 +167,13 @@ export default function AdminLayout() {
                             </button>
                         </div>
 
-                        <div className="admin-profile">
-                            <div className="profile-info hidden sm:block">
+                        <Link to="/admin/profile" className="admin-profile hover:bg-gray-50 transition-colors p-1 rounded-xl cursor-pointer">
+                            <div className="profile-info hidden sm:block text-right">
                                 <span className="profile-name">Administrator</span>
                                 <span className="profile-role">Super Admin</span>
                             </div>
                             <div className="profile-avatar">A</div>
-                        </div>
+                        </Link>
                     </div>
                 </header>
 

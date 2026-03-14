@@ -23,7 +23,7 @@ export default function EditTicket() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const tickets = getTickets();
-        const updated = tickets.map(t => t.id === Number(id) ? { ...formData, price: Number(formData.price) } : t);
+        const updated = tickets.map(t => t.id === Number(id) ? { ...formData, price: Number(formData.price), priceWeekend: Number(formData.priceWeekend) } : t);
         saveTickets(updated);
         toast.success('Perubahan berhasil disimpan');
         navigate('/admin/tickets');
@@ -51,7 +51,7 @@ export default function EditTicket() {
                 <div className="lg:col-span-2 space-y-6">
                     <form onSubmit={handleSubmit} className="admin-card space-y-6">
                         <h3 className="text-sm font-bold text-admin-text-main mb-6 pb-4 border-b border-admin-border">Konfigurasi Tiket</h3>
-                        
+
                         <div className="form-group">
                             <label className="form-label">Nama / Jenis Tiket</label>
                             <div className="relative">
@@ -73,10 +73,17 @@ export default function EditTicket() {
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label className="form-label">Harga Tiket</label>
+                                <label className="form-label">Harga Tiket (Weekday)</label>
                                 <div className="relative">
                                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-light font-bold text-sm">Rp</span>
                                     <input required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} type="number" className="admin-input pl-10" placeholder="0" />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Harga Tiket (Weekend)</label>
+                                <div className="relative">
+                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-light font-bold text-sm">Rp</span>
+                                    <input required value={formData.priceWeekend} onChange={e => setFormData({ ...formData, priceWeekend: e.target.value })} type="number" className="admin-input pl-10" placeholder="0" />
                                 </div>
                             </div>
                         </div>

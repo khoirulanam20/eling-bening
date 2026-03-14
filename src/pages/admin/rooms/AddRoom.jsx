@@ -16,6 +16,7 @@ export default function AddRoom() {
     const initialForm = {
         name: '',
         price: '',
+        priceWeekend: '',
         capacity: 2,
         stock: 5,
         bed: 'King Bed',
@@ -45,6 +46,7 @@ export default function AddRoom() {
             id: newId,
             image: formData.images.length > 0 ? formData.images[0] : '/images/resort-room.png',
             price: Number(formData.price),
+            priceWeekend: Number(formData.priceWeekend),
             capacity: Number(formData.capacity),
             stock: Number(formData.stock),
             size: Number(formData.size)
@@ -76,7 +78,7 @@ export default function AddRoom() {
                                 <label className="form-label">Nama Tipe Kamar</label>
                                 <input required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} type="text" className="admin-input" placeholder="misal: Deluxe Lake View" />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label className="form-label">Deskripsi Lengkap</label>
                                 <textarea required rows="6" value={formData.desc} onChange={e => setFormData({ ...formData, desc: e.target.value })} className="admin-textarea" placeholder="Jelaskan detail kamar, pemandangan, dan keunggulan lainnya..."></textarea>
@@ -93,17 +95,15 @@ export default function AddRoom() {
                                     <div
                                         key={opt}
                                         onClick={() => handleAmenityChange(opt)}
-                                        className={`flex items-center gap-2 p-3 rounded-xl border transition-all cursor-pointer select-none ${
-                                            isSelected 
-                                            ? 'bg-admin-primary-light border-admin-primary text-admin-primary-dark' 
-                                            : 'bg-white border-admin-border text-admin-text-muted hover:border-admin-primary/50'
-                                        }`}
+                                        className={`flex items-center gap-2 p-3 rounded-xl border transition-all cursor-pointer select-none ${isSelected
+                                                ? 'bg-admin-primary-light border-admin-primary text-admin-primary-dark'
+                                                : 'bg-white border-admin-border text-admin-text-muted hover:border-admin-primary/50'
+                                            }`}
                                     >
-                                        <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${
-                                            isSelected 
-                                            ? 'bg-admin-primary border-admin-primary text-white' 
-                                            : 'bg-white border-admin-border text-transparent'
-                                        }`}>
+                                        <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${isSelected
+                                                ? 'bg-admin-primary border-admin-primary text-white'
+                                                : 'bg-white border-admin-border text-transparent'
+                                            }`}>
                                             <Check size={12} strokeWidth={4} />
                                         </div>
                                         <span className="text-xs font-bold">{opt}</span>
@@ -119,11 +119,20 @@ export default function AddRoom() {
                     <div className="admin-card">
                         <h3 className="text-sm font-bold text-admin-text-main mb-6 pb-4 border-b border-admin-border">Pengaturan & Harga</h3>
                         <div className="space-y-4">
-                            <div className="form-group">
-                                <label className="form-label">Harga per Malam</label>
-                                <div className="relative">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-light font-bold text-sm">Rp</span>
-                                    <input required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} type="number" className="admin-input pl-10" placeholder="0" />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="form-group">
+                                    <label className="form-label">Harga per Malam (Weekday)</label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-light font-bold text-sm">Rp</span>
+                                        <input required value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} type="number" className="admin-input pl-10" placeholder="0" />
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Harga per Malam (Weekend)</label>
+                                    <div className="relative">
+                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-admin-text-light font-bold text-sm">Rp</span>
+                                        <input required value={formData.priceWeekend} onChange={e => setFormData({ ...formData, priceWeekend: e.target.value })} type="number" className="admin-input pl-10" placeholder="0" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -152,9 +161,9 @@ export default function AddRoom() {
 
                     <div className="admin-card">
                         <h3 className="text-sm font-bold text-admin-text-main mb-6 pb-4 border-b border-admin-border">Galeri Foto</h3>
-                        <ImageUpload 
-                            images={formData.images} 
-                            onChange={(images) => setFormData({ ...formData, images })} 
+                        <ImageUpload
+                            images={formData.images}
+                            onChange={(images) => setFormData({ ...formData, images })}
                         />
                     </div>
 

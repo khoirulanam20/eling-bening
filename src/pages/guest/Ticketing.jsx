@@ -38,8 +38,23 @@ export default function Ticketing() {
     const updateQty = (id, delta) => {
         setQtys(prev => ({
             ...prev,
-            [id]: Math.max(0, prev[id] + delta)
+            [id]: Math.max(0, (prev[id] || 0) + delta)
         }));
+    };
+
+    // Calculate Dynamic Prices
+    const today = new Date().getDay();
+    const isWeekend = today === 0 || today === 5 || today === 6;
+
+    const getTicketPrice = (name) => {
+        const ticket = tickets.find(t => t.name.includes(name));
+        if (!ticket) return name.includes('Utama') ? 25000 : 20000;
+        return isWeekend && ticket.priceWeekend ? ticket.priceWeekend : ticket.price;
+    };
+
+    const currentPrices = {
+        'ticket-main': getTicketPrice('Utama'),
+        'ticket-pool': getTicketPrice('Kolam')
     };
 
     const applyPromo = () => {
@@ -65,23 +80,18 @@ export default function Ticketing() {
     };
 
     // Calculate totals
-    const prices = {
-        'ticket-main': 25000,
-        'ticket-pool': 20000
-    };
-
     let subtotal = 0;
     const orderItems = [];
 
     if (qtys['ticket-main'] > 0) {
-        const amount = qtys['ticket-main'] * prices['ticket-main'];
+        const amount = qtys['ticket-main'] * currentPrices['ticket-main'];
         subtotal += amount;
-        orderItems.push({ name: 'Tiket Masuk Utama', qty: qtys['ticket-main'], price: prices['ticket-main'], amount });
+        orderItems.push({ name: 'Tiket Masuk Utama', qty: qtys['ticket-main'], price: currentPrices['ticket-main'], amount });
     }
     if (qtys['ticket-pool'] > 0) {
-        const amount = qtys['ticket-pool'] * prices['ticket-pool'];
+        const amount = qtys['ticket-pool'] * currentPrices['ticket-pool'];
         subtotal += amount;
-        orderItems.push({ name: 'Akses Kolam Renang', qty: qtys['ticket-pool'], price: prices['ticket-pool'], amount });
+        orderItems.push({ name: 'Akses Kolam Renang', qty: qtys['ticket-pool'], price: currentPrices['ticket-pool'], amount });
     }
 
     const hasItems = orderItems.length > 0;
@@ -133,8 +143,8 @@ export default function Ticketing() {
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <p className="text-gray-400 line-through text-sm">Rp 30.000</p>
-                                        <p className="text-3xl font-bold text-eling-green">Rp 25.000<span className="text-sm text-gray-400 ml-1">/org</span></p>
+                                        {isWeekend && <p className="text-gray-400 line-through text-sm">{formatRupiah(getTicketPrice('Utama') / 1.2)}</p>}
+                                        <p className="text-3xl font-bold text-eling-green">{formatRupiah(currentPrices['ticket-main'])}<span className="text-sm text-gray-400 ml-1">/org</span></p>
                                     </div>
                                     <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl">
                                         <button onClick={() => updateQty('ticket-main', -1)} className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center hover:bg-eling-green hover:text-white transition">
@@ -161,7 +171,7 @@ export default function Ticketing() {
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <div>
-                                        <p className="text-3xl font-bold text-eling-green">Rp 20.000<span className="text-sm text-gray-400 ml-1">/org</span></p>
+                                        <p className="text-3xl font-bold text-eling-green">{formatRupiah(currentPrices['ticket-pool'])}<span className="text-sm text-gray-400 ml-1">/org</span></p>
                                     </div>
                                     <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-xl">
                                         <button onClick={() => updateQty('ticket-pool', -1)} className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center hover:bg-eling-green hover:text-white transition">

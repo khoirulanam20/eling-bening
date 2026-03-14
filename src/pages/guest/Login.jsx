@@ -83,10 +83,10 @@ export default function Login() {
                         </div>
 
                         <div className="relative">
-                            <label className="block text-sm font-bold text-gray-700 mb-2 flex justify-between">
-                                Password
-                                <a href="#" className="font-medium text-eling-green hover:text-green-800 transition">Lupa password?</a>
-                            </label>
+                            <div className="flex justify-between items-center mb-2">
+                                <label className="block text-sm font-bold text-gray-700">Password</label>
+                                <Link to="/forgot-password" className="text-sm font-medium text-eling-green hover:text-green-800 transition">Lupa password?</Link>
+                            </div>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                                     <Lock className="h-5 w-5 text-gray-400" />

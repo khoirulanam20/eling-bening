@@ -1,18 +1,10 @@
-import { useState } from 'react';
 import { Utensils, BedDouble, Waves, MapPin, Phone, Mail, X } from 'lucide-react';
+import { useContent } from '../../context/ContentContext';
 
 export default function Facilities() {
+    const { content } = useContent();
     const [showMap, setShowMap] = useState(false);
-    const facilities = [
-        { icon: "fa-utensils", title: "Restaurant & Cafe", desc: "Menyajikan hidangan lokal dan internasional dengan view spektakuler Danau Rawa Pening." },
-        { icon: "fa-child", title: "Area Play-Land", desc: "Taman bermain yang aman dan menyenangkan untuk anak-anak dengan berbagai wahana." },
-        { icon: "fa-users", title: "Tatap Lokasi", desc: "Berbagai spot foto ikonik untuk mengabadikan momen kebersamaan Anda." },
-        { icon: "fa-binoculars", title: "Skydeck", desc: "Dek observasi tertinggi untuk menikmati matahari terbenam yang memukau." },
-        { icon: "fa-home", title: "Resort Mewah", desc: "Penginapan eksklusif dengan fasilitas kamar yang sangat lengkap dan nyaman." },
-        { icon: "fa-praying-hands", title: "Musholla", desc: "Fasilitas ibadah yang bersih, terawat, luas, dan nyaman." },
-        { icon: "fa-wifi", title: "Free Wi-Fi", desc: "Koneksi internet cepat tersedia gratis di seluruh area publik Eling Bening." },
-        { icon: "fa-camera", title: "Spot Foto", desc: "Puluhan spot instagramable eksklusif dengan latar alam Ambarawa sepuasnya." }
-    ];
+    const facilities = content.facilities || [];
 
     return (
         <div className="animate-fade-in bg-gray-50 pb-24">
@@ -40,10 +32,10 @@ export default function Facilities() {
                             <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-bl-full -z-10 transition duration-500 group-hover:scale-150 group-hover:bg-eling-green/5"></div>
 
                             <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-eling-green transition duration-500 shadow-sm">
-                                <i className={`fas ${item.icon} text-eling-green text-2xl group-hover:text-white transition duration-500`}></i>
+                                <i className={`fas fa-${item.icon} text-eling-green text-2xl group-hover:text-white transition duration-500`}></i>
                             </div>
 
-                            <h3 className="font-bold text-xl mb-4 text-gray-900 font-serif leading-tight">{item.title}</h3>
+                            <h3 className="font-bold text-xl mb-4 text-gray-900 font-serif leading-tight">{item.title || item.name}</h3>
                             <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
                         </div>
                     ))}
@@ -68,8 +60,8 @@ export default function Facilities() {
                     </div>
                     <div className="flex-1 w-full relative group">
                         <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white cursor-pointer" onClick={() => setShowMap(true)}>
-                            {/* Dummy Map Illustration */}
-                            <img src="/images/hero-bg.png" alt="Map Preview" className="w-full h-full object-cover group-hover:scale-105 transition duration-500 blur-[2px] group-hover:blur-0" />
+                            {/* Dynamic Map Illustration */}
+                            <img src={content.mapImage || "/images/hero-bg.png"} alt="Map Preview" className="w-full h-full object-cover group-hover:scale-105 transition duration-500 blur-[2px] group-hover:blur-0" />
                             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition duration-500 rounded-2xl flex items-center justify-center">
                                 <span className="bg-white/90 text-gray-900 px-6 py-2 rounded-full font-bold shadow-lg backdrop-blur-sm shadow-black/20 group-hover:scale-110 transition duration-300">Buka Peta</span>
                             </div>

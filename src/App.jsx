@@ -19,6 +19,7 @@ import Payment from './pages/guest/Payment';
 import BookingDetails from './pages/guest/BookingDetails';
 import Login from './pages/guest/Login';
 import Register from './pages/guest/Register';
+import ForgotPassword from './pages/guest/ForgotPassword';
 import Events from './pages/guest/Events';
 
 import Dashboard from './pages/admin/Dashboard';
@@ -48,6 +49,7 @@ import AdminFinanceTickets from './pages/admin/FinanceTickets';
 import AdminFinanceResort from './pages/admin/FinanceResort';
 import AdminStats from './pages/admin/Stats';
 import AdminContent from './pages/admin/AdminContent';
+import AdminProfile from './pages/admin/Profile';
 import AdminSettings from './pages/admin/Settings';
 
 // Protected Route Component
@@ -71,6 +73,7 @@ function App() {
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
           {/* Guest Routes */}
           <Route path="/" element={<GuestLayout />}>
@@ -119,6 +122,7 @@ function App() {
             <Route path="finance/tickets" element={<AdminFinanceTickets />} />
             <Route path="finance/resort" element={<AdminFinanceResort />} />
             <Route path="content" element={<AdminContent />} />
+            <Route path="profile" element={<AdminProfile />} />
             <Route path="settings" element={<AdminSettings />} />
             <Route path="*" element={<Navigate to="/admin" replace />} />
           </Route>

@@ -47,6 +47,11 @@ export default function Rooms() {
                     const unavailable = isFull || isMaintenance;
                     const badgeText = isMaintenance ? 'Perbaikan' : isFull ? 'Sold Out' : `${r.stock} Unit Tersisa`;
 
+                    // Dynamic Pricing Logic
+                    const today = new Date().getDay();
+                    const isWeekend = today === 0 || today === 5 || today === 6; // 0=Sun, 5=Fri, 6=Sat
+                    const currentPrice = isWeekend && r.priceWeekend ? r.priceWeekend : r.price;
+
                     return (
                         <div key={idx} className={`bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100 group ${unavailable ? 'opacity-75' : ''}`}>
                             <div className="h-64 overflow-hidden relative">
@@ -77,7 +82,7 @@ export default function Rooms() {
                                 </ul>
                                 <div className="flex justify-between items-center pt-6 border-t border-gray-100">
                                     <p className={`text-2xl font-bold font-serif ${unavailable ? 'text-gray-400' : 'text-eling-green'}`}>
-                                        {formatRupiah(r.price)}<span className="text-xs text-gray-400 ml-1 font-sans font-normal">/malam</span>
+                                        {formatRupiah(currentPrice)}<span className="text-xs text-gray-400 ml-1 font-sans font-normal">/malam</span>
                                     </p>
                                     {unavailable ? (
                                         <button disabled className="bg-gray-200 text-gray-400 font-bold py-3 px-6 rounded-xl cursor-not-allowed">Habis</button>

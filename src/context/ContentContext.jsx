@@ -26,7 +26,14 @@ const defaultContent = {
         email: 'info@elingbening.com',
         phone: '+62 812 3456 7890',
         address: 'Jl. Sarjono, Ambarawa, Jawa Tengah, Indonesia'
-    }
+    },
+    facilities: [
+        { id: 1, name: 'Kolam Renang Infinity', desc: 'Kolam renang dengan pemandangan pegunungan yang menakjubkan.', icon: 'swimming-pool', image: '/images/hero-bg.png' },
+        { id: 2, name: 'Restoran & Cafe', desc: 'Hidangan lezat dengan bahan lokal segar dan suasana nyaman.', icon: 'utensils', image: '/images/hero-bg.png' },
+        { id: 3, name: 'Taman Bermain', desc: 'Area aman dan menyenangkan untuk aktifitas anak-anak.', icon: 'child', image: '/images/hero-bg.png' },
+        { id: 4, name: 'Spot Foto Skydeck', desc: 'Sudut terbaik untuk mengabadikan momen dengan latar Rawa Pening.', icon: 'camera', image: '/images/hero-bg.png' }
+    ],
+    mapImage: '/images/hero-bg.png'
 };
 
 export const ContentProvider = ({ children }) => {
@@ -40,13 +47,18 @@ export const ContentProvider = ({ children }) => {
     }, [content]);
 
     const updateContent = (tab, key, value) => {
-        setContent(prev => ({
-            ...prev,
-            [tab]: {
-                ...prev[tab],
-                [key]: value
+        setContent(prev => {
+            if (!tab) {
+                return { ...prev, [key]: value };
             }
-        }));
+            return {
+                ...prev,
+                [tab]: {
+                    ...prev[tab],
+                    [key]: value
+                }
+            };
+        });
     };
 
     return (

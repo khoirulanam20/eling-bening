@@ -13,6 +13,11 @@ export default function RoomDetails() {
         navigate('/booking'); // Proceed to booking form
     };
 
+    // Dynamic Pricing Logic
+    const today = new Date().getDay();
+    const isWeekend = today === 0 || today === 5 || today === 6; // 0=Sun, 5=Fri, 6=Sat
+    const currentPrice = isWeekend && room.priceWeekend ? room.priceWeekend : room.price;
+
     return (
         <main className="pt-24 pb-20 px-6 max-w-7xl mx-auto animate-fade-in">
             {/* Room Headline */}
@@ -198,7 +203,7 @@ export default function RoomDetails() {
                 <div className="lg:col-span-1 hidden lg:block">
                     <div className="bg-white rounded-3xl p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] border border-gray-100 sticky top-32">
                         <div className="mb-6 flex items-end gap-1">
-                            <span className="text-3xl font-bold font-serif text-eling-green">{formatRupiah(room.price)}</span>
+                            <span className="text-3xl font-bold font-serif text-eling-green">{formatRupiah(currentPrice)}</span>
                             <span className="text-gray-400 text-sm mb-1">/ malam</span>
                         </div>
 
@@ -240,16 +245,16 @@ export default function RoomDetails() {
                         {/* Price breakdown */}
                         <div className="space-y-3 pt-6 border-t border-dashed border-gray-200 text-sm">
                             <div className="flex justify-between text-gray-600">
-                                <span className="underline decoration-dotted text-gray-500">{formatRupiah(room.price)} x 1 malam</span>
-                                <span>{formatRupiah(room.price)}</span>
+                                <span className="underline decoration-dotted text-gray-500">{formatRupiah(currentPrice)} x 1 malam</span>
+                                <span>{formatRupiah(currentPrice)}</span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span className="underline decoration-dotted text-gray-500">Pajak & Layanan Hotel</span>
-                                <span>{formatRupiah(room.price * 0.1)}</span>
+                                <span>{formatRupiah(currentPrice * 0.1)}</span>
                             </div>
                             <div className="flex justify-between pt-4 font-bold text-lg text-eling-green border-t border-gray-100">
                                 <span>Total Harga</span>
-                                <span>{formatRupiah(room.price * 1.1)}</span>
+                                <span>{formatRupiah(currentPrice * 1.1)}</span>
                             </div>
                         </div>
                     </div>
@@ -259,7 +264,7 @@ export default function RoomDetails() {
                 <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 px-6 flex justify-between items-center z-50 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)]">
                     <div>
                         <span className="text-xs text-gray-500 block mb-0.5">Mulai dari</span>
-                        <span className="text-lg font-bold font-serif text-eling-green">{formatRupiah(room.price)}</span>
+                        <span className="text-lg font-bold font-serif text-eling-green">{formatRupiah(currentPrice)}</span>
                         <span className="text-gray-400 text-[10px]">/mlm</span>
                     </div>
                     <button onClick={handleBooking} className="bg-eling-red text-white px-8 py-3 rounded-xl font-bold text-sm hover:bg-red-800 transition shadow-md">
